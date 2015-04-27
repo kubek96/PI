@@ -1,0 +1,99 @@
+﻿using System;
+using System.Collections.Generic;
+using Digger.Game.Elements;
+using Microsoft.Xna.Framework;
+using System.Linq;
+
+namespace Digger.Game.Common
+{
+    public class StageHelper
+    {
+        private Dictionary<FruitType, Fruit> _fruitsTemplates;
+
+        public StageHelper()
+        {
+            _fruitsTemplates = new Dictionary<FruitType, Fruit>(5);
+            _fruitsTemplates.Add(FruitType.Lemon, new Fruit(FruitType.Lemon, "Game/Fruits/Lemon", worm => worm.AcidShoots += 5, enemy => enemy.Evolve()));
+            _fruitsTemplates.Add(FruitType.Orange, new Fruit(FruitType.Orange, "Game/Fruits/Orange", worm => worm.VenomShoots += 5, enemy => enemy.Evolve()));
+            _fruitsTemplates.Add(FruitType.Kiwi, new Fruit(FruitType.Kiwi, "Game/Fruits/Kiwi", worm => worm.KiwisCount++, enemy => enemy.Kill()));
+            _fruitsTemplates.Add(FruitType.Watermelon, new Fruit(FruitType.Watermelon, "Game/Fruits/Watermelon", worm => worm.MudCount++, enemy => enemy.Evolve()));
+            _fruitsTemplates.Add(FruitType.Plum, new Fruit(FruitType.Plum, "Game/Fruits/Plum", worm => worm.MoveFaster(1, 5000), enemy => enemy.Evolve()));
+            _fruitsTemplates.Add(FruitType.Candy, new Fruit(FruitType.Candy, "Game/Fruits/Candy", worm => worm.Heal(), enemy => enemy.Evolve()));
+        }
+
+        public Point[] GenerateFreeGroundsCoordinates(int n, int width=20, int height=20)
+        {
+            // Popraw do indeksowania od 0;
+            width--;
+            height--;
+
+            Random random = new Random();
+            Point[] points = new Point[n+2];
+            points[0] = new Point(0,height);
+            points[n + 1] = new Point(width,0);
+
+            for (int i = 1; i < n+1; i++)
+            {
+                points[i] = new Point(random.Next(points[i - 1].X, width - 1), random.Next(1, points[i - 1].Y));
+            }
+
+            List<Point> tunnel = new List<Point>();
+            for (int i = 1; i < n + 2; i++)
+            {
+                if (i%2 != 0)
+                {
+                    // Najpierw buduj poziomo
+                    for (int x = points[i - 1].X; x < points[i].X; x++)
+                    {
+                        tunnel.Add(new Point(x, points[i - 1].Y));
+                    }
+                    // Potem pionowo
+                    for (int y = points[i - 1].Y; y > points[i].Y; y--)
+                    {
+                        tunnel.Add(new Point(points[i].X, y));
+                    }
+                }
+                else
+                {
+                    // Najpierw buduj pionowo
+                    for (int y = points[i - 1].Y; y > points[i].Y; y--)
+                    {
+                        tunnel.Add(new Point(points[i-1].X, y));
+                    }
+                    // Potem poziomo
+                    for (int x = points[i - 1].X; x < points[i].X; x++)
+                    {
+                        tunnel.Add(new Point(x, points[i].Y));
+                    }
+                }
+            }
+            tunnel.Add(new Point(width,0));
+
+            return tunnel.ToArray();
+        }
+
+        // Zwrócone obiekty wymagają initialize!
+        public List<Fruit> GenerateGrabableFruits(int n)
+        {
+            Random random = new Random();
+            List<Fruit> fruits = new List<Fruit>();
+            for (int i = 0; i < n; i++)
+            {
+                fruits.Add(new Fruit(_fruitsTemplates[(FruitType)random.Next((int)FruitType.Lemon,(int)FruitType.Candy)]));
+            }
+            return fruits;
+        }
+
+        public Fruit[] GenerateInterfaceFruits()
+        {
+            Fruit[] fruits = new Fruit[4];
+
+            fruits[0] = new Fruit(_fruitsTemplates[FruitType.Lemon]);
+            fruits[1] = new Fruit(_fruitsTemplates[FruitType.Orange]);
+            fruits[2] = new Fruit(_fruitsTemplates[FruitType.Kiwi]);
+            fruits[3] = new Fruit(_fruitsTemplates[FruitType.Watermelon]);
+
+            return fruits;
+        } 
+    }
+}

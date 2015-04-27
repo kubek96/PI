@@ -1,0 +1,353 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline">
+  <Asset Type="Pipeline:BuildItemCollection">
+    <Item>
+      <Source>Views\Common\Background.png</Source>
+      <Name>Views\Common\Background</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\Common\Background.xnb</Output>
+      <Time>2015-04-14T20:12:27.9995023+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\Menu\GrassThree.png</Source>
+      <Name>Views\Menu\GrassThree</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\Menu\GrassThree.xnb</Output>
+      <Time>2015-04-14T19:48:00.8661623+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\Menu\GrassTwo.png</Source>
+      <Name>Views\Menu\GrassTwo</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\Menu\GrassTwo.xnb</Output>
+      <Time>2015-04-14T19:49:39.4648404+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\Menu\GrassOne.png</Source>
+      <Name>Views\Menu\GrassOne</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\Menu\GrassOne.xnb</Output>
+      <Time>2015-04-14T19:31:53.5790844+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\NavigationButtons\NewGame.png</Source>
+      <Name>Views\NavigationButtons\NewGame</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\NewGame.xnb</Output>
+      <Time>2015-04-16T11:26:12.9010537+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\NavigationButtons\BestScores.png</Source>
+      <Name>Views\NavigationButtons\BestScores</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\BestScores.xnb</Output>
+      <Time>2015-04-16T11:26:13.3542018+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\NavigationButtons\Exit.png</Source>
+      <Name>Views\NavigationButtons\Exit</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\Exit.xnb</Output>
+      <Time>2015-04-16T11:26:13.8229682+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\NavigationButtons\Help.png</Source>
+      <Name>Views\NavigationButtons\Help</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\Help.xnb</Output>
+      <Time>2015-04-16T11:26:11.8848686+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\NavigationButtons\LoadGame.png</Source>
+      <Name>Views\NavigationButtons\LoadGame</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\LoadGame.xnb</Output>
+      <Time>2015-04-16T11:26:12.4786458+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\NavigationButtons\Options.png</Source>
+      <Name>Views\NavigationButtons\Options</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\Options.xnb</Output>
+      <Time>2015-04-14T17:23:09.3357611+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\Menu\Clouds.png</Source>
+      <Name>Views\Menu\Clouds</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\Menu\Clouds.xnb</Output>
+      <Time>2015-04-14T20:21:37.4177058+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\Menu\Sky.png</Source>
+      <Name>Views\Menu\Sky</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\Menu\Sky.xnb</Output>
+      <Time>2015-04-14T20:10:59.4962725+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\Menu\GroundBuffer.png</Source>
+      <Name>Views\Menu\GroundBuffer</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\Menu\GroundBuffer.xnb</Output>
+      <Time>2015-04-14T20:07:11.8078443+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Worm.png</Source>
+      <Name>Game\Worm</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Worm.xnb</Output>
+      <Time>2015-04-20T16:25:40.5273006+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\Common\MenuFrame.png</Source>
+      <Name>Views\Common\MenuFrame</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\Common\MenuFrame.xnb</Output>
+      <Time>2015-04-15T22:31:58.6281671+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\NavigationButtons\Clouds.png</Source>
+      <Name>Views\NavigationButtons\Clouds</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\Clouds.xnb</Output>
+      <Time>2015-04-15T22:44:02.4905001+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\NavigationButtons\Play.png</Source>
+      <Name>Views\NavigationButtons\Play</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\Play.xnb</Output>
+      <Time>2015-04-20T11:14:44.7910573+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\NavigationButtons\GoBack.png</Source>
+      <Name>Views\NavigationButtons\GoBack</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\GoBack.xnb</Output>
+      <Time>2015-04-20T10:53:58.6000581+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Fonts\Silkscreen.spritefont</Source>
+      <Name>Fonts\Silkscreen</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Fonts\Silkscreen.xnb</Output>
+      <Time>2015-04-20T13:10:20.7818206+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\Common\IBeam.png</Source>
+      <Name>Views\Common\IBeam</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\Common\IBeam.xnb</Output>
+      <Time>2015-04-20T12:57:21.7675721+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\GroundFree.png</Source>
+      <Name>Game\GroundFree</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\GroundFree.xnb</Output>
+      <Time>2015-04-20T15:35:37.6855276+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\GroundOne.png</Source>
+      <Name>Game\GroundOne</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\GroundOne.xnb</Output>
+      <Time>2015-04-20T13:41:00.079317+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\GroundTwo.png</Source>
+      <Name>Game\GroundTwo</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\GroundTwo.xnb</Output>
+      <Time>2015-04-20T13:41:00.0823179+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Fruits\Candy.png</Source>
+      <Name>Game\Fruits\Candy</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\Candy.xnb</Output>
+      <Time>2015-04-20T19:21:45.1115392+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Fruits\Kiwi.png</Source>
+      <Name>Game\Fruits\Kiwi</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\Kiwi.xnb</Output>
+      <Time>2015-04-20T19:21:45.0845162+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Fruits\Lemon.png</Source>
+      <Name>Game\Fruits\Lemon</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\Lemon.xnb</Output>
+      <Time>2015-04-20T19:21:45.0885183+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Fruits\Orange.png</Source>
+      <Name>Game\Fruits\Orange</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\Orange.xnb</Output>
+      <Time>2015-04-20T19:21:45.0915233+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Fruits\Plum.png</Source>
+      <Name>Game\Fruits\Plum</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\Plum.xnb</Output>
+      <Time>2015-04-20T19:21:45.0945238+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Fruits\RedFive.png</Source>
+      <Name>Game\Fruits\RedFive</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\RedFive.xnb</Output>
+      <Time>2015-04-20T19:21:45.0965256+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Fruits\RedFour.png</Source>
+      <Name>Game\Fruits\RedFour</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\RedFour.xnb</Output>
+      <Time>2015-04-20T19:21:45.0985278+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Fruits\RedOne.png</Source>
+      <Name>Game\Fruits\RedOne</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\RedOne.xnb</Output>
+      <Time>2015-04-20T19:21:45.1015485+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Fruits\RedThree.png</Source>
+      <Name>Game\Fruits\RedThree</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\RedThree.xnb</Output>
+      <Time>2015-04-20T19:21:45.1045505+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Fruits\RedTwo.png</Source>
+      <Name>Game\Fruits\RedTwo</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\RedTwo.xnb</Output>
+      <Time>2015-04-20T19:21:45.1065347+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Fruits\Watermelon.png</Source>
+      <Name>Game\Fruits\Watermelon</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\Watermelon.xnb</Output>
+      <Time>2015-04-20T19:21:45.1095422+02:00</Time>
+    </Item>
+    <BuildSuccessful>true</BuildSuccessful>
+    <Settings>
+      <ContentProjectGUID>{68C71AFF-19EA-4448-ADB3-45B2C3A1A79B}</ContentProjectGUID>
+      <TargetPlatform>Windows</TargetPlatform>
+      <TargetProfile>Reach</TargetProfile>
+      <BuildConfiguration>Debug</BuildConfiguration>
+      <CompressContent>false</CompressContent>
+      <RootDirectory>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\DiggerContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\</OutputDirectory>
+    </Settings>
+    <Assemblies>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll</Key>
+        <Value>2011-09-01T17:22:30+02:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.VideoImporters.dll</Key>
+        <Value>2011-09-01T17:22:30+02:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll</Key>
+        <Value>2011-09-01T17:22:30+02:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll</Key>
+        <Value>2011-09-01T17:22:30+02:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll</Key>
+        <Value>2011-09-01T17:22:30+02:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.dll</Key>
+        <Value>2011-09-01T17:22:30+02:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Windows\Microsoft.Net\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
+        <Value>2015-03-25T15:04:38.6661286+01:00</Value>
+      </Assembly>
+    </Assemblies>
+  </Asset>
+</XnaContent>
