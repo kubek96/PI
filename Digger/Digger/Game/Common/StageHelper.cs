@@ -9,16 +9,24 @@ namespace Digger.Game.Common
     public class StageHelper
     {
         private Dictionary<FruitType, Fruit> _fruitsTemplates;
+        private Dictionary<EnemyType, Enemy> _enemyTemplates;
 
         public StageHelper()
         {
-            _fruitsTemplates = new Dictionary<FruitType, Fruit>(5);
+            _fruitsTemplates = new Dictionary<FruitType, Fruit>();
             _fruitsTemplates.Add(FruitType.Lemon, new Fruit(FruitType.Lemon, "Game/Fruits/Lemon", worm => worm.AcidShoots += 5, enemy => enemy.Evolve()));
             _fruitsTemplates.Add(FruitType.Orange, new Fruit(FruitType.Orange, "Game/Fruits/Orange", worm => worm.VenomShoots += 5, enemy => enemy.Evolve()));
             _fruitsTemplates.Add(FruitType.Kiwi, new Fruit(FruitType.Kiwi, "Game/Fruits/Kiwi", worm => worm.KiwisCount++, enemy => enemy.Kill()));
             _fruitsTemplates.Add(FruitType.Watermelon, new Fruit(FruitType.Watermelon, "Game/Fruits/Watermelon", worm => worm.MudCount++, enemy => enemy.Evolve()));
             _fruitsTemplates.Add(FruitType.Plum, new Fruit(FruitType.Plum, "Game/Fruits/Plum", worm => worm.MoveFaster(1, 5000), enemy => enemy.Evolve()));
             _fruitsTemplates.Add(FruitType.Candy, new Fruit(FruitType.Candy, "Game/Fruits/Candy", worm => worm.Heal(), enemy => enemy.Evolve()));
+
+            _enemyTemplates = new Dictionary<EnemyType, Enemy>();
+            _enemyTemplates.Add(EnemyType.Mouse, new Enemy());
+            _enemyTemplates.Add(EnemyType.Beetle, new Enemy());
+            _enemyTemplates.Add(EnemyType.Spider, new Enemy());
+            _enemyTemplates.Add(EnemyType.RedSpider, new Enemy());
+            _enemyTemplates.Add(EnemyType.RedSpider, new Enemy());
         }
 
         public Point[] GenerateFreeGroundsCoordinates(int n, int width=20, int height=20)

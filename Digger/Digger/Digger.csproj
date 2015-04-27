@@ -76,6 +76,7 @@
     <Compile Include="Data\Player.cs" />
     <Compile Include="Game\Common\Direction.cs" />
     <Compile Include="Game\Common\StageHelper.cs" />
+    <Compile Include="Game\Elements\Door.cs" />
     <Compile Include="Game\Elements\Enemy.cs" />
     <Compile Include="Game\Elements\Fruit.cs" />
     <Compile Include="Game\Elements\Ground.cs" />

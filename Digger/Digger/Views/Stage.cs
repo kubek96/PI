@@ -28,6 +28,7 @@ namespace Digger.Views
         private List<Fruit> _redFruits;
         private List<Fruit> _grabbableFruits;
         private List<Fruit> _rootenKiwis;
+        private Door _door;
 
         private Fruit[] _interfaceFruits;
         private Label[] _interfaceFruitsXs;
@@ -58,6 +59,9 @@ namespace Digger.Views
             _redFruits = new List<Fruit>();
             _grabbableFruits = _stageHelper.GenerateGrabableFruits(20);
             _rootenKiwis = new List<Fruit>();
+
+            // Drzwi
+            _door = new Door(null);
 
             // Interfejs użytkownika
             _interfaceFruits = _stageHelper.GenerateInterfaceFruits();
@@ -94,6 +98,7 @@ namespace Digger.Views
             }
 
             _worm.LoadContent(content, "Game/Worm");
+            _door.LoadContent(content, "Game/Door");
 
             // Elementy interfejsu użytkownika
             for (int i = 0; i < _interfaceFruitsXs.Length; i++)
@@ -129,6 +134,7 @@ namespace Digger.Views
             }
 
             _worm.Initialize(_grounds[0, (int)Math.Sqrt(_grounds.Length)-1].Rectangle);
+            _door.Initialize(_grounds[(int)Math.Sqrt(_grounds.Length) - 1, 0].Rectangle);
 
             Random random = new Random();
             int x, y;
@@ -137,6 +143,7 @@ namespace Digger.Views
                 x = random.Next(0, (int) Math.Sqrt(_grounds.Length))*41 + horizontalShift; 
                 y = random.Next(0, (int)Math.Sqrt(_grounds.Length)) * 41 + verticalShift;
                 // Randomowe koordynaty
+                // TODO: Zrób tak, żeby na siebie nie nachodziły (sprawdź, czy już nie została ta pozycja wylosowana)
                 _grabbableFruits[i].Initialize(new Rectangle(x, y, 40, 40));
             }
 
@@ -171,6 +178,7 @@ namespace Digger.Views
             }
 
             _worm.Draw(spriteBatch);
+            _door.Draw(spriteBatch);
 
             // Elementy interfejsu użytkownika
             for (int i = 0; i < _interfaceFruits.Length; i++)
@@ -228,6 +236,7 @@ namespace Digger.Views
             _lastPressedKeys = keys.ToArray();
             // Robaczek
             _worm.Update(gameTime);
+            _door.Update(gameTime);
 
 
             // Uaktualnienie elementów interfejsu użytkownika
