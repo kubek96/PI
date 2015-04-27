@@ -183,9 +183,6 @@ namespace Digger.Views
 
         public void Update(GameTime gameTime)
         {
-            // Usuwanie elementów
-            bool[] grabableFruitsToRemove = new bool[_grabbableFruits.Count];
-
             // Obsługuj ruch robaczka
             KeyboardState newKeyboardState = Keyboard.GetState();
             Keys[] keys = newKeyboardState.GetPressedKeys();
@@ -218,11 +215,10 @@ namespace Digger.Views
                     // Przecięcia z owocami
                     for (int j = 0; j < _grabbableFruits.Count; j++)
                     {
-                        if (_worm.WormRectangle.Intersects(_grabbableFruits[j].FruitRectangle))
+                        if (_worm.WormRectangle.Intersects(_grabbableFruits[j].FruitRectangle) && _grabbableFruits[j].IsUsed == false)
                         {
                             _grabbableFruits[j].PlayerUse(_worm);
                             _grabbableFruits[j].IsUsed = true;
-                            grabableFruitsToRemove[j] = true;
                         }
                     }
                 }
@@ -234,11 +230,17 @@ namespace Digger.Views
             _worm.Update(gameTime);
 
 
+            // Uaktualnienie elementów interfejsu użytkownika
+            _interfaceFruitsCounts[0].Text = _worm.AcidShoots.ToString();
+            _interfaceFruitsCounts[1].Text = _worm.VenomShoots.ToString();
+            _interfaceFruitsCounts[2].Text = _worm.KiwisCount.ToString();
+            _interfaceFruitsCounts[3].Text = _worm.MudCount.ToString();
+
             // Obsługa usuwania elementów
             // Usuwanie użytych owoców
-            for (int i = 0; i < grabableFruitsToRemove.Length; i++)
+            for (int i = 0; i < _grabbableFruits.Count; i++)
             {
-                if (grabableFruitsToRemove[i]) _grabbableFruits.RemoveAt(i);
+                if (_grabbableFruits[i].IsUsed) _grabbableFruits.RemoveAt(i);
             }
         }
     }

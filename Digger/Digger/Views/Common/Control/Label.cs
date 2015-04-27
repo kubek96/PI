@@ -15,6 +15,12 @@ namespace Digger.Views.Common.Control
             _string = label;
         }
 
+        public string Text
+        {
+            get { return _string; }
+            set { _string = value; }
+        }
+
         public void LoadContent(ContentManager content, string assetName)
         {
             _font = content.Load<SpriteFont>(assetName);
