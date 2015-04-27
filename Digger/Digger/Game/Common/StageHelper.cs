@@ -22,11 +22,11 @@ namespace Digger.Game.Common
             _fruitsTemplates.Add(FruitType.Candy, new Fruit(FruitType.Candy, "Game/Fruits/Candy", worm => worm.Heal(), enemy => enemy.Evolve()));
 
             _enemyTemplates = new Dictionary<EnemyType, Enemy>();
-            _enemyTemplates.Add(EnemyType.Mouse, new Enemy());
-            _enemyTemplates.Add(EnemyType.Beetle, new Enemy());
-            _enemyTemplates.Add(EnemyType.Spider, new Enemy());
-            _enemyTemplates.Add(EnemyType.RedSpider, new Enemy());
-            _enemyTemplates.Add(EnemyType.RedSpider, new Enemy());
+            _enemyTemplates.Add(EnemyType.Mouse, new Enemy(EnemyType.Mouse, "Game/Enemies/Mouse", 1, 1, 80, Direction.Left,false, ));
+            _enemyTemplates.Add(EnemyType.Beetle, new Enemy(EnemyType.Beetle, "Game/Enemies/Beetle", 1, 1, 50, Direction.Left,false, ));
+            _enemyTemplates.Add(EnemyType.Spider, new Enemy(EnemyType.Spider, "Game/Enemies/Spider", 2, 1, 110, Direction.Left, false,));
+            _enemyTemplates.Add(EnemyType.RedSpider, new Enemy(EnemyType.RedSpider, "Game/Enemies/RedSpider", 2, 1, 110, Direction.Left,false,));
+            _enemyTemplates.Add(EnemyType.RedSpider, new Enemy(EnemyType.Rat, "Game/Enemies/Rat", null, 10, 100, Direction.Left, false,));
         }
 
         public Point[] GenerateFreeGroundsCoordinates(int n, int width=20, int height=20)

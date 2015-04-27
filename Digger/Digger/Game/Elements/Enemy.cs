@@ -26,7 +26,7 @@ namespace Digger.Game.Elements
         private Rectangle _enemyRectangle;
 
         private EnemyType _enemyType;
-        private int _life;
+        private int? _life;
         private int _strenght;
         private int _speed;
         private Direction _direction;
@@ -64,11 +64,23 @@ namespace Digger.Game.Elements
             _attack = enemy._attack;
         }
 
-        public Enemy(EnemyType enemyType, string assetName, int life, int strenght, int speed, Direction direction, bool isFreeze, EvolveDelegate evolve,MoveDelegate move,
+        public Enemy(EnemyType enemyType, string assetName, int? life, int strenght, int speed, Direction direction, bool isFreeze, EvolveDelegate evolve,MoveDelegate move,
             WebShootDelegate webShoot, ObserveDelegate observe, AttackDelegate attack)
         {
             _enemyType = enemyType;
+            _life = life;
+            _strenght = strenght;
+            _speed = speed;
+            _direction = direction;
+            _isFreeze = isFreeze;
+            
             _enemyGraphic = new AnimatedGraphic();
+
+            _evolve = evolve;
+            _move = move;
+            _webShoot = webShoot;
+            _observe = observe;
+            _attack = attack;
 
             LoadContent(Game1.Context.Content, assetName);
 
