@@ -122,5 +122,11 @@ namespace Digger.Graphic
             _currentFrame = frameNumber;
             _sourceRectangle = new Rectangle(_currentFrame * _frameWidth, 0, _frameWidth, _frameHeight);
         }
+
+        public AnimatedGraphic Clone()
+        {
+            // TODO: Clone
+            return null;
+        }
     }
 }
