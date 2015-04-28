@@ -31,6 +31,7 @@ namespace Digger.Views
         private List<Fruit> _grabbableFruits;
         private List<Fruit> _rootenKiwis;
         private Door _door;
+        private List<Shot> _shots;
 
         private Fruit[] _interfaceFruits;
         private Label[] _interfaceFruitsXs;
@@ -74,18 +75,22 @@ namespace Digger.Views
             // Wrogowie 
             _enemies = new List<Enemy>();
 
+            // Strzały
+            _shots = new List<Shot>();
+
             // Interfejs użytkownika
             _interfaceFruits = _stageHelper.GenerateInterfaceFruits();
-            _interfaceFruitsXs = new Label[4];
+            _interfaceFruitsXs = new Label[5];
             for (int i = 0; i < _interfaceFruitsXs.Length; i++)
             {
                 _interfaceFruitsXs[i] = new Label("x");
             }
-            _interfaceFruitsCounts = new Label[4];
+            _interfaceFruitsCounts = new Label[5];
             _interfaceFruitsCounts[0] = new Label(_worm.AcidShoots.ToString());
             _interfaceFruitsCounts[1] = new Label(_worm.VenomShoots.ToString());
-            _interfaceFruitsCounts[2] = new Label(_worm.KiwisCount.ToString());
-            _interfaceFruitsCounts[3] = new Label(_worm.MudCount.ToString());
+            _interfaceFruitsCounts[2] = new Label(_worm.PlumsCount.ToString());
+            _interfaceFruitsCounts[3] = new Label(_worm.KiwisCount.ToString());
+            _interfaceFruitsCounts[4] = new Label(_worm.MudCount.ToString());
 
             _interfaceLife = new FixedGraphic();
             _interfaceLifeX = new Label("x");
@@ -217,11 +222,22 @@ namespace Digger.Views
 
             _door.Draw(spriteBatch);
             
+            // Rysuj zgniłe kiwi
+            for (int i = 0; i < _rootenKiwis.Count; i++)
+            {
+                _rootenKiwis[i].Draw(spriteBatch);
+            }
             
             // Rysuj przeciwników
             for (int i = 0; i < _enemies.Count; i++)
             {
                 _enemies[i].Draw(spriteBatch);
+            }
+
+            // Rysuj strzały
+            for (int i = 0; i < _shots.Count; i++)
+            {
+                _shots[i].Draw(spriteBatch);
             }
 
             // Elementy interfejsu użytkownika
@@ -258,7 +274,7 @@ namespace Digger.Views
                 if (!Game1.Context.Player.UserControls.ContainsKey(keys[i]))
                 {
                     // Budowanie grudek ziemi
-                    if (_worm.MudCount > 0)
+                    if (keys[i] == Keys.D5 && _worm.MudCount > 0)
                     {
                         Rectangle rectangle = new Rectangle();
                         switch (_worm.Direction)
@@ -289,8 +305,67 @@ namespace Digger.Views
                                 }
                             }
                         }
+                        continue;
                     }
-
+                    // Strzelanie Acid
+                    if (keys[i] == Keys.D1 && _worm.AcidShoots > 0)
+                    {
+                        Shot shot = new Shot(_stageHelper.ShotTemplates[ShotType.Acid]);
+                        shot.Initialize(_worm.WormRectangle, _worm.Direction);
+                        _shots.Add(shot);
+                        _worm.AcidShoots--;
+                        continue;
+                    }
+                    // Strzelanie Venom
+                    if (keys[i] == Keys.D2 && _worm.VenomShoots > 0)
+                    {
+                        Shot shot = new Shot(_stageHelper.ShotTemplates[ShotType.Venom]);
+                        shot.Initialize(_worm.WormRectangle, _worm.Direction);
+                        _shots.Add(shot);
+                        _worm.VenomShoots--;
+                        continue;
+                    }
+                    // Wykorzystanie śliwki
+                    if (keys[i] == Keys.D3 && _worm.PlumsCount > 0)
+                    {
+                        _worm.MoveFaster(6, 5000);
+                        continue;
+                    }
+                    // Zastawienie kiwi
+                    if (keys[i] == Keys.D4 && _worm.KiwisCount > 0)
+                    {
+                        Rectangle rectangle = new Rectangle();
+                        switch (_worm.Direction)
+                        {
+                            case Direction.Up:
+                                rectangle = new Rectangle(_worm.WormRectangle.X, _worm.WormRectangle.Y - 42, _worm.WormRectangle.Width, _worm.WormRectangle.Height);
+                                break;
+                            case Direction.Right:
+                                rectangle = new Rectangle(_worm.WormRectangle.X + 42, _worm.WormRectangle.Y, _worm.WormRectangle.Width, _worm.WormRectangle.Height);
+                                break;
+                            case Direction.Down:
+                                rectangle = new Rectangle(_worm.WormRectangle.X, _worm.WormRectangle.Y + 42, _worm.WormRectangle.Width, _worm.WormRectangle.Height);
+                                break;
+                            case Direction.Left:
+                                rectangle = new Rectangle(_worm.WormRectangle.X - 42, _worm.WormRectangle.Y, _worm.WormRectangle.Width, _worm.WormRectangle.Height);
+                                break;
+                        }
+                        for (int x = 0; x < Math.Sqrt(_grounds.Length); x++)
+                        {
+                            for (int y = 0; y < Math.Sqrt(_grounds.Length); y++)
+                            {
+                                if (rectangle.Intersects(_grounds[x, y].Rectangle))
+                                {
+                                    if (_grounds[x, y].GroundType != GroundType.Free) continue;
+                                    Fruit kiwi = new Fruit(_stageHelper.FruitsTemplates[FruitType.Kiwi]);
+                                    kiwi.Initialize(rectangle);
+                                    _rootenKiwis.Add(kiwi);
+                                    _worm.KiwisCount--;
+                                }
+                            }
+                        }
+                        continue;
+                    }
                     continue;
                 }
 
@@ -420,14 +495,22 @@ namespace Digger.Views
                 }
             }
 
+            // Akutalizacja strzałów
+            for (int i = 0; i < _shots.Count; i++)
+            {
+                _shots[i].Update(gameTime);
+                _shots[i].Move();
+            }
+
             // Przesuwanie robaczka
             _worm.Move();
 
             // Uaktualnienie elementów interfejsu użytkownika
             _interfaceFruitsCounts[0].Text = _worm.AcidShoots.ToString();
             _interfaceFruitsCounts[1].Text = _worm.VenomShoots.ToString();
-            _interfaceFruitsCounts[2].Text = _worm.KiwisCount.ToString();
-            _interfaceFruitsCounts[3].Text = _worm.MudCount.ToString();
+            _interfaceFruitsCounts[2].Text = _worm.PlumsCount.ToString();
+            _interfaceFruitsCounts[3].Text = _worm.KiwisCount.ToString();
+            _interfaceFruitsCounts[4].Text = _worm.MudCount.ToString();
             _interfaceLifeCount.Text = _worm.Life.ToString();
 
             // Obsługa usuwania elementów

@@ -10,6 +10,7 @@ namespace Digger.Game.Common
     {
         private Dictionary<FruitType, Fruit> _fruitsTemplates;
         private Dictionary<EnemyType, Enemy> _enemyTemplates;
+        private Dictionary<ShotType, Shot> _shotTemplates; 
 
         public StageHelper()
         {
@@ -18,7 +19,7 @@ namespace Digger.Game.Common
             _fruitsTemplates.Add(FruitType.Orange, new Fruit(FruitType.Orange, "Game/Fruits/Orange", worm => worm.VenomShoots += 5, enemy => enemy.Evolve(enemy)));
             _fruitsTemplates.Add(FruitType.Kiwi, new Fruit(FruitType.Kiwi, "Game/Fruits/Kiwi", worm => worm.KiwisCount++, enemy => enemy.Kill()));
             _fruitsTemplates.Add(FruitType.Watermelon, new Fruit(FruitType.Watermelon, "Game/Fruits/Watermelon", worm => worm.MudCount++, enemy => enemy.Evolve(enemy)));
-            _fruitsTemplates.Add(FruitType.Plum, new Fruit(FruitType.Plum, "Game/Fruits/Plum", worm => worm.MoveFaster(6, 5000), enemy => enemy.Evolve(enemy)));
+            _fruitsTemplates.Add(FruitType.Plum, new Fruit(FruitType.Plum, "Game/Fruits/Plum", worm => worm.PlumsCount++, enemy => enemy.Evolve(enemy)));
             _fruitsTemplates.Add(FruitType.Candy, new Fruit(FruitType.Candy, "Game/Fruits/Candy", worm => worm.Heal(), enemy => enemy.Evolve(enemy)));
             _fruitsTemplates.Add(FruitType.RedFruit, new Fruit(FruitType.RedFruit, "Game/Fruits/RedOne", worm => worm.RedFruits++, null));
 
@@ -62,6 +63,10 @@ namespace Digger.Game.Common
             _enemyTemplates.Add(EnemyType.Spider, new Enemy(EnemyType.Spider, "Game/Enemies/Spider", 2, 1, 3, Direction.Left, false, null, null,null, null, null));
             _enemyTemplates.Add(EnemyType.RedSpider, new Enemy(EnemyType.RedSpider, "Game/Enemies/RedSpider", 2, 1, 3, Direction.Left,false,null, null,null, null, null));
             _enemyTemplates.Add(EnemyType.Rat, new Enemy(EnemyType.Rat, "Game/Enemies/Rat", null, 10, 7, Direction.Left, false, null, null, null, null, null));
+
+            _shotTemplates = new Dictionary<ShotType, Shot>();
+            _shotTemplates.Add(ShotType.Acid, new Shot(ShotType.Acid, "Game/Shots/AcidShot"));
+            _shotTemplates.Add(ShotType.Venom, new Shot(ShotType.Venom, "Game/Shots/VenomShot"));
         }
 
         public Point[] GenerateFreeGroundsCoordinates(int n, int width=20, int height=20)
@@ -151,14 +156,30 @@ namespace Digger.Game.Common
 
         public Fruit[] GenerateInterfaceFruits()
         {
-            Fruit[] fruits = new Fruit[4];
+            Fruit[] fruits = new Fruit[5];
 
             fruits[0] = new Fruit(_fruitsTemplates[FruitType.Lemon]);
             fruits[1] = new Fruit(_fruitsTemplates[FruitType.Orange]);
-            fruits[2] = new Fruit(_fruitsTemplates[FruitType.Kiwi]);
-            fruits[3] = new Fruit(_fruitsTemplates[FruitType.Watermelon]);
+            fruits[2] = new Fruit(_fruitsTemplates[FruitType.Plum]);
+            fruits[3] = new Fruit(_fruitsTemplates[FruitType.Kiwi]);
+            fruits[4] = new Fruit(_fruitsTemplates[FruitType.Watermelon]);
 
             return fruits;
-        } 
+        }
+
+        public Dictionary<ShotType, Shot> ShotTemplates
+        {
+            get { return _shotTemplates; }
+        }
+
+        public Dictionary<FruitType, Fruit> FruitsTemplates
+        {
+            get { return _fruitsTemplates; }
+        }
+
+        public Dictionary<EnemyType, Enemy> EnemyTemplates
+        {
+            get { return _enemyTemplates; }
+        }
     }
 }

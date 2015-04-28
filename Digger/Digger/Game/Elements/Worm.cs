@@ -21,6 +21,7 @@ namespace Digger.Game.Elements
         private int _acidShoots;
         private int _venomShoots;
         private int _kiwisCount;
+        private int _plumsCount;
         private int _mudCount;
         private int _life;
         private int _speedEffectTime;
@@ -39,6 +40,12 @@ namespace Digger.Game.Elements
             _life = 10;
             _elapsedSpeedTime = 0;
             _speedEffectTime = 0;
+        }
+
+        public int PlumsCount
+        {
+            get { return _plumsCount; }
+            set { _plumsCount = value; }
         }
 
         public int MudCount
@@ -149,6 +156,8 @@ namespace Digger.Game.Elements
 
         public void MoveFaster(int speed, int effectTime)
         {
+            if (_plumsCount == 0) return;
+            _plumsCount--;
             // Wyrównaj klatki przesunięcia
             _speed = speed - _speed;
             Move();
