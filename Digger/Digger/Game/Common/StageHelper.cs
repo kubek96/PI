@@ -17,10 +17,10 @@ namespace Digger.Game.Common
             _fruitsTemplates = new Dictionary<FruitType, Fruit>();
             _fruitsTemplates.Add(FruitType.Lemon, new Fruit(FruitType.Lemon, "Game/Fruits/Lemon", worm => worm.AcidShoots += 5, enemy => enemy.Evolve(enemy)));
             _fruitsTemplates.Add(FruitType.Orange, new Fruit(FruitType.Orange, "Game/Fruits/Orange", worm => worm.VenomShoots += 5, enemy => enemy.Evolve(enemy)));
-            _fruitsTemplates.Add(FruitType.Kiwi, new Fruit(FruitType.Kiwi, "Game/Fruits/Kiwi", worm => worm.KiwisCount++, enemy => enemy.Kill()));
+            _fruitsTemplates.Add(FruitType.Kiwi, new Fruit(FruitType.Kiwi, "Game/Fruits/Kiwi", worm => worm.KiwisCount++, enemy => enemy.IsKilled=true));
             _fruitsTemplates.Add(FruitType.Watermelon, new Fruit(FruitType.Watermelon, "Game/Fruits/Watermelon", worm => worm.MudCount++, enemy => enemy.Evolve(enemy)));
             _fruitsTemplates.Add(FruitType.Plum, new Fruit(FruitType.Plum, "Game/Fruits/Plum", worm => worm.PlumsCount++, enemy => enemy.Evolve(enemy)));
-            _fruitsTemplates.Add(FruitType.Candy, new Fruit(FruitType.Candy, "Game/Fruits/Candy", worm => worm.Heal(), enemy => enemy.Evolve(enemy)));
+            _fruitsTemplates.Add(FruitType.Candy, new Fruit(FruitType.Candy, "Game/Fruits/Candy", worm => worm.CandyCount++, enemy => enemy.Evolve(enemy)));
             _fruitsTemplates.Add(FruitType.RedFruit, new Fruit(FruitType.RedFruit, "Game/Fruits/RedOne", worm => worm.RedFruits++, null));
 
             _enemyTemplates = new Dictionary<EnemyType, Enemy>();
@@ -127,7 +127,7 @@ namespace Digger.Game.Common
             List<Fruit> fruits = new List<Fruit>();
             for (int i = 0; i < n; i++)
             {
-                fruits.Add(new Fruit(_fruitsTemplates[(FruitType)random.Next((int)FruitType.Lemon,(int)FruitType.Candy)]));
+                fruits.Add(new Fruit(_fruitsTemplates[(FruitType)random.Next((int)FruitType.Lemon,(int)FruitType.Candy+1)]));
             }
             return fruits;
         }
@@ -156,13 +156,14 @@ namespace Digger.Game.Common
 
         public Fruit[] GenerateInterfaceFruits()
         {
-            Fruit[] fruits = new Fruit[5];
+            Fruit[] fruits = new Fruit[6];
 
             fruits[0] = new Fruit(_fruitsTemplates[FruitType.Lemon]);
             fruits[1] = new Fruit(_fruitsTemplates[FruitType.Orange]);
             fruits[2] = new Fruit(_fruitsTemplates[FruitType.Plum]);
             fruits[3] = new Fruit(_fruitsTemplates[FruitType.Kiwi]);
             fruits[4] = new Fruit(_fruitsTemplates[FruitType.Watermelon]);
+            fruits[5] = new Fruit(_fruitsTemplates[FruitType.Candy]);
 
             return fruits;
         }

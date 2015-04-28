@@ -194,11 +194,6 @@ namespace Digger.Game.Elements
             }
         }
 
-        public void Kill()
-        {
-            
-        }
-
         public Direction Direction
         {
             get { return _direction; }

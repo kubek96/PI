@@ -80,17 +80,18 @@ namespace Digger.Views
 
             // Interfejs użytkownika
             _interfaceFruits = _stageHelper.GenerateInterfaceFruits();
-            _interfaceFruitsXs = new Label[5];
+            _interfaceFruitsXs = new Label[6];
             for (int i = 0; i < _interfaceFruitsXs.Length; i++)
             {
                 _interfaceFruitsXs[i] = new Label("x");
             }
-            _interfaceFruitsCounts = new Label[5];
+            _interfaceFruitsCounts = new Label[6];
             _interfaceFruitsCounts[0] = new Label(_worm.AcidShoots.ToString());
             _interfaceFruitsCounts[1] = new Label(_worm.VenomShoots.ToString());
             _interfaceFruitsCounts[2] = new Label(_worm.PlumsCount.ToString());
             _interfaceFruitsCounts[3] = new Label(_worm.KiwisCount.ToString());
             _interfaceFruitsCounts[4] = new Label(_worm.MudCount.ToString());
+            _interfaceFruitsCounts[5] = new Label(_worm.CandyCount.ToString());
 
             _interfaceLife = new FixedGraphic();
             _interfaceLifeX = new Label("x");
@@ -274,7 +275,7 @@ namespace Digger.Views
                 if (!Game1.Context.Player.UserControls.ContainsKey(keys[i]))
                 {
                     // Budowanie grudek ziemi
-                    if (keys[i] == Keys.D5 && _worm.MudCount > 0)
+                    if (!_lastPressedKeys.Contains(Keys.D5) && keys[i] == Keys.D5 && _worm.MudCount > 0)
                     {
                         Rectangle rectangle = new Rectangle();
                         switch (_worm.Direction)
@@ -308,7 +309,7 @@ namespace Digger.Views
                         continue;
                     }
                     // Strzelanie Acid
-                    if (keys[i] == Keys.D1 && _worm.AcidShoots > 0)
+                    if (!_lastPressedKeys.Contains(Keys.D1) && keys[i] == Keys.D1 && _worm.AcidShoots > 0)
                     {
                         Shot shot = new Shot(_stageHelper.ShotTemplates[ShotType.Acid]);
                         shot.Initialize(_worm.WormRectangle, _worm.Direction);
@@ -317,7 +318,7 @@ namespace Digger.Views
                         continue;
                     }
                     // Strzelanie Venom
-                    if (keys[i] == Keys.D2 && _worm.VenomShoots > 0)
+                    if (!_lastPressedKeys.Contains(Keys.D2) && keys[i] == Keys.D2 && _worm.VenomShoots > 0)
                     {
                         Shot shot = new Shot(_stageHelper.ShotTemplates[ShotType.Venom]);
                         shot.Initialize(_worm.WormRectangle, _worm.Direction);
@@ -326,13 +327,13 @@ namespace Digger.Views
                         continue;
                     }
                     // Wykorzystanie śliwki
-                    if (keys[i] == Keys.D3 && _worm.PlumsCount > 0)
+                    if (!_lastPressedKeys.Contains(Keys.D3) && keys[i] == Keys.D3 && _worm.PlumsCount > 0)
                     {
                         _worm.MoveFaster(6, 5000);
                         continue;
                     }
                     // Zastawienie kiwi
-                    if (keys[i] == Keys.D4 && _worm.KiwisCount > 0)
+                    if (!_lastPressedKeys.Contains(Keys.D4) && keys[i] == Keys.D4 && _worm.KiwisCount > 0)
                     {
                         Rectangle rectangle = new Rectangle();
                         switch (_worm.Direction)
@@ -366,6 +367,12 @@ namespace Digger.Views
                         }
                         continue;
                     }
+                    if (!_lastPressedKeys.Contains(Keys.D6) && keys[i] == Keys.D6 && _worm.CandyCount > 0)
+                    {
+                        _worm.CandyCount--;
+                        _worm.Heal();
+                        continue;
+                    }
                     continue;
                 }
 
@@ -389,14 +396,23 @@ namespace Digger.Views
                 // Przecięcia z ziemią
                 for (int y = 0; y < Math.Sqrt(_grounds.Length); y++)
                 {
+                    if (_grounds[x, y].GroundType == GroundType.Free) continue;
+
                     if (_worm.WormRectangle.Intersects(_grounds[x, y].Rectangle))
                     {
-                        if (_grounds[x, y].GroundType == GroundType.Free) continue;
-
                         // Rozpocznij proces zwolnienia
                         _worm.IsDigging = true;
                         // Usun ziemię
                         _grounds[x, y].GroundType = GroundType.Free;
+                    }
+
+                    // Czy strzał osiągnął ziemię
+                    for (int i = 0; i < _shots.Count; i++)
+                    {
+                        if (_shots[i].ShotRectangle.Intersects(_grounds[x, y].Rectangle))
+                        {
+                            _shots[i].ShootSomething = true;
+                        }
                     }
                 }
             }
@@ -493,6 +509,26 @@ namespace Digger.Views
                     _enemies[i].Attack(_worm);
                     _enemies[i].IsKilled = true;
                 }
+
+                for (int j = 0; j < _shots.Count; j++)
+                {
+                    if (_shots[j].ShootSomething) 
+                        continue;
+                    if (_shots[j].ShotRectangle.Intersects(_enemies[i].EnemyRectangle))
+                    {
+                        _enemies[i].IsKilled = true;
+                        _shots[j].ShootSomething = true;
+                    }
+                }
+
+                for (int j = 0; j < _rootenKiwis.Count; j++)
+                {
+                    if (_rootenKiwis[j].FruitRectangle.Intersects(_enemies[i].EnemyRectangle))
+                    {
+                        _rootenKiwis[j].EnemyUse(_enemies[i]);
+                        _rootenKiwis[j].IsUsed = true;
+                    }
+                }
             }
 
             // Akutalizacja strzałów
@@ -511,6 +547,7 @@ namespace Digger.Views
             _interfaceFruitsCounts[2].Text = _worm.PlumsCount.ToString();
             _interfaceFruitsCounts[3].Text = _worm.KiwisCount.ToString();
             _interfaceFruitsCounts[4].Text = _worm.MudCount.ToString();
+            _interfaceFruitsCounts[5].Text = _worm.CandyCount.ToString();
             _interfaceLifeCount.Text = _worm.Life.ToString();
 
             // Obsługa usuwania elementów
@@ -528,6 +565,16 @@ namespace Digger.Views
             for (int i = 0; i < _enemies.Count; i++)
             {
                 if (_enemies[i].IsKilled) _enemies.RemoveAt(i);
+            }
+            // Usuwanie strzalow, ktore cos osiagnely
+            for (int i = 0; i < _shots.Count; i++)
+            {
+                if (_shots[i].ShootSomething || !_gameField.Contains(_shots[i].ShotRectangle)) _shots.RemoveAt(i);
+            }
+            // Usuwanie kiwi
+            for (int i = 0; i < _rootenKiwis.Count; i++)
+            {
+                if (_rootenKiwis[i].IsUsed) _rootenKiwis.RemoveAt(i);
             }
         }
     }

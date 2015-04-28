@@ -20,13 +20,20 @@ namespace Digger.Game.Elements
         private Direction _direction;
         private ShotType _shotType;
         private int _speed;
+        private bool _shootSomething;
 
         public Shot(ShotType shotType, string assetName)
         {
             _shotType = shotType;
             _shotGraphic = new AnimatedGraphic();
             _speed = 14;
+            _shootSomething = false;
             LoadContent(Game1.Context.Content, assetName);
+        }
+
+        public Rectangle ShotRectangle
+        {
+            get { return _shotRectangle; }
         }
 
         public Shot(Shot shot)
@@ -56,6 +63,12 @@ namespace Digger.Game.Elements
         public void Update(GameTime gameTime)
         {
             _shotGraphic.Update(gameTime);
+        }
+
+        public bool ShootSomething
+        {
+            get { return _shootSomething; }
+            set { _shootSomething = value; }
         }
 
         public void Move()

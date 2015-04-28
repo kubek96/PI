@@ -14,6 +14,7 @@ namespace Digger.Game.Elements
         private Direction _direction;
         private int _speed;
         private int _elapsedSpeedTime;
+        private int _elapsedFreezeTime;
         private int _lastSpeed;
         private Rectangle _wormRectangle;
         private Point _destination;
@@ -23,8 +24,10 @@ namespace Digger.Game.Elements
         private int _kiwisCount;
         private int _plumsCount;
         private int _mudCount;
+        private int _candyCount;
         private int _life;
         private int _speedEffectTime;
+        private bool _isFreeze;
 
         private bool _isDigging;
         private bool _isMoving;
@@ -40,6 +43,13 @@ namespace Digger.Game.Elements
             _life = 10;
             _elapsedSpeedTime = 0;
             _speedEffectTime = 0;
+            _isFreeze = false;
+        }
+
+        public int CandyCount
+        {
+            get { return _candyCount; }
+            set { _candyCount = value; }
         }
 
         public int PlumsCount
@@ -152,6 +162,15 @@ namespace Digger.Game.Elements
                 _speed = _lastSpeed = 3;
                 _elapsedSpeedTime = 0;
             }
+            if (_isFreeze)
+            {
+                _elapsedFreezeTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (_elapsedFreezeTime > 200)
+                {
+                    _isFreeze = false;
+                    _elapsedFreezeTime = 0;
+                }
+            }
         }
 
         public void MoveFaster(int speed, int effectTime)
@@ -169,7 +188,7 @@ namespace Digger.Game.Elements
 
         public void Heal()
         {
-            
+            _life = 10;
         }
 
         public bool IsMoving
@@ -179,6 +198,8 @@ namespace Digger.Game.Elements
 
         public void MakeMove(Direction direction)
         {
+            if (_isFreeze) return;
+
             _isMoving = true;
 
             switch (direction)
@@ -244,6 +265,8 @@ namespace Digger.Game.Elements
             {
                 _isMoving = false;
                 _isDigging = false;
+                _isFreeze = true;
+                _elapsedFreezeTime = 0;
             }
         }
 
