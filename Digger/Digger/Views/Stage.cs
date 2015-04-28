@@ -35,6 +35,10 @@ namespace Digger.Views
         private Fruit[] _interfaceFruits;
         private Label[] _interfaceFruitsXs;
         private Label[] _interfaceFruitsCounts;
+        
+        private FixedGraphic _interfaceLife;
+        private Label _interfaceLifeX;
+        private Label _interfaceLifeCount;
 
         public Stage()
         {
@@ -83,6 +87,10 @@ namespace Digger.Views
             _interfaceFruitsCounts[2] = new Label(_worm.KiwisCount.ToString());
             _interfaceFruitsCounts[3] = new Label(_worm.MudCount.ToString());
 
+            _interfaceLife = new FixedGraphic();
+            _interfaceLifeX = new Label("x");
+            _interfaceLifeCount = new Label(_worm.Life.ToString());
+
             // Wczytaj zawartość
             LoadContent(Game1.Context.Content);
 
@@ -113,6 +121,10 @@ namespace Digger.Views
                 _interfaceFruitsXs[i].LoadContent(content, "Fonts/Silkscreen");
                 _interfaceFruitsCounts[i].LoadContent(content, "Fonts/Silkscreen");
             }
+
+            _interfaceLife.LoadContent(content, "Game/Interface/Heart");
+            _interfaceLifeX.LoadContent(content, "Fonts/Silkscreen");
+            _interfaceLifeCount.LoadContent(content, "Fonts/Silkscreen");
         }
 
         public void Initialize()
@@ -122,15 +134,15 @@ namespace Digger.Views
 
             _background.Initialize(new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
 
-            int horizontalShift = (screenWidth - (int)Math.Sqrt(_grounds.Length) * 41)/2;
-            int verticalShift = (screenHeight - (int)Math.Sqrt(_grounds.Length) * 41)/2;
-            _gameField = new Rectangle(horizontalShift, verticalShift, (int)Math.Sqrt(_grounds.Length) * 41, (int)Math.Sqrt(_grounds.Length) * 41);
+            int horizontalShift = (screenWidth - (int)Math.Sqrt(_grounds.Length) * 42)/2;
+            int verticalShift = (screenHeight - (int)Math.Sqrt(_grounds.Length) * 42)/2;
+            _gameField = new Rectangle(horizontalShift, verticalShift, (int)Math.Sqrt(_grounds.Length) * 42, (int)Math.Sqrt(_grounds.Length) * 42);
 
             for (int i = 0; i < Math.Sqrt(_grounds.Length); i++)
             {
                 for (int j = 0; j < Math.Sqrt(_grounds.Length); j++)
                 {
-                    _grounds[i,j].Initialize(new Vector2(i * 41 + horizontalShift, j * 41 + verticalShift));
+                    _grounds[i,j].Initialize(new Vector2(i * 42 + horizontalShift, j * 42 + verticalShift));
                 }
             }
 
@@ -147,16 +159,16 @@ namespace Digger.Views
             int x, y;
             for (int i = 0; i < _grabbableFruits.Count; i++)
             {
-                x = random.Next(0, (int) Math.Sqrt(_grounds.Length))*41 + horizontalShift; 
-                y = random.Next(0, (int)Math.Sqrt(_grounds.Length)) * 41 + verticalShift;
+                x = random.Next(0, (int) Math.Sqrt(_grounds.Length))*42 + horizontalShift; 
+                y = random.Next(0, (int)Math.Sqrt(_grounds.Length)) * 42 + verticalShift;
                 // Randomowe koordynaty
                 // TODO: Zrób tak, żeby na siebie nie nachodziły (sprawdź, czy już nie została ta pozycja wylosowana)
                 _grabbableFruits[i].Initialize(new Rectangle(x, y, 40, 40));
             }
             for (int i = 0; i < _redFruits.Count; i++)
             {
-                x = random.Next(0, (int)Math.Sqrt(_grounds.Length)) * 41 + horizontalShift;
-                y = random.Next(0, (int)Math.Sqrt(_grounds.Length)) * 41 + verticalShift;
+                x = random.Next(0, (int)Math.Sqrt(_grounds.Length)) * 42 + horizontalShift;
+                y = random.Next(0, (int)Math.Sqrt(_grounds.Length)) * 42 + verticalShift;
                 // Randomowe koordynaty
                 // TODO: Zrób tak, żeby na siebie nie nachodziły (sprawdź, czy już nie została ta pozycja wylosowana)
                 _redFruits[i].Initialize(new Rectangle(x, y, 40, 40));
@@ -172,6 +184,11 @@ namespace Digger.Views
                 _interfaceFruits[i].Initialize(new Rectangle(x, y, 40, 40));
                 y += 50;
             }
+
+            y = screenHeight / 2;
+            _interfaceLife.Initialize(new Vector2(x, y - 200), Color.White);
+            _interfaceLifeX.Initialize(new Vector2(x+50, y - 200));
+            _interfaceLifeCount.Initialize(new Vector2(x + 100, y - 200));
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
@@ -214,6 +231,9 @@ namespace Digger.Views
                 _interfaceFruitsCounts[i].Draw(spriteBatch);
                 _interfaceFruitsXs[i].Draw(spriteBatch);
             }
+            _interfaceLife.Draw(spriteBatch);
+            _interfaceLifeX.Draw(spriteBatch);
+            _interfaceLifeCount.Draw(spriteBatch);
 
             _worm.Draw(spriteBatch);
         }
@@ -233,51 +253,105 @@ namespace Digger.Views
                     continue;
                 //if (!_lastPressedKeys.Contains(keys[i]))
                 // Klawisz w dole
+
+                // Ruch:
                 if (!Game1.Context.Player.UserControls.ContainsKey(keys[i]))
+                {
+                    // Budowanie grudek ziemi
+                    if (_worm.MudCount > 0)
+                    {
+                        Rectangle rectangle = new Rectangle();
+                        switch (_worm.Direction)
+                        {
+                            case Direction.Up:
+                                rectangle = new Rectangle(_worm.WormRectangle.X, _worm.WormRectangle.Y - 42, _worm.WormRectangle.Width, _worm.WormRectangle.Height);
+                                break;
+                            case Direction.Right:
+                                rectangle = new Rectangle(_worm.WormRectangle.X + 42, _worm.WormRectangle.Y, _worm.WormRectangle.Width, _worm.WormRectangle.Height);
+                                break;
+                            case Direction.Down:
+                                rectangle = new Rectangle(_worm.WormRectangle.X, _worm.WormRectangle.Y + 42, _worm.WormRectangle.Width, _worm.WormRectangle.Height);
+                                break;
+                            case Direction.Left:
+                                rectangle = new Rectangle(_worm.WormRectangle.X - 42, _worm.WormRectangle.Y, _worm.WormRectangle.Width, _worm.WormRectangle.Height);
+                                break;
+                        }
+                        for (int x = 0; x < Math.Sqrt(_grounds.Length); x++)
+                        {
+                            for (int y = 0; y < Math.Sqrt(_grounds.Length); y++)
+                            {
+                                if (rectangle.Intersects(_grounds[x, y].Rectangle))
+                                {
+                                    if (_grounds[x, y].GroundType != GroundType.Free) continue;
+                                    // Zmniejsz licznik dostępnej ziemi
+                                    _worm.MudCount--;
+                                    _grounds[x, y].GroundType = GroundType.Normal;
+                                }
+                            }
+                        }
+                    }
+
                     continue;
+                }
+
                 // Sprawdź, czy po ruchu gracz jest wewnątrz obszaru grania
                 if (!_gameField.Contains(_worm.TestMove(Game1.Context.Player.UserControls[keys[i]]))) 
                     continue;
+                // Sprawdź czy robaczek nie w ruchu
+                if (_worm.IsMoving) 
+                    continue;
 
-                _worm.Move(Game1.Context.Player.UserControls[keys[i]]);
-                // Sprawdź przecięcia
-                for (int x = 0; x < Math.Sqrt(_grounds.Length); x++)
+                _worm.MakeMove(Game1.Context.Player.UserControls[keys[i]]);
+               
+                _elapsedTime = 0;
+            }
+            _lastPressedKeys = keys.ToArray();
+            // Robaczek
+
+            // Sprawdź przecięcia
+            for (int x = 0; x < Math.Sqrt(_grounds.Length); x++)
+            {
+                // Przecięcia z ziemią
+                for (int y = 0; y < Math.Sqrt(_grounds.Length); y++)
                 {
-                    // Przecięcia z ziemią
-                    for (int y = 0; y < Math.Sqrt(_grounds.Length); y++)
+                    if (_worm.WormRectangle.Intersects(_grounds[x, y].Rectangle))
                     {
-                        if (_worm.WormRectangle.Intersects(_grounds[x, y].Rectangle))
-                        {
-                            // Rozpocznij proces zwolnienia
-                            _worm.IsDigging = true;
-                            // Usun ziemię
-                            _grounds[x, y].GroundType = GroundType.Free;
-                        }
+                        if (_grounds[x, y].GroundType == GroundType.Free) continue;
+
+                        // Rozpocznij proces zwolnienia
+                        _worm.IsDigging = true;
+                        // Usun ziemię
+                        _grounds[x, y].GroundType = GroundType.Free;
                     }
                 }
-                // Przecięcia z owocami
-                for (int j = 0; j < _grabbableFruits.Count; j++)
+            }
+            // Przecięcia z owocami
+            for (int j = 0; j < _grabbableFruits.Count; j++)
+            {
+                if (_worm.WormRectangle.Intersects(_grabbableFruits[j].FruitRectangle) && _grabbableFruits[j].IsUsed == false)
                 {
-                    if (_worm.WormRectangle.Intersects(_grabbableFruits[j].FruitRectangle) && _grabbableFruits[j].IsUsed == false)
+                    _grabbableFruits[j].PlayerUse(_worm);
+                    _grabbableFruits[j].IsUsed = true;
+                }
+                for (int i = 0; i < _enemies.Count; i++)
+                {
+                    if (_enemies[i].EnemyRectangle.Intersects(_grabbableFruits[j].FruitRectangle) && _grabbableFruits[j].IsUsed == false)
                     {
-                        _grabbableFruits[j].PlayerUse(_worm);
+                        _grabbableFruits[j].EnemyUse(_enemies[i]);
                         _grabbableFruits[j].IsUsed = true;
                     }
                 }
-                // Przecięcia z czerwonymi owocami
-                for (int j = 0; j < _redFruits.Count; j++)
+            }
+            // Przecięcia z czerwonymi owocami
+            for (int j = 0; j < _redFruits.Count; j++)
+            {
+                if (_worm.WormRectangle.Intersects(_redFruits[j].FruitRectangle) && _redFruits[j].IsUsed == false)
                 {
-                    if (_worm.WormRectangle.Intersects(_redFruits[j].FruitRectangle) && _redFruits[j].IsUsed == false)
-                    {
-                        _redFruits[j].PlayerUse(_worm);
-                        _redFruits[j].IsUsed = true;
-                    }
+                    _redFruits[j].PlayerUse(_worm);
+                    _redFruits[j].IsUsed = true;
                 }
-                _elapsedTime = 0;
             }
 
-            _lastPressedKeys = keys.ToArray();
-            // Robaczek
             _worm.Update(gameTime);
             _door.Update(gameTime);
 
@@ -294,13 +368,16 @@ namespace Digger.Views
                 // Poruszaj przeciwnikami
                 for (int i = 0; i < _enemies.Count; i++)
                 {
+                    // Sprawdź, czy się juz nie przesuwa 
+                    if (_enemies[i].IsMoving) continue;
+
                     // Sprawdź przecięcia tego enemie z otaczajacymi go obiektami
                     List<Direction> avaliableDirections = new List<Direction>();
                     Rectangle upRectangle, downRectangle, rightRectangle, leftRectangle;
-                    upRectangle = new Rectangle(_enemies[i].EnemyRectangle.X, _enemies[i].EnemyRectangle.Y - 41, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
-                    rightRectangle = new Rectangle(_enemies[i].EnemyRectangle.X + 41, _enemies[i].EnemyRectangle.Y, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
-                    downRectangle = new Rectangle(_enemies[i].EnemyRectangle.X, _enemies[i].EnemyRectangle.Y + 41, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
-                    leftRectangle = new Rectangle(_enemies[i].EnemyRectangle.X - 41, _enemies[i].EnemyRectangle.Y, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
+                    upRectangle = new Rectangle(_enemies[i].EnemyRectangle.X, _enemies[i].EnemyRectangle.Y - 42, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
+                    rightRectangle = new Rectangle(_enemies[i].EnemyRectangle.X + 42, _enemies[i].EnemyRectangle.Y, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
+                    downRectangle = new Rectangle(_enemies[i].EnemyRectangle.X, _enemies[i].EnemyRectangle.Y + 42, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
+                    leftRectangle = new Rectangle(_enemies[i].EnemyRectangle.X - 42, _enemies[i].EnemyRectangle.Y, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
                     bool[] freeSpace = new bool[4];
                     // Przecięcia z ziemią
                     for (int x = 0; x < Math.Sqrt(_grounds.Length); x++)
@@ -323,22 +400,35 @@ namespace Digger.Views
                     if (_gameField.Contains(downRectangle) && freeSpace[2]) avaliableDirections.Add(Direction.Down);
                     // Left
                     if (_gameField.Contains(leftRectangle) && freeSpace[3]) avaliableDirections.Add(Direction.Left);
-                    // Move
-                    _enemies[i].Move(_enemies[i], avaliableDirections.ToArray());
+                    // MakeMove
+                    _enemies[i].MakeMove(_enemies[i], avaliableDirections.ToArray());
                 }
                 _enemieMoveElapsedTime = 0;
             }
             // Aktualizuj istniejąych przeciwników
             for (int i = 0; i < _enemies.Count; i++)
             {
+                _enemies[i].Move();
                 _enemies[i].Update(gameTime);
+
+                // Przecięcie enemie z robaczkiem
+                // TODO: tu będzie metoda obserwe
+                if (_worm.WormRectangle.Intersects(_enemies[i].EnemyRectangle) && !_enemies[i].IsKilled)
+                {
+                    _enemies[i].Attack(_worm);
+                    _enemies[i].IsKilled = true;
+                }
             }
+
+            // Przesuwanie robaczka
+            _worm.Move();
 
             // Uaktualnienie elementów interfejsu użytkownika
             _interfaceFruitsCounts[0].Text = _worm.AcidShoots.ToString();
             _interfaceFruitsCounts[1].Text = _worm.VenomShoots.ToString();
             _interfaceFruitsCounts[2].Text = _worm.KiwisCount.ToString();
             _interfaceFruitsCounts[3].Text = _worm.MudCount.ToString();
+            _interfaceLifeCount.Text = _worm.Life.ToString();
 
             // Obsługa usuwania elementów
             // Usuwanie użytych owoców
@@ -350,6 +440,11 @@ namespace Digger.Views
             for (int i = 0; i < _redFruits.Count; i++)
             {
                 if (_redFruits[i].IsUsed) _redFruits.RemoveAt(i);
+            }
+            // Usuwanie zabitych wrogów
+            for (int i = 0; i < _enemies.Count; i++)
+            {
+                if (_enemies[i].IsKilled) _enemies.RemoveAt(i);
             }
         }
     }

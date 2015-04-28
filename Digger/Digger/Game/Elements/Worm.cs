@@ -1,4 +1,5 @@
-﻿using Digger.Game.Common;
+﻿using System.Runtime.Serialization.Formatters;
+using Digger.Game.Common;
 using Digger.Graphic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -6,30 +7,23 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Digger.Game.Elements
 {
-    public enum WormState
-    {
-        Normal,
-        Eating
-    }
-
-    public enum WormSpeed
-    {
-        Normal = 120,
-        Eating = 20
-    }
-
     public class Worm : IMoveable
     {
         private readonly AnimatedGraphic _wormGraphic;
         private int _framesCount;
         private Direction _direction;
         private int _speed;
+        private int _elapsedSpeedTime;
+        private int _lastSpeed;
         private Rectangle _wormRectangle;
+        private Point _destination;
         private int _redFruits;
         private int _acidShoots;
         private int _venomShoots;
         private int _kiwisCount;
         private int _mudCount;
+        private int _life;
+        private int _speedEffectTime;
 
         private bool _isDigging;
         private bool _isMoving;
@@ -38,10 +32,13 @@ namespace Digger.Game.Elements
         {
             _wormGraphic = new AnimatedGraphic();
             _framesCount = 0;
-            _speed = 120;
+            _speed = _lastSpeed = 3;
             _redFruits = 0;
             _isDigging = false;
             _isMoving = false;
+            _life = 10;
+            _elapsedSpeedTime = 0;
+            _speedEffectTime = 0;
         }
 
         public int MudCount
@@ -89,7 +86,17 @@ namespace Digger.Game.Elements
         public bool IsDigging
         {
             get { return _isDigging; }
-            set { _isDigging = value; }
+            set
+            {
+                _isDigging = value;
+                if (_isDigging) _lastSpeed = _speed;
+            }
+        }
+
+        public int Life
+        {
+            get { return _life; }
+            set { _life = value; }
         }
 
         public AnimatedGraphic WormGraphic
@@ -121,17 +128,34 @@ namespace Digger.Game.Elements
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (_isMoving) _wormGraphic.MoveToFrame(1);
+            else _wormGraphic.MoveToFrame(0);
+
             _wormGraphic.Draw(spriteBatch);
         }
 
         public void Update(GameTime gameTime)
         {
             _wormGraphic.Update(gameTime);
+
+            // Sprawdź, czy nie upłynął już czas przyśpieszenia
+            _elapsedSpeedTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (_elapsedSpeedTime > _speedEffectTime)
+            {
+                _speed = _lastSpeed = 3;
+                _elapsedSpeedTime = 0;
+            }
         }
 
         public void MoveFaster(int speed, int effectTime)
         {
-            
+            // Wyrównaj klatki przesunięcia
+            _speed = speed - _speed;
+            Move();
+            // Ustaw nową prędkość
+            _speed = _lastSpeed = speed;
+            _speedEffectTime = effectTime;
+            _elapsedSpeedTime = 0;
         }
 
         public void Heal()
@@ -139,29 +163,78 @@ namespace Digger.Game.Elements
             
         }
 
-        public void Move(Direction direction)
+        public bool IsMoving
+        {
+            get { return _isMoving; }
+        }
+
+        public void MakeMove(Direction direction)
         {
             _isMoving = true;
-            _wormGraphic.MoveToFrame(1);
 
             switch (direction)
             {
                 case Direction.Up:
-                    _wormRectangle = new Rectangle(_wormRectangle.X, _wormRectangle.Y-41, _wormRectangle.Width, _wormRectangle.Height);
-                    _wormGraphic.Position = new Vector2(_wormGraphic.Position.X, _wormGraphic.Position.Y - 41);
+                    _destination = new Point(_wormRectangle.X, _wormRectangle.Y - 42);
+                    _direction = Direction.Up;
+                    //_wormRectangle = new Rectangle(_wormRectangle.X, _wormRectangle.Y-42, _wormRectangle.Width, _wormRectangle.Height);
+                    //_wormGraphic.Position = new Vector2(_wormGraphic.Position.X, _wormGraphic.Position.Y - 42);
                     break;
                 case Direction.Right:
-                    _wormRectangle = new Rectangle(_wormRectangle.X + 41, _wormRectangle.Y, _wormRectangle.Width, _wormRectangle.Height);
-                    _wormGraphic.Position = new Vector2(_wormGraphic.Position.X + 41, _wormGraphic.Position.Y);
+                    _destination = new Point(_wormRectangle.X + 42, _wormRectangle.Y);
+                    _direction = Direction.Right;
+                    //_wormRectangle = new Rectangle(_wormRectangle.X + 42, _wormRectangle.Y, _wormRectangle.Width, _wormRectangle.Height);
+                    //_wormGraphic.Position = new Vector2(_wormGraphic.Position.X + 42, _wormGraphic.Position.Y);
                     break;
                 case Direction.Down:
-                    _wormRectangle = new Rectangle(_wormRectangle.X, _wormRectangle.Y + 41, _wormRectangle.Width, _wormRectangle.Height);
-                    _wormGraphic.Position = new Vector2(_wormGraphic.Position.X, _wormGraphic.Position.Y + 41);
+                    _destination = new Point(_wormRectangle.X, _wormRectangle.Y + 42);
+                    _direction = Direction.Down;
+                    //_wormRectangle = new Rectangle(_wormRectangle.X, _wormRectangle.Y + 42, _wormRectangle.Width, _wormRectangle.Height);
+                    //_wormGraphic.Position = new Vector2(_wormGraphic.Position.X, _wormGraphic.Position.Y + 42);
                     break;
                 case Direction.Left:
-                    _wormRectangle = new Rectangle(_wormRectangle.X - 41, _wormRectangle.Y, _wormRectangle.Width, _wormRectangle.Height);
-                    _wormGraphic.Position = new Vector2(_wormGraphic.Position.X - 41, _wormGraphic.Position.Y);
+                    _destination = new Point(_wormRectangle.X - 42, _wormRectangle.Y);
+                    _direction = Direction.Left;
+                    //_wormRectangle = new Rectangle(_wormRectangle.X - 42, _wormRectangle.Y, _wormRectangle.Width, _wormRectangle.Height);
+                    //_wormGraphic.Position = new Vector2(_wormGraphic.Position.X - 42, _wormGraphic.Position.Y);
                     break;
+            }
+        }
+
+        public void Move()
+        {
+            if (!_isMoving) return;
+            if (_isDigging) _speed = 1;
+            else _speed = _lastSpeed;
+
+            if (_destination.X != _wormRectangle.X)
+                if (_destination.X > _wormRectangle.X)
+                {
+                    _wormRectangle = new Rectangle(_wormRectangle.X + _speed, _wormRectangle.Y, _wormRectangle.Width, _wormRectangle.Height);
+                    _wormGraphic.Position = new Vector2(_wormGraphic.Position.X + _speed, _wormGraphic.Position.Y);
+                }
+                else
+                {
+                    _wormRectangle = new Rectangle(_wormRectangle.X - _speed, _wormRectangle.Y, _wormRectangle.Width, _wormRectangle.Height);
+                    _wormGraphic.Position = new Vector2(_wormGraphic.Position.X - _speed, _wormGraphic.Position.Y);
+                }
+
+            if (_destination.Y != _wormRectangle.Y)
+                if (_destination.Y > _wormRectangle.Y)
+                {
+                    _wormRectangle = new Rectangle(_wormRectangle.X, _wormRectangle.Y + _speed, _wormRectangle.Width, _wormRectangle.Height);
+                    _wormGraphic.Position = new Vector2(_wormGraphic.Position.X, _wormGraphic.Position.Y + _speed);
+                }
+                else
+                {
+                    _wormRectangle = new Rectangle(_wormRectangle.X, _wormRectangle.Y - _speed, _wormRectangle.Width, _wormRectangle.Height);
+                    _wormGraphic.Position = new Vector2(_wormGraphic.Position.X, _wormGraphic.Position.Y - _speed);
+                }
+
+            if (_wormRectangle.X == _destination.X && _wormRectangle.Y == _destination.Y)
+            {
+                _isMoving = false;
+                _isDigging = false;
             }
         }
 
@@ -170,13 +243,13 @@ namespace Digger.Game.Elements
             switch (direction)
             {
                 case Direction.Up:
-                    return new Rectangle(_wormRectangle.X, _wormRectangle.Y - 41, _wormRectangle.Width, _wormRectangle.Height);
+                    return new Rectangle(_wormRectangle.X, _wormRectangle.Y - 42, _wormRectangle.Width, _wormRectangle.Height);
                 case Direction.Right:
-                    return new Rectangle(_wormRectangle.X + 41, _wormRectangle.Y, _wormRectangle.Width, _wormRectangle.Height);
+                    return new Rectangle(_wormRectangle.X + 42, _wormRectangle.Y, _wormRectangle.Width, _wormRectangle.Height);
                 case Direction.Down:
-                    return new Rectangle(_wormRectangle.X, _wormRectangle.Y + 41, _wormRectangle.Width, _wormRectangle.Height);
+                    return new Rectangle(_wormRectangle.X, _wormRectangle.Y + 42, _wormRectangle.Width, _wormRectangle.Height);
                 case Direction.Left:
-                    return new Rectangle(_wormRectangle.X - 41, _wormRectangle.Y, _wormRectangle.Width, _wormRectangle.Height);
+                    return new Rectangle(_wormRectangle.X - 42, _wormRectangle.Y, _wormRectangle.Width, _wormRectangle.Height);
                 default:
                     return new Rectangle();
             }

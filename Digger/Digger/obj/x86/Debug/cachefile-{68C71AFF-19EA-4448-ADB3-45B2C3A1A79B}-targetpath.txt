@@ -38,3 +38,4 @@ Content\Game\Enemies\Mouse.xnb
 Content\Game\Enemies\Rat.xnb
 Content\Game\Enemies\RedSpider.xnb
 Content\Game\Enemies\Spider.xnb
+Content\Game\Interface\Heart.xnb

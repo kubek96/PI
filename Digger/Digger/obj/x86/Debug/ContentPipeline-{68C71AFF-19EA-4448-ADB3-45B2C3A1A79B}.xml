@@ -125,7 +125,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Worm.xnb</Output>
-      <Time>2015-04-20T16:25:40.5273006+02:00</Time>
+      <Time>2015-04-28T18:56:46.8285331+02:00</Time>
     </Item>
     <Item>
       <Source>Views\Common\MenuFrame.png</Source>
@@ -332,7 +332,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Enemies\Mouse.xnb</Output>
-      <Time>2015-04-27T23:04:53.4120518+02:00</Time>
+      <Time>2015-04-28T19:07:14.0451639+02:00</Time>
     </Item>
     <Item>
       <Source>Game\Enemies\Rat.png</Source>
@@ -360,6 +360,15 @@
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Enemies\Spider.xnb</Output>
       <Time>2015-04-27T23:04:53.4070469+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Interface\Heart.png</Source>
+      <Name>Game\Interface\Heart</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Interface\Heart.xnb</Output>
+      <Time>2015-04-28T19:30:17.4743717+02:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

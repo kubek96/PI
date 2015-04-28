@@ -5,7 +5,7 @@ namespace Digger.Graphic
 {
     public interface IMoveable
     {
-        void Move(Direction direction);
+        void MakeMove(Direction direction);
         Rectangle TestMove(Direction direction);
     }
 }

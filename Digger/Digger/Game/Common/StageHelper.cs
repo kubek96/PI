@@ -18,18 +18,18 @@ namespace Digger.Game.Common
             _fruitsTemplates.Add(FruitType.Orange, new Fruit(FruitType.Orange, "Game/Fruits/Orange", worm => worm.VenomShoots += 5, enemy => enemy.Evolve(enemy)));
             _fruitsTemplates.Add(FruitType.Kiwi, new Fruit(FruitType.Kiwi, "Game/Fruits/Kiwi", worm => worm.KiwisCount++, enemy => enemy.Kill()));
             _fruitsTemplates.Add(FruitType.Watermelon, new Fruit(FruitType.Watermelon, "Game/Fruits/Watermelon", worm => worm.MudCount++, enemy => enemy.Evolve(enemy)));
-            _fruitsTemplates.Add(FruitType.Plum, new Fruit(FruitType.Plum, "Game/Fruits/Plum", worm => worm.MoveFaster(1, 5000), enemy => enemy.Evolve(enemy)));
+            _fruitsTemplates.Add(FruitType.Plum, new Fruit(FruitType.Plum, "Game/Fruits/Plum", worm => worm.MoveFaster(6, 5000), enemy => enemy.Evolve(enemy)));
             _fruitsTemplates.Add(FruitType.Candy, new Fruit(FruitType.Candy, "Game/Fruits/Candy", worm => worm.Heal(), enemy => enemy.Evolve(enemy)));
             _fruitsTemplates.Add(FruitType.RedFruit, new Fruit(FruitType.RedFruit, "Game/Fruits/RedOne", worm => worm.RedFruits++, null));
 
             _enemyTemplates = new Dictionary<EnemyType, Enemy>();
-            _enemyTemplates.Add(EnemyType.Mouse, new Enemy(EnemyType.Mouse, "Game/Enemies/Mouse", 1, 1, 80, Direction.Left, false,
+            _enemyTemplates.Add(EnemyType.Mouse, new Enemy(EnemyType.Mouse, "Game/Enemies/Mouse", 1, 1, 2, Direction.Left, false,
                 delegate(Enemy enemy)
                 {
                     Enemy e = new Enemy(_enemyTemplates[EnemyType.Spider]); 
                     e.Initialize(enemy.EnemyRectangle); 
-                    e.Direction=enemy.Direction; 
-                    return e;
+                    e.Direction=enemy.Direction;
+                    enemy = e;
                 }, delegate(Enemy enemy, Direction[] availableDirections)
                 {
                     // Podmień pozycję 
@@ -39,24 +39,29 @@ namespace Digger.Game.Common
                     switch (availableDirections[m])
                     {
                         case Direction.Up:
-                            y -= 41;
+                            y -= 42;
                             break;
                         case Direction.Right:
-                            x += 41;
+                            x += 42;
                             break;
                         case Direction.Down:
-                            y += 41;
+                            y += 42;
                             break;
                         case Direction.Left:
-                            x -= 41;
+                            x -= 42;
                             break;
                     }
-                    enemy.EnemyRectangle = new Rectangle(enemy.EnemyRectangle.X + x, enemy.EnemyRectangle.Y + y, enemy.EnemyRectangle.Width, enemy.EnemyRectangle.Height);
-                }, null, null, null));
-            //_enemyTemplates.Add(EnemyType.Beetle, new Enemy(EnemyType.Beetle, "Game/Enemies/Beetle", 1, 1, 50, Direction.Left,false, ));
-            //_enemyTemplates.Add(EnemyType.Spider, new Enemy(EnemyType.Spider, "Game/Enemies/Spider", 2, 1, 110, Direction.Left, false,));
-            //_enemyTemplates.Add(EnemyType.RedSpider, new Enemy(EnemyType.RedSpider, "Game/Enemies/RedSpider", 2, 1, 110, Direction.Left,false,));
-            //_enemyTemplates.Add(EnemyType.Rat, new Enemy(EnemyType.Rat, "Game/Enemies/Rat", null, 10, 100, Direction.Left, false,));
+                    enemy.Destination = new Point(enemy.EnemyRectangle.X + x, enemy.EnemyRectangle.Y + y);
+                    enemy.IsMoving = true;
+                }, null, null, delegate(Worm worm)
+                {
+                    worm.Life--;
+                    // TODO: freeze;
+                }));
+            _enemyTemplates.Add(EnemyType.Beetle, new Enemy(EnemyType.Beetle, "Game/Enemies/Beetle", 1, 1, 1, Direction.Left,false, null, null,null, null, null));
+            _enemyTemplates.Add(EnemyType.Spider, new Enemy(EnemyType.Spider, "Game/Enemies/Spider", 2, 1, 3, Direction.Left, false, null, null,null, null, null));
+            _enemyTemplates.Add(EnemyType.RedSpider, new Enemy(EnemyType.RedSpider, "Game/Enemies/RedSpider", 2, 1, 3, Direction.Left,false,null, null,null, null, null));
+            _enemyTemplates.Add(EnemyType.Rat, new Enemy(EnemyType.Rat, "Game/Enemies/Rat", null, 10, 7, Direction.Left, false, null, null, null, null, null));
         }
 
         public Point[] GenerateFreeGroundsCoordinates(int n, int width=20, int height=20)
