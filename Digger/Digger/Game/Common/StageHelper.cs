@@ -14,19 +14,49 @@ namespace Digger.Game.Common
         public StageHelper()
         {
             _fruitsTemplates = new Dictionary<FruitType, Fruit>();
-            _fruitsTemplates.Add(FruitType.Lemon, new Fruit(FruitType.Lemon, "Game/Fruits/Lemon", worm => worm.AcidShoots += 5, enemy => enemy.Evolve()));
-            _fruitsTemplates.Add(FruitType.Orange, new Fruit(FruitType.Orange, "Game/Fruits/Orange", worm => worm.VenomShoots += 5, enemy => enemy.Evolve()));
+            _fruitsTemplates.Add(FruitType.Lemon, new Fruit(FruitType.Lemon, "Game/Fruits/Lemon", worm => worm.AcidShoots += 5, enemy => enemy.Evolve(enemy)));
+            _fruitsTemplates.Add(FruitType.Orange, new Fruit(FruitType.Orange, "Game/Fruits/Orange", worm => worm.VenomShoots += 5, enemy => enemy.Evolve(enemy)));
             _fruitsTemplates.Add(FruitType.Kiwi, new Fruit(FruitType.Kiwi, "Game/Fruits/Kiwi", worm => worm.KiwisCount++, enemy => enemy.Kill()));
-            _fruitsTemplates.Add(FruitType.Watermelon, new Fruit(FruitType.Watermelon, "Game/Fruits/Watermelon", worm => worm.MudCount++, enemy => enemy.Evolve()));
-            _fruitsTemplates.Add(FruitType.Plum, new Fruit(FruitType.Plum, "Game/Fruits/Plum", worm => worm.MoveFaster(1, 5000), enemy => enemy.Evolve()));
-            _fruitsTemplates.Add(FruitType.Candy, new Fruit(FruitType.Candy, "Game/Fruits/Candy", worm => worm.Heal(), enemy => enemy.Evolve()));
+            _fruitsTemplates.Add(FruitType.Watermelon, new Fruit(FruitType.Watermelon, "Game/Fruits/Watermelon", worm => worm.MudCount++, enemy => enemy.Evolve(enemy)));
+            _fruitsTemplates.Add(FruitType.Plum, new Fruit(FruitType.Plum, "Game/Fruits/Plum", worm => worm.MoveFaster(1, 5000), enemy => enemy.Evolve(enemy)));
+            _fruitsTemplates.Add(FruitType.Candy, new Fruit(FruitType.Candy, "Game/Fruits/Candy", worm => worm.Heal(), enemy => enemy.Evolve(enemy)));
+            _fruitsTemplates.Add(FruitType.RedFruit, new Fruit(FruitType.RedFruit, "Game/Fruits/RedOne", worm => worm.RedFruits++, null));
 
             _enemyTemplates = new Dictionary<EnemyType, Enemy>();
-            _enemyTemplates.Add(EnemyType.Mouse, new Enemy(EnemyType.Mouse, "Game/Enemies/Mouse", 1, 1, 80, Direction.Left,false, ));
-            _enemyTemplates.Add(EnemyType.Beetle, new Enemy(EnemyType.Beetle, "Game/Enemies/Beetle", 1, 1, 50, Direction.Left,false, ));
-            _enemyTemplates.Add(EnemyType.Spider, new Enemy(EnemyType.Spider, "Game/Enemies/Spider", 2, 1, 110, Direction.Left, false,));
-            _enemyTemplates.Add(EnemyType.RedSpider, new Enemy(EnemyType.RedSpider, "Game/Enemies/RedSpider", 2, 1, 110, Direction.Left,false,));
-            _enemyTemplates.Add(EnemyType.RedSpider, new Enemy(EnemyType.Rat, "Game/Enemies/Rat", null, 10, 100, Direction.Left, false,));
+            _enemyTemplates.Add(EnemyType.Mouse, new Enemy(EnemyType.Mouse, "Game/Enemies/Mouse", 1, 1, 80, Direction.Left, false,
+                delegate(Enemy enemy)
+                {
+                    Enemy e = new Enemy(_enemyTemplates[EnemyType.Spider]); 
+                    e.Initialize(enemy.EnemyRectangle); 
+                    e.Direction=enemy.Direction; 
+                    return e;
+                }, delegate(Enemy enemy, Direction[] availableDirections)
+                {
+                    // Podmień pozycję 
+                    Random random = new Random();
+                    int x = 0, y = 0;
+                    int m = random.Next(availableDirections.Length);
+                    switch (availableDirections[m])
+                    {
+                        case Direction.Up:
+                            y -= 41;
+                            break;
+                        case Direction.Right:
+                            x += 41;
+                            break;
+                        case Direction.Down:
+                            y += 41;
+                            break;
+                        case Direction.Left:
+                            x -= 41;
+                            break;
+                    }
+                    enemy.EnemyRectangle = new Rectangle(enemy.EnemyRectangle.X + x, enemy.EnemyRectangle.Y + y, enemy.EnemyRectangle.Width, enemy.EnemyRectangle.Height);
+                }, null, null, null));
+            //_enemyTemplates.Add(EnemyType.Beetle, new Enemy(EnemyType.Beetle, "Game/Enemies/Beetle", 1, 1, 50, Direction.Left,false, ));
+            //_enemyTemplates.Add(EnemyType.Spider, new Enemy(EnemyType.Spider, "Game/Enemies/Spider", 2, 1, 110, Direction.Left, false,));
+            //_enemyTemplates.Add(EnemyType.RedSpider, new Enemy(EnemyType.RedSpider, "Game/Enemies/RedSpider", 2, 1, 110, Direction.Left,false,));
+            //_enemyTemplates.Add(EnemyType.Rat, new Enemy(EnemyType.Rat, "Game/Enemies/Rat", null, 10, 100, Direction.Left, false,));
         }
 
         public Point[] GenerateFreeGroundsCoordinates(int n, int width=20, int height=20)
@@ -91,6 +121,28 @@ namespace Digger.Game.Common
             }
             return fruits;
         }
+
+        public List<Fruit> GenerateRedFruits(int n)
+        {
+            List<Fruit> fruits = new List<Fruit>();
+            for (int i = 0; i < n; i++)
+            {
+                fruits.Add(new Fruit(_fruitsTemplates[FruitType.RedFruit]));
+            }
+            return fruits;
+        }
+
+        public Stack<Enemy> GenerateEnemies(int mouses = 5, int beetles = 0, int spiders = 0, int redSpiders = 0, int rats = 0)
+        {
+            Stack<Enemy> enemies = new Stack<Enemy>();
+
+            for (int i = 0; i < mouses; i++)
+            {
+                enemies.Push(new Enemy(_enemyTemplates[EnemyType.Mouse]));
+            }
+
+            return enemies;
+        } 
 
         public Fruit[] GenerateInterfaceFruits()
         {

@@ -25,16 +25,23 @@ namespace Digger.Game.Elements
         private Direction _direction;
         private int _speed;
         private Rectangle _wormRectangle;
+        private int _redFruits;
         private int _acidShoots;
         private int _venomShoots;
         private int _kiwisCount;
         private int _mudCount;
+
+        private bool _isDigging;
+        private bool _isMoving;
 
         public Worm()
         {
             _wormGraphic = new AnimatedGraphic();
             _framesCount = 0;
             _speed = 120;
+            _redFruits = 0;
+            _isDigging = false;
+            _isMoving = false;
         }
 
         public int MudCount
@@ -61,6 +68,12 @@ namespace Digger.Game.Elements
             set { _acidShoots = value; }
         }
 
+        public int RedFruits
+        {
+            get { return _redFruits; }
+            set { _redFruits = value; }
+        }
+
         public int FramesCount
         {
             get { return _framesCount; }
@@ -73,6 +86,11 @@ namespace Digger.Game.Elements
             set { _venomShoots = value; }
         }
 
+        public bool IsDigging
+        {
+            get { return _isDigging; }
+            set { _isDigging = value; }
+        }
 
         public AnimatedGraphic WormGraphic
         {
@@ -123,6 +141,9 @@ namespace Digger.Game.Elements
 
         public void Move(Direction direction)
         {
+            _isMoving = true;
+            _wormGraphic.MoveToFrame(1);
+
             switch (direction)
             {
                 case Direction.Up:

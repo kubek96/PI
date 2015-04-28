@@ -2,6 +2,7 @@
 using Digger.Graphic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Digger.Game.Elements
 {
@@ -14,11 +15,11 @@ namespace Digger.Game.Elements
         Rat
     }
 
-    public delegate void EvolveDelegate();
-    public delegate void MoveDelegate();
+    public delegate Enemy EvolveDelegate(Enemy enemy);
+    public delegate void MoveDelegate(Enemy enemy, Direction[] availableDirections);
     public delegate Shot WebShootDelegate();
     public delegate void ObserveDelegate();
-    public delegate void AttackDelegate();
+    public delegate void AttackDelegate(Worm w);
 
     public class Enemy
     {
@@ -43,7 +44,7 @@ namespace Digger.Game.Elements
         /// <summary>
         /// Konstruktor kopiujący
         /// </summary>
-        /// <param name="fruit"></param>
+        /// <param name="enemy"></param>
         public Enemy(Enemy enemy)
         {
             _enemyGraphic = enemy._enemyGraphic.Clone();
@@ -93,9 +94,41 @@ namespace Digger.Game.Elements
             _enemyRectangle = new Rectangle();
         }
 
+        public void Initialize(Rectangle rectangle)
+        {
+            _enemyRectangle = rectangle;
+            _enemyGraphic.Initialize(new Vector2(_enemyRectangle.X + 10, _enemyRectangle.Y + 10), 22, 20, 1, 100, Color.White);
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            _enemyGraphic.Draw(spriteBatch);
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            _enemyGraphic.Update(gameTime);
+        }
+
+        public Rectangle EnemyRectangle
+        {
+            get { return _enemyRectangle; }
+            set
+            {
+                _enemyRectangle = value;
+                _enemyGraphic.Position = new Vector2(_enemyRectangle.X + 10, _enemyRectangle.Y + 10);
+            }
+        }
+
         public void Kill()
         {
             
+        }
+
+        public Direction Direction
+        {
+            get { return _direction; }
+            set { _direction = value; }
         }
 
         public EvolveDelegate Evolve

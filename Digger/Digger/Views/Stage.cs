@@ -24,6 +24,8 @@ namespace Digger.Views
         private Rectangle _gameField;
         private Keys[] _lastPressedKeys;
         private int _elapsedTime;
+        private int _nextEnemieElapsedTime;
+        private int _enemieMoveElapsedTime;
         private List<Enemy> _enemies;
         private List<Fruit> _redFruits;
         private List<Fruit> _grabbableFruits;
@@ -51,17 +53,22 @@ namespace Digger.Views
             }
 
             _elapsedTime = 0;
+            _nextEnemieElapsedTime = 0;
+            _enemieMoveElapsedTime = 0; 
 
             _worm = new Worm();
             _lastPressedKeys = new Keys[0];
 
             // Owoce
-            _redFruits = new List<Fruit>();
+            _redFruits = _stageHelper.GenerateRedFruits(10);
             _grabbableFruits = _stageHelper.GenerateGrabableFruits(20);
             _rootenKiwis = new List<Fruit>();
 
             // Drzwi
-            _door = new Door(null);
+            _door = new Door(_stageHelper.GenerateEnemies(6), 8000);
+
+            // Wrogowie 
+            _enemies = new List<Enemy>();
 
             // Interfejs użytkownika
             _interfaceFruits = _stageHelper.GenerateInterfaceFruits();
@@ -146,6 +153,14 @@ namespace Digger.Views
                 // TODO: Zrób tak, żeby na siebie nie nachodziły (sprawdź, czy już nie została ta pozycja wylosowana)
                 _grabbableFruits[i].Initialize(new Rectangle(x, y, 40, 40));
             }
+            for (int i = 0; i < _redFruits.Count; i++)
+            {
+                x = random.Next(0, (int)Math.Sqrt(_grounds.Length)) * 41 + horizontalShift;
+                y = random.Next(0, (int)Math.Sqrt(_grounds.Length)) * 41 + verticalShift;
+                // Randomowe koordynaty
+                // TODO: Zrób tak, żeby na siebie nie nachodziły (sprawdź, czy już nie została ta pozycja wylosowana)
+                _redFruits[i].Initialize(new Rectangle(x, y, 40, 40));
+            }
 
             // Inicjalizuj obiekty interfesju użytkownika
             x = horizontalShift/4;
@@ -172,13 +187,25 @@ namespace Digger.Views
             }
 
             //spriteBatch.Draw(_background.Image, _gameField, Color.Violet);
+            // Rysuj grabalbe owocki
             for (int i = 0; i < _grabbableFruits.Count; i++)
             {
                 _grabbableFruits[i].Draw(spriteBatch);
             }
+            // Rysuj czerwone owocki
+            for (int i = 0; i < _redFruits.Count; i++)
+            {
+                _redFruits[i].Draw(spriteBatch);
+            }
 
-            _worm.Draw(spriteBatch);
             _door.Draw(spriteBatch);
+            
+            
+            // Rysuj przeciwników
+            for (int i = 0; i < _enemies.Count; i++)
+            {
+                _enemies[i].Draw(spriteBatch);
+            }
 
             // Elementy interfejsu użytkownika
             for (int i = 0; i < _interfaceFruits.Length; i++)
@@ -187,6 +214,8 @@ namespace Digger.Views
                 _interfaceFruitsCounts[i].Draw(spriteBatch);
                 _interfaceFruitsXs[i].Draw(spriteBatch);
             }
+
+            _worm.Draw(spriteBatch);
         }
 
         public void Update(GameTime gameTime)
@@ -196,6 +225,8 @@ namespace Digger.Views
             Keys[] keys = newKeyboardState.GetPressedKeys();
 
             _elapsedTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
+            _nextEnemieElapsedTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
+            _enemieMoveElapsedTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
             for (int i = 0; i < keys.Length; i++)
             {
                 if (_elapsedTime < _worm.Speed) 
@@ -217,17 +248,29 @@ namespace Digger.Views
                     {
                         if (_worm.WormRectangle.Intersects(_grounds[x, y].Rectangle))
                         {
+                            // Rozpocznij proces zwolnienia
+                            _worm.IsDigging = true;
+                            // Usun ziemię
                             _grounds[x, y].GroundType = GroundType.Free;
                         }
                     }
-                    // Przecięcia z owocami
-                    for (int j = 0; j < _grabbableFruits.Count; j++)
+                }
+                // Przecięcia z owocami
+                for (int j = 0; j < _grabbableFruits.Count; j++)
+                {
+                    if (_worm.WormRectangle.Intersects(_grabbableFruits[j].FruitRectangle) && _grabbableFruits[j].IsUsed == false)
                     {
-                        if (_worm.WormRectangle.Intersects(_grabbableFruits[j].FruitRectangle) && _grabbableFruits[j].IsUsed == false)
-                        {
-                            _grabbableFruits[j].PlayerUse(_worm);
-                            _grabbableFruits[j].IsUsed = true;
-                        }
+                        _grabbableFruits[j].PlayerUse(_worm);
+                        _grabbableFruits[j].IsUsed = true;
+                    }
+                }
+                // Przecięcia z czerwonymi owocami
+                for (int j = 0; j < _redFruits.Count; j++)
+                {
+                    if (_worm.WormRectangle.Intersects(_redFruits[j].FruitRectangle) && _redFruits[j].IsUsed == false)
+                    {
+                        _redFruits[j].PlayerUse(_worm);
+                        _redFruits[j].IsUsed = true;
                     }
                 }
                 _elapsedTime = 0;
@@ -238,6 +281,58 @@ namespace Digger.Views
             _worm.Update(gameTime);
             _door.Update(gameTime);
 
+            // Generuj kolejnych przeciwników
+            if (_nextEnemieElapsedTime > _door.TimeToNextEnemie)
+            {
+                Enemy e =_door.ReleaseNextEnemy();
+                if (e != null) _enemies.Add(e);
+                _nextEnemieElapsedTime = 0;
+            }
+
+            if (_enemieMoveElapsedTime > 200)
+            {
+                // Poruszaj przeciwnikami
+                for (int i = 0; i < _enemies.Count; i++)
+                {
+                    // Sprawdź przecięcia tego enemie z otaczajacymi go obiektami
+                    List<Direction> avaliableDirections = new List<Direction>();
+                    Rectangle upRectangle, downRectangle, rightRectangle, leftRectangle;
+                    upRectangle = new Rectangle(_enemies[i].EnemyRectangle.X, _enemies[i].EnemyRectangle.Y - 41, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
+                    rightRectangle = new Rectangle(_enemies[i].EnemyRectangle.X + 41, _enemies[i].EnemyRectangle.Y, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
+                    downRectangle = new Rectangle(_enemies[i].EnemyRectangle.X, _enemies[i].EnemyRectangle.Y + 41, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
+                    leftRectangle = new Rectangle(_enemies[i].EnemyRectangle.X - 41, _enemies[i].EnemyRectangle.Y, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
+                    bool[] freeSpace = new bool[4];
+                    // Przecięcia z ziemią
+                    for (int x = 0; x < Math.Sqrt(_grounds.Length); x++)
+                    {
+                        for (int y = 0; y < Math.Sqrt(_grounds.Length); y++)
+                        {
+                            if (_grounds[x, y].GroundType != GroundType.Free) continue;
+
+                            if (upRectangle.Intersects(_grounds[x, y].Rectangle)) freeSpace[0] = true;
+                            if (rightRectangle.Intersects(_grounds[x, y].Rectangle)) freeSpace[1] = true;
+                            if (downRectangle.Intersects(_grounds[x, y].Rectangle)) freeSpace[2] = true;
+                            if (leftRectangle.Intersects(_grounds[x, y].Rectangle)) freeSpace[3] = true;
+                        }
+                    }
+                    // Up
+                    if (_gameField.Contains(upRectangle) && freeSpace[0]) avaliableDirections.Add(Direction.Up);
+                    // Right
+                    if (_gameField.Contains(rightRectangle) && freeSpace[1]) avaliableDirections.Add(Direction.Right);
+                    // Down
+                    if (_gameField.Contains(downRectangle) && freeSpace[2]) avaliableDirections.Add(Direction.Down);
+                    // Left
+                    if (_gameField.Contains(leftRectangle) && freeSpace[3]) avaliableDirections.Add(Direction.Left);
+                    // Move
+                    _enemies[i].Move(_enemies[i], avaliableDirections.ToArray());
+                }
+                _enemieMoveElapsedTime = 0;
+            }
+            // Aktualizuj istniejąych przeciwników
+            for (int i = 0; i < _enemies.Count; i++)
+            {
+                _enemies[i].Update(gameTime);
+            }
 
             // Uaktualnienie elementów interfejsu użytkownika
             _interfaceFruitsCounts[0].Text = _worm.AcidShoots.ToString();
@@ -250,6 +345,11 @@ namespace Digger.Views
             for (int i = 0; i < _grabbableFruits.Count; i++)
             {
                 if (_grabbableFruits[i].IsUsed) _grabbableFruits.RemoveAt(i);
+            }
+            // Usuwanie zebranyc czerwonych owoców
+            for (int i = 0; i < _redFruits.Count; i++)
+            {
+                if (_redFruits[i].IsUsed) _redFruits.RemoveAt(i);
             }
         }
     }

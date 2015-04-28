@@ -33,3 +33,8 @@ Content\Game\Fruits\RedThree.xnb
 Content\Game\Fruits\RedTwo.xnb
 Content\Game\Fruits\Watermelon.xnb
 Content\Game\Door.xnb
+Content\Game\Enemies\Beetle.xnb
+Content\Game\Enemies\Mouse.xnb
+Content\Game\Enemies\Rat.xnb
+Content\Game\Enemies\RedSpider.xnb
+Content\Game\Enemies\Spider.xnb

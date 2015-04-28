@@ -39,3 +39,8 @@ C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x8
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\RedTwo.xnb
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\Watermelon.xnb
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Door.xnb
+C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Enemies\Beetle.xnb
+C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Enemies\Mouse.xnb
+C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Enemies\Rat.xnb
+C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Enemies\RedSpider.xnb
+C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Enemies\Spider.xnb

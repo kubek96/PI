@@ -125,8 +125,30 @@ namespace Digger.Graphic
 
         public AnimatedGraphic Clone()
         {
-            // TODO: Clone
-            return null;
+            AnimatedGraphic temp = new AnimatedGraphic();
+
+            temp._image = _image;
+            temp._position = new Vector2(_position.X, _position.Y);
+            temp._scale = _scale;
+            temp._isVisible = _isVisible;
+            temp._backColor = _backColor;
+            temp._destRectangle = new Rectangle(_destRectangle.X, _destRectangle.Y, _destRectangle.Width, _destRectangle.Height);
+
+            temp._frameWidth = _frameWidth;
+            temp._frameHeight = _frameHeight;
+            temp._frameCount = _frameCount;
+            temp._frameTime = _frameTime;
+            temp._scale = _scale;
+
+            temp._looping = _looping;
+            temp._position = _position;
+
+            temp._elapsedTime = _elapsedTime;
+            temp._currentFrame = _currentFrame;
+
+            temp._active = _active;
+
+            return temp;
         }
     }
 }

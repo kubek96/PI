@@ -9,21 +9,24 @@ namespace Digger.Game.Elements
     public class Door
     {
         private AnimatedGraphic _doorGraphic;
-        private List<Enemy> _enemiesToGenerate;
-        private int _releasedEnemies;
+        private Stack<Enemy> _enemiesToGenerate;
         private Rectangle _doorRectangle;
+        private int _timeToNextEnemie;
 
-
-        public Door(List<Enemy> enemies)
+        public Door(Stack<Enemy> enemies, int timeToNextEnemie)
         {
             _doorGraphic = new AnimatedGraphic();
             _enemiesToGenerate = enemies;
-            _releasedEnemies = 0;
+            _timeToNextEnemie = timeToNextEnemie;
         }
 
         public Enemy ReleaseNextEnemy()
         {
-            return _enemiesToGenerate[_releasedEnemies++];
+            if (_enemiesToGenerate.Count == 0) return null;
+
+            Enemy e = _enemiesToGenerate.Pop();
+            e.Initialize(_doorRectangle);
+            return e;
         }
 
         public void LoadContent(ContentManager content, string assetName)
@@ -45,6 +48,11 @@ namespace Digger.Game.Elements
         public void Update(GameTime gameTime)
         {
             _doorGraphic.Update(gameTime);
+        }
+
+        public int TimeToNextEnemie
+        {
+            get { return _timeToNextEnemie; }
         }
     }
 }
