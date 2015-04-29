@@ -12,12 +12,40 @@ namespace Digger.Game.Elements
         private Stack<Enemy> _enemiesToGenerate;
         private Rectangle _doorRectangle;
         private int _timeToNextEnemie;
+        private Enemy _rat;
+        private bool _areOpen;
+
+        public Rectangle DoorRectangle
+        {
+            get { return _doorRectangle; }
+        }
 
         public Door(Stack<Enemy> enemies, int timeToNextEnemie)
         {
             _doorGraphic = new AnimatedGraphic();
             _enemiesToGenerate = enemies;
             _timeToNextEnemie = timeToNextEnemie;
+            _rat = null;
+            _areOpen = false;
+        }
+
+        public bool AreOpen
+        {
+            get { return _areOpen; }
+        }
+
+        public Enemy OpenDoor()
+        {
+            _areOpen = true;
+            _doorGraphic.MoveToFrame(1);
+            return _rat;
+        }
+
+        public void ReleaseRatWhenOpen(Enemy enemy)
+        {
+            if (_rat != null || _areOpen) return;
+            _rat = enemy;
+            _rat.Initialize(_doorRectangle);
         }
 
         public Enemy ReleaseNextEnemy()
@@ -42,6 +70,9 @@ namespace Digger.Game.Elements
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (!_areOpen) _doorGraphic.MoveToFrame(0);
+            else _doorGraphic.MoveToFrame(1);
+
             _doorGraphic.Draw(spriteBatch);
         }
 
@@ -53,6 +84,12 @@ namespace Digger.Game.Elements
         public int TimeToNextEnemie
         {
             get { return _timeToNextEnemie; }
+        }
+
+        public Enemy ReleaseNewEnemyNow(Enemy enemy)
+        {
+            enemy.Initialize(_doorRectangle);
+            return enemy;
         }
     }
 }

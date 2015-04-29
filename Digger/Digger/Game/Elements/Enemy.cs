@@ -20,7 +20,7 @@ namespace Digger.Game.Elements
     public delegate Enemy EvolveDelegate(Enemy enemy);
     public delegate void TestMoveDelegate(Enemy enemy, Ground[,] grounds, Rectangle gameField);
     public delegate Shot WebShootDelegate();
-    public delegate void ObserveDelegate(Enemy enemy, Worm worm);
+    public delegate void ObserveDelegate(Enemy enemy, Worm worm, Ground[,] grounds);
     public delegate void AttackDelegate(Worm w);
 
     public class Enemy
@@ -48,6 +48,7 @@ namespace Digger.Game.Elements
         private bool _isFreeze;
 
         private bool _isKilled;
+        private bool _addAsNew;
 
         private EvolveDelegate _evolve;
         private TestMoveDelegate _testMove;
@@ -110,6 +111,11 @@ namespace Digger.Game.Elements
             _isKilled = false;
         }
 
+        public EnemyType EnemyType
+        {
+            get { return _enemyType; }
+        }
+
         public void LoadContent(ContentManager content, string assetName)
         {
             _enemyGraphic.LoadContent(content, assetName);
@@ -149,6 +155,12 @@ namespace Digger.Game.Elements
                     _elapsedFreezeTime = 0;
                 }
             }
+        }
+
+        public bool AddAsNew
+        {
+            get { return _addAsNew; }
+            set { _addAsNew = value; }
         }
 
         public bool IsKilled
@@ -298,6 +310,7 @@ namespace Digger.Game.Elements
         {
             // Podmień pozycję 
             int x = 0, y = 0;
+            _direction = direction;
             switch (direction)
             {
                 case Direction.Up:

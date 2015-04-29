@@ -29,8 +29,17 @@ namespace Digger.Game.Common
             _fruitsTemplates.Add(FruitType.Watermelon, new Fruit(FruitType.Watermelon, "Game/Fruits/Watermelon", worm => worm.MudCount++, _fruitsTemplates[FruitType.Lemon].EnemyUse));
             _fruitsTemplates.Add(FruitType.Plum, new Fruit(FruitType.Plum, "Game/Fruits/Plum", worm => worm.PlumsCount++, _fruitsTemplates[FruitType.Lemon].EnemyUse));
             _fruitsTemplates.Add(FruitType.Candy, new Fruit(FruitType.Candy, "Game/Fruits/Candy", worm => worm.CandyCount++, _fruitsTemplates[FruitType.Lemon].EnemyUse));
-            _fruitsTemplates.Add(FruitType.RedFruit, new Fruit(FruitType.RedFruit, "Game/Fruits/RedOne", worm => worm.RedFruits++, null));
+            _fruitsTemplates.Add(FruitType.RedFruit, new Fruit(FruitType.RedFruit, "Game/Fruits/RedOne", worm => worm.RedFruits++,
+                delegate(Enemy enemy)
+                {
+                    Enemy e = new Enemy(_enemyTemplates[EnemyType.Rat]);
+                    e.Initialize(enemy.EnemyRectangle);
+                    e.Direction = enemy.Direction;
+                    e.AddAsNew = true;
+                    return e;
+                }));
 
+            //---------
             _enemyTemplates = new Dictionary<EnemyType, Enemy>();
             _enemyTemplates.Add(EnemyType.Mouse, new Enemy(EnemyType.Mouse, "Game/Enemies/Mouse", 1, 1, 2, Direction.Left, false,
                 delegate(Enemy enemy)
@@ -72,13 +81,53 @@ namespace Digger.Game.Common
                     // MakeMove
                     Random random = new Random();
                     enemy.MakeMove(avaliableDirections[random.Next(avaliableDirections.Count)]);
-                }, null, null, worm => worm.Life--));
+                }, null, delegate(Enemy enemy, Worm worm, Ground[,] grounds)
+                {
+                    switch (enemy.Direction)
+                    {
+                        case Direction.Up:
+                            if (worm.WormRectangle.X != enemy.EnemyRectangle.X) return;
+                            if (worm.WormRectangle.Y < enemy.EnemyRectangle.Y) return;
+                            for (int x = 0; x < Math.Sqrt(grounds.Length); x++)
+                            {
+                                for (int y = 0; y < Math.Sqrt(grounds.Length); y++)
+                                {
+                                    if (grounds[x, y].GroundType == GroundType.Free) continue;
+                                    if (grounds[x, y].Rectangle.Y > enemy.EnemyRectangle.Y && grounds[x, y].Rectangle.Y < worm.WormRectangle.Y) continue;
+                                    enemy.MakeMove(Direction.Up);
+                                }
+                            }
+                            break;
+                        case Direction.Down:
+                            if (worm.WormRectangle.X != enemy.EnemyRectangle.X) return;
+                            if (worm.WormRectangle.Y > enemy.EnemyRectangle.Y) return;
+                            for (int x = 0; x < Math.Sqrt(grounds.Length); x++)
+                            {
+                                for (int y = 0; y < Math.Sqrt(grounds.Length); y++)
+                                {
+                                    if (grounds[x, y].GroundType == GroundType.Free) continue;
+                                    if (grounds[x, y].Rectangle.Y > enemy.EnemyRectangle.Y && grounds[x, y].Rectangle.Y < worm.WormRectangle.Y) continue;
+                                    enemy.MakeMove(Direction.Up);
+                                }
+                            }
+                            break;
+                        case Direction.Right:
+                            if (worm.WormRectangle.Y != enemy.EnemyRectangle.X) return;
+                            if (worm.WormRectangle.X < enemy.EnemyRectangle.X) return;
+                            break;
+                        case Direction.Left:
+                            if (worm.WormRectangle.Y != enemy.EnemyRectangle.X) return;
+                            if (worm.WormRectangle.X > enemy.EnemyRectangle.X) return;
+                            break;
+                    }
+                }, worm => worm.Life--));
             _enemyTemplates.Add(EnemyType.Beetle, new Enemy(EnemyType.Beetle, "Game/Enemies/Beetle", 1, 1, 1, Direction.Left,false,
                 delegate(Enemy enemy)
                 {
-                    Enemy e = new Enemy(_enemyTemplates[EnemyType.RedSpider]);
+                    Enemy e = new Enemy(_enemyTemplates[EnemyType.Beetle]);
                     e.Initialize(enemy.EnemyRectangle);
                     e.Direction = enemy.Direction;
+                    e.AddAsNew = true;
                     return e;
                 }, 
                 delegate(Enemy enemy, Ground[,] grounds, Rectangle gameField)
@@ -135,8 +184,21 @@ namespace Digger.Game.Common
 
                     enemy.MakeMove(choosenDirection);
                 }, null, null, _enemyTemplates[EnemyType.Mouse].Attack));
-            _enemyTemplates.Add(EnemyType.Spider, new Enemy(EnemyType.Spider, "Game/Enemies/Spider", 2, 1, 3, Direction.Left, false, null, _enemyTemplates[EnemyType.Mouse].TestMove, null, null, _enemyTemplates[EnemyType.Mouse].Attack));
-            _enemyTemplates.Add(EnemyType.RedSpider, new Enemy(EnemyType.RedSpider, "Game/Enemies/RedSpider", 2, 1, 3, Direction.Left, false, null, _enemyTemplates[EnemyType.Mouse].TestMove, null, null, _enemyTemplates[EnemyType.Mouse].Attack));
+            _enemyTemplates.Add(EnemyType.Spider, new Enemy(EnemyType.Spider, "Game/Enemies/Spider", 2, 1, 3, Direction.Left, false, delegate(Enemy enemy)
+                {
+                    Enemy e = new Enemy(_enemyTemplates[EnemyType.RedSpider]);
+                    e.Initialize(enemy.EnemyRectangle);
+                    e.Direction = enemy.Direction;
+                    return e;
+                }, _enemyTemplates[EnemyType.Mouse].TestMove, null, null, _enemyTemplates[EnemyType.Mouse].Attack));
+            _enemyTemplates.Add(EnemyType.RedSpider, new Enemy(EnemyType.RedSpider, "Game/Enemies/RedSpider", 2, 1, 3, Direction.Left, false, delegate(Enemy enemy)
+                {
+                    Enemy e = new Enemy(_enemyTemplates[EnemyType.RedSpider]);
+                    e.Initialize(enemy.EnemyRectangle);
+                    e.Direction = enemy.Direction;
+                    e.AddAsNew = true;
+                    return e;
+                }, _enemyTemplates[EnemyType.Mouse].TestMove, null, null, _enemyTemplates[EnemyType.Mouse].Attack));
             _enemyTemplates.Add(EnemyType.Rat, new Enemy(EnemyType.Rat, "Game/Enemies/Rat", null, 10, 7, Direction.Left, false, null, null, null, null, null));
 
             _shotTemplates = new Dictionary<ShotType, Shot>();

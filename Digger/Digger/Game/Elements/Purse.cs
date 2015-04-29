@@ -146,7 +146,11 @@ namespace Digger.Game.Elements
 
         public Fruit Shatter()
         {
-            if (_fruit == null) return null;
+            if (_fruit == null)
+            {
+                _isShatter = true;
+                return null;
+            }
             _fruit.Initialize(_purseRectangle);
             _isShatter = true;
             return _fruit;

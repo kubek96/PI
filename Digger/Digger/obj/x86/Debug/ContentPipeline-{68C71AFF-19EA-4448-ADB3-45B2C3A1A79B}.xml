@@ -314,7 +314,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Door.xnb</Output>
-      <Time>2015-04-27T22:20:25.7135343+02:00</Time>
+      <Time>2015-04-29T17:08:12.0270137+02:00</Time>
     </Item>
     <Item>
       <Source>Game\Enemies\Beetle.png</Source>
@@ -350,7 +350,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Enemies\RedSpider.xnb</Output>
-      <Time>2015-04-27T23:04:53.4040445+02:00</Time>
+      <Time>2015-04-29T16:14:40.3495076+02:00</Time>
     </Item>
     <Item>
       <Source>Game\Enemies\Spider.png</Source>
@@ -359,7 +359,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Enemies\Spider.xnb</Output>
-      <Time>2015-04-27T23:04:53.4070469+02:00</Time>
+      <Time>2015-04-29T16:14:40.9730729+02:00</Time>
     </Item>
     <Item>
       <Source>Game\Interface\Heart.png</Source>

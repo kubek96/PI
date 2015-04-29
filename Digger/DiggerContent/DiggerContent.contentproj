@@ -227,13 +227,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Game\Door.png">
-      <Name>Door</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Game\Enemies\Mouse.png">
       <Name>Mouse</Name>
       <Importer>TextureImporter</Importer>
@@ -298,6 +291,13 @@
   <ItemGroup>
     <Compile Include="Game\Enemies\Beetle.png">
       <Name>Beetle</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Game\Door.png">
+      <Name>Door</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

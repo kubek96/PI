@@ -27,13 +27,17 @@ namespace Digger.Views
         private int _nextEnemieElapsedTime;
         private int _enemieMoveElapsedTime;
         private List<Enemy> _enemies;
+        private int _totalEnemiesCount;
+        private int _totalKilledEnemiesCount;
         private List<Fruit> _redFruits;
         private List<Fruit> _grabbableFruits;
         private List<Fruit> _rootenKiwis;
         private Door _door;
         private List<Shot> _shots;
         private List<Stone> _stones;
-        private List<Purse> _purses; 
+        private List<Purse> _purses;
+
+        private int _redFruitsCount;
 
         private Fruit[] _interfaceFruits;
         private Label[] _interfaceFruitsXs;
@@ -67,11 +71,14 @@ namespace Digger.Views
             _lastPressedKeys = new Keys[0];
 
             // Owoce
-            _redFruits = _stageHelper.GenerateRedFruits(10);
+            _redFruitsCount = 10;
+            _redFruits = _stageHelper.GenerateRedFruits(_redFruitsCount);
             _grabbableFruits = new List<Fruit>();
             _rootenKiwis = new List<Fruit>();
 
             // Drzwi
+            _totalEnemiesCount = 10;
+            _totalKilledEnemiesCount = 0;
             _door = new Door(_stageHelper.GenerateEnemies(2,8,2,2), 8000);
 
             // Wrogowie 
@@ -464,15 +471,6 @@ namespace Digger.Views
                     _grabbableFruits[j].PlayerUse(_worm);
                     _grabbableFruits[j].IsUsed = true;
                 }
-                for (int i = 0; i < _enemies.Count; i++)
-                {
-                    if (_enemies[i].EnemyRectangle.Intersects(_grabbableFruits[j].FruitRectangle) && _grabbableFruits[j].IsUsed == false)
-                    {
-                        Enemy e = _grabbableFruits[j].EnemyUse(_enemies[i]);
-                        if (e != null) _enemies[i] = e;
-                        _grabbableFruits[j].IsUsed = true;
-                    }
-                }
             }
             // Przecięcia z czerwonymi owocami
             for (int j = 0; j < _redFruits.Count; j++)
@@ -522,6 +520,33 @@ namespace Digger.Views
                         {
                             _enemies[i].Attack(_worm);
                             _enemies[i].Freeze(2000);
+                        }
+                    }
+
+                    for (int j = 0; j < _grabbableFruits.Count; j++)
+                    {
+                        if (_enemies[i].EnemyRectangle.Intersects(_grabbableFruits[j].FruitRectangle) && _grabbableFruits[j].IsUsed == false)
+                        {
+                            Enemy e = _grabbableFruits[j].EnemyUse(_enemies[i]);
+
+                            if (e == null) continue;
+
+                            if (!e.AddAsNew)
+                            {
+                                _enemies[i] = e;
+                                continue;
+                            }
+
+                            if (e.EnemyType == EnemyType.Rat)
+                            {
+                                _door.ReleaseRatWhenOpen(e);
+                                continue;
+                            }
+
+                            _enemies.Add(_door.ReleaseNewEnemyNow(e));
+                            _totalEnemiesCount++;
+
+                            _grabbableFruits[j].IsUsed = true;
                         }
                     }
                 }
@@ -734,6 +759,26 @@ namespace Digger.Views
             // Przesuwanie robaczka
             _worm.Move();
 
+            // Sprawdź, czy gracz juz nie przeszedl gry
+            if (_worm.RedFruits == _redFruitsCount || _totalEnemiesCount == _totalKilledEnemiesCount)
+            {
+                Enemy e = _door.OpenDoor();
+                // Ew. dodaj szczura
+                if (e != null) _enemies.Add(e);
+            }
+
+            // Czy gracz zeczywiscie przeszedl gre
+            if (_door.AreOpen && _worm.WormRectangle.Intersects(_door.DoorRectangle))
+            {
+                // TODO: wyświetl inofmracje o wygrnaej
+            }
+
+            // Czy gracz przegrał
+            if (_worm.Life == 0)
+            {
+                // TODO: Gracz przegral
+            }
+
             // Uaktualnienie elementów interfejsu użytkownika
             _interfaceFruitsCounts[0].Text = _worm.AcidShoots.ToString();
             _interfaceFruitsCounts[1].Text = _worm.VenomShoots.ToString();
@@ -757,7 +802,11 @@ namespace Digger.Views
             // Usuwanie zabitych wrogów
             for (int i = 0; i < _enemies.Count; i++)
             {
-                if (_enemies[i].IsKilled) _enemies.RemoveAt(i);
+                if (_enemies[i].IsKilled)
+                {
+                    _enemies.RemoveAt(i);
+                    _totalKilledEnemiesCount++;
+                }
             }
             // Usuwanie strzalow, ktore cos osiagnely
             for (int i = 0; i < _shots.Count; i++)
