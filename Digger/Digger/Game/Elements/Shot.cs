@@ -10,7 +10,8 @@ namespace Digger.Game.Elements
     public enum ShotType
     {
         Acid,
-        Venom
+        Venom,
+        Web
     }
 
     public delegate void ShootEnemy(Enemy enemy);

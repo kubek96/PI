@@ -406,6 +406,15 @@
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Purse.xnb</Output>
       <Time>2015-04-29T12:01:00.3221402+02:00</Time>
     </Item>
+    <Item>
+      <Source>Game\Shots\WebShot.png</Source>
+      <Name>Game\Shots\WebShot</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Shots\WebShot.xnb</Output>
+      <Time>2015-04-29T22:27:09.4876986+02:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <ContentProjectGUID>{68C71AFF-19EA-4448-ADB3-45B2C3A1A79B}</ContentProjectGUID>

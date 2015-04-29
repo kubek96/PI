@@ -49,3 +49,4 @@ C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x8
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Shots\VenomShot.xnb
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Stone.xnb
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Purse.xnb
+C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Shots\WebShot.xnb

@@ -186,6 +186,17 @@ namespace Digger.Game.Elements
             _elapsedSpeedTime = 0;
         }
 
+        public void MoveSlower(int speed, int effectTime)
+        {
+            // Wyrównaj klatki przesunięcia
+            _speed = _speed - speed;
+            Move();
+            // Ustaw nową prędkość
+            _speed = _lastSpeed = speed;
+            _speedEffectTime = effectTime;
+            _elapsedSpeedTime = 0;
+        }
+
         public void Heal()
         {
             _life = 10;

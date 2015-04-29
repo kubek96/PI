@@ -34,6 +34,7 @@ namespace Digger.Views
         private List<Fruit> _rootenKiwis;
         private Door _door;
         private List<Shot> _shots;
+        private List<Shot> _webShots; 
         private List<Stone> _stones;
         private List<Purse> _purses;
 
@@ -77,15 +78,16 @@ namespace Digger.Views
             _rootenKiwis = new List<Fruit>();
 
             // Drzwi
-            _totalEnemiesCount = 10;
+            _totalEnemiesCount = 8;
             _totalKilledEnemiesCount = 0;
-            _door = new Door(_stageHelper.GenerateEnemies(2,8,2,2), 8000);
+            _door = new Door(_stageHelper.GenerateEnemies(2,2,1,3), 8000);
 
             // Wrogowie 
             _enemies = new List<Enemy>();
 
             // Strzały
             _shots = new List<Shot>();
+            _webShots = new List<Shot>();
 
             // Skały
             _stones = _stageHelper.GenerateStones(10);
@@ -287,6 +289,10 @@ namespace Digger.Views
             {
                 _shots[i].Draw(spriteBatch);
             }
+            for (int i = 0; i < _webShots.Count; i++)
+            {
+                _webShots[i].Draw(spriteBatch);
+            }
 
             // Elementy interfejsu użytkownika
             for (int i = 0; i < _interfaceFruits.Length; i++)
@@ -461,6 +467,15 @@ namespace Digger.Views
                             _shots[i].ShootSomething = true;
                         }
                     }
+
+                    // Czy strzał tego ego no weba osiągnął ziemię
+                    for (int i = 0; i < _webShots.Count; i++)
+                    {
+                        if (_webShots[i].ShotRectangle.Intersects(_grounds[x, y].Rectangle))
+                        {
+                            _webShots[i].ShootSomething = true;
+                        }
+                    }
                 }
             }
             // Przecięcia z owocami
@@ -501,7 +516,13 @@ namespace Digger.Views
                     // Sprawdź, czy się juz nie przesuwa 
                     if (_enemies[i].IsMoving) continue;
 
-                    _enemies[i].TestMove(_enemies[i], _grounds, _gameField);
+                    if (_enemies[i].Observe != null) _enemies[i].Observe(_enemies[i], _worm, _grounds);
+                    if (!_enemies[i].SawWorm) _enemies[i].TestMove(_enemies[i], _grounds, _gameField);
+                    if (_enemies[i].WebShoot != null)
+                    {
+                        Shot s = _enemies[i].WebShoot(_enemies[i], _worm, _grounds);
+                        if (s != null) _webShots.Add(s);
+                    }
 
                     Rectangle upRectangle, downRectangle, rightRectangle, leftRectangle;
                     upRectangle = new Rectangle(_enemies[i].EnemyRectangle.X, _enemies[i].EnemyRectangle.Y - 42, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
@@ -558,9 +579,6 @@ namespace Digger.Views
                 _enemies[i].Move();
                 _enemies[i].Update(gameTime);
 
-                // Przecięcie enemie z robaczkiem
-                // TODO: tu będzie metoda obserwe
-                
                 for (int j = 0; j < _shots.Count; j++)
                 {
                     if (_shots[j].ShootSomething) 
@@ -587,6 +605,27 @@ namespace Digger.Views
             {
                 _shots[i].Update(gameTime);
                 _shots[i].Move();
+            }
+            for (int i = 0; i < _webShots.Count; i++)
+            {
+                _webShots[i].Update(gameTime);
+                _webShots[i].Move();
+
+                if (_webShots[i].ShotRectangle.Intersects(_worm.WormRectangle) && !_webShots[i].ShootSomething)
+                {
+                    _webShots[i].ShootSomething = true;
+                    _worm.MoveSlower(1,5000);
+                }
+
+                // Zderzenie dwóch shots
+                for (int j = 0; j < _shots.Count; j++)
+                {
+                    if (_webShots[i].ShotRectangle.Intersects(_shots[j].ShotRectangle) && !_webShots[i].ShootSomething && !_shots[j].ShootSomething)
+                    {
+                        _webShots[i].ShootSomething = true;
+                        _shots[j].ShootSomething = true;
+                    }
+                }
             }
 
             // Aktualizacja kamieni
@@ -812,6 +851,10 @@ namespace Digger.Views
             for (int i = 0; i < _shots.Count; i++)
             {
                 if (_shots[i].ShootSomething || !_gameField.Contains(_shots[i].ShotRectangle)) _shots.RemoveAt(i);
+            }
+            for (int i = 0; i < _webShots.Count; i++)
+            {
+                if (_webShots[i].ShootSomething || !_gameField.Contains(_webShots[i].ShotRectangle)) _webShots.RemoveAt(i);
             }
             // Usuwanie kiwi
             for (int i = 0; i < _rootenKiwis.Count; i++)

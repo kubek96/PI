@@ -19,7 +19,7 @@ namespace Digger.Game.Elements
 
     public delegate Enemy EvolveDelegate(Enemy enemy);
     public delegate void TestMoveDelegate(Enemy enemy, Ground[,] grounds, Rectangle gameField);
-    public delegate Shot WebShootDelegate();
+    public delegate Shot WebShootDelegate(Enemy enemy, Worm worm, Ground[,] grounds);
     public delegate void ObserveDelegate(Enemy enemy, Worm worm, Ground[,] grounds);
     public delegate void AttackDelegate(Worm w);
 
@@ -49,6 +49,7 @@ namespace Digger.Game.Elements
 
         private bool _isKilled;
         private bool _addAsNew;
+        private bool _sawWorm;
 
         private EvolveDelegate _evolve;
         private TestMoveDelegate _testMove;
@@ -79,6 +80,7 @@ namespace Digger.Game.Elements
             _webShoot = enemy._webShoot;
             _observe = enemy._observe;
             _attack = enemy._attack;
+            _sawWorm = enemy._sawWorm;
         }
 
         public Enemy(EnemyType enemyType, string assetName, int? life, int strenght, int speed, Direction direction, bool isFreeze, EvolveDelegate evolve,TestMoveDelegate testMove,
@@ -109,11 +111,18 @@ namespace Digger.Game.Elements
             LoadContent(Game1.Context.Content, assetName);
 
             _isKilled = false;
+            _sawWorm = false;
         }
 
         public EnemyType EnemyType
         {
             get { return _enemyType; }
+        }
+
+        public bool SawWorm
+        {
+            get { return _sawWorm; }
+            set { _sawWorm = value; }
         }
 
         public void LoadContent(ContentManager content, string assetName)
