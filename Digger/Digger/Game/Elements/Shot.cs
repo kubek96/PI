@@ -13,6 +13,8 @@ namespace Digger.Game.Elements
         Venom
     }
 
+    public delegate void ShootEnemy(Enemy enemy);
+
     public class Shot
     {
         private AnimatedGraphic _shotGraphic;
@@ -21,14 +23,21 @@ namespace Digger.Game.Elements
         private ShotType _shotType;
         private int _speed;
         private bool _shootSomething;
+        private ShootEnemy _shootEnemy;
 
-        public Shot(ShotType shotType, string assetName)
+        public Shot(ShotType shotType, string assetName, ShootEnemy shootEnemy)
         {
             _shotType = shotType;
             _shotGraphic = new AnimatedGraphic();
             _speed = 14;
             _shootSomething = false;
             LoadContent(Game1.Context.Content, assetName);
+            _shootEnemy = shootEnemy;
+        }
+
+        public ShootEnemy ShootEnemy
+        {
+            get { return _shootEnemy; }
         }
 
         public Rectangle ShotRectangle
@@ -41,6 +50,7 @@ namespace Digger.Game.Elements
             _shotGraphic = shot._shotGraphic.Clone();
             _shotType = shot._shotType;
             _speed = shot._speed;
+            _shootEnemy = shot._shootEnemy;
         }
 
         public void LoadContent(ContentManager content, string assetName)

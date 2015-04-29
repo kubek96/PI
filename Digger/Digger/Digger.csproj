@@ -80,7 +80,9 @@
     <Compile Include="Game\Elements\Enemy.cs" />
     <Compile Include="Game\Elements\Fruit.cs" />
     <Compile Include="Game\Elements\Ground.cs" />
+    <Compile Include="Game\Elements\Purse.cs" />
     <Compile Include="Game\Elements\Shot.cs" />
+    <Compile Include="Game\Elements\Stone.cs" />
     <Compile Include="Game\Elements\Worm.cs" />
     <Compile Include="Graphic\AnimatedGraphic.cs" />
     <Compile Include="Views\BestScores.cs" />

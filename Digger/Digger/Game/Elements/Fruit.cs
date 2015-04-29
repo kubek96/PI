@@ -17,7 +17,7 @@ namespace Digger.Game.Elements
     }
 
     public delegate void PlayerUseDelegate(Worm worm);
-    public delegate void EnemyUseDelegate(Enemy enemy);
+    public delegate Enemy EnemyUseDelegate(Enemy enemy);
 
     public class Fruit
     {

@@ -41,3 +41,5 @@ Content\Game\Enemies\Spider.xnb
 Content\Game\Interface\Heart.xnb
 Content\Game\Shots\AcidShot.xnb
 Content\Game\Shots\VenomShot.xnb
+Content\Game\Stone.xnb
+Content\Game\Purse.xnb

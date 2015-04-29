@@ -323,7 +323,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Enemies\Beetle.xnb</Output>
-      <Time>2015-04-27T23:04:53.4090502+02:00</Time>
+      <Time>2015-04-29T15:01:32.7936015+02:00</Time>
     </Item>
     <Item>
       <Source>Game\Enemies\Mouse.png</Source>
@@ -387,6 +387,24 @@
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Shots\VenomShot.xnb</Output>
       <Time>2015-04-28T20:38:33.3466624+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Stone.png</Source>
+      <Name>Game\Stone</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Stone.xnb</Output>
+      <Time>2015-04-29T09:50:31.7597318+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Purse.png</Source>
+      <Name>Game\Purse</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Purse.xnb</Output>
+      <Time>2015-04-29T12:01:00.3221402+02:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

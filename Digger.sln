@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Digger", "Digger\Digger\Digger.csproj", "{106CA60C-D17A-4411-B647-51C8E1BF1371}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "DiggerContent", "Digger\DiggerContent\DiggerContent.contentproj", "{68C71AFF-19EA-4448-ADB3-45B2C3A1A79B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiggerContent", "Digger\DiggerContent\DiggerContent.contentproj", "{68C71AFF-19EA-4448-ADB3-45B2C3A1A79B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

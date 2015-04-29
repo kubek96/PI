@@ -32,6 +32,8 @@ namespace Digger.Views
         private List<Fruit> _rootenKiwis;
         private Door _door;
         private List<Shot> _shots;
+        private List<Stone> _stones;
+        private List<Purse> _purses; 
 
         private Fruit[] _interfaceFruits;
         private Label[] _interfaceFruitsXs;
@@ -66,17 +68,23 @@ namespace Digger.Views
 
             // Owoce
             _redFruits = _stageHelper.GenerateRedFruits(10);
-            _grabbableFruits = _stageHelper.GenerateGrabableFruits(20);
+            _grabbableFruits = new List<Fruit>();
             _rootenKiwis = new List<Fruit>();
 
             // Drzwi
-            _door = new Door(_stageHelper.GenerateEnemies(6), 8000);
+            _door = new Door(_stageHelper.GenerateEnemies(2,8,2,2), 8000);
 
             // Wrogowie 
             _enemies = new List<Enemy>();
 
             // Strzały
             _shots = new List<Shot>();
+
+            // Skały
+            _stones = _stageHelper.GenerateStones(10);
+
+            // Sakiewki
+            _purses = _stageHelper.GeneratePurses(10);
 
             // Interfejs użytkownika
             _interfaceFruits = _stageHelper.GenerateInterfaceFruits();
@@ -121,6 +129,18 @@ namespace Digger.Views
             _worm.LoadContent(content, "Game/Worm");
             _door.LoadContent(content, "Game/Door");
 
+            // Skały
+            for (int i = 0; i < _stones.Count; i++)
+            {
+                _stones[i].LoadContent(content, "Game/Stone");
+            }
+            
+            // Sakiewki
+            for (int i = 0; i < _purses.Count; i++)
+            {
+                _purses[i].LoadContent(content, "Game/Purse");
+            }
+
             // Elementy interfejsu użytkownika
             for (int i = 0; i < _interfaceFruitsXs.Length; i++)
             {
@@ -163,13 +183,21 @@ namespace Digger.Views
 
             Random random = new Random();
             int x, y;
-            for (int i = 0; i < _grabbableFruits.Count; i++)
+            for (int i = 0; i < _stones.Count; i++)
             {
                 x = random.Next(0, (int) Math.Sqrt(_grounds.Length))*42 + horizontalShift; 
                 y = random.Next(0, (int)Math.Sqrt(_grounds.Length)) * 42 + verticalShift;
                 // Randomowe koordynaty
                 // TODO: Zrób tak, żeby na siebie nie nachodziły (sprawdź, czy już nie została ta pozycja wylosowana)
-                _grabbableFruits[i].Initialize(new Rectangle(x, y, 40, 40));
+                _stones[i].Initialize(new Rectangle(x, y, 40, 40));
+            }
+            for (int i = 0; i < _purses.Count; i++)
+            {
+                x = random.Next(0, (int)Math.Sqrt(_grounds.Length)) * 42 + horizontalShift;
+                y = random.Next(0, (int)Math.Sqrt(_grounds.Length)) * 42 + verticalShift;
+                // Randomowe koordynaty
+                // TODO: Zrób tak, żeby na siebie nie nachodziły (sprawdź, czy już nie została ta pozycja wylosowana)
+                _purses[i].Initialize(new Rectangle(x, y, 40, 40));
             }
             for (int i = 0; i < _redFruits.Count; i++)
             {
@@ -185,15 +213,15 @@ namespace Digger.Views
             y = screenHeight/2;
             for (int i = 0; i < _interfaceFruits.Length; i++)
             {
-                _interfaceFruitsXs[i].Initialize(new Vector2(x+50, y));
+                _interfaceFruitsXs[i].Initialize(new Vector2(x+60, y));
                 _interfaceFruitsCounts[i].Initialize(new Vector2(x + 100, y));
-                _interfaceFruits[i].Initialize(new Rectangle(x, y, 40, 40));
+                _interfaceFruits[i].Initialize(new Rectangle(x, y-27, 40, 40));
                 y += 50;
             }
 
             y = screenHeight / 2;
-            _interfaceLife.Initialize(new Vector2(x, y - 200), Color.White);
-            _interfaceLifeX.Initialize(new Vector2(x+50, y - 200));
+            _interfaceLife.Initialize(new Vector2(x, y - 210), Color.White);
+            _interfaceLifeX.Initialize(new Vector2(x+60, y - 200));
             _interfaceLifeCount.Initialize(new Vector2(x + 100, y - 200));
         }
 
@@ -233,6 +261,18 @@ namespace Digger.Views
             for (int i = 0; i < _enemies.Count; i++)
             {
                 _enemies[i].Draw(spriteBatch);
+            }
+
+            // Kamienie
+            for (int i = 0; i < _stones.Count; i++)
+            {
+                _stones[i].Draw(spriteBatch);
+            }
+
+            // Sakiewki
+            for (int i = 0; i < _purses.Count; i++)
+            {
+                _purses[i].Draw(spriteBatch);
             }
 
             // Rysuj strzały
@@ -428,7 +468,8 @@ namespace Digger.Views
                 {
                     if (_enemies[i].EnemyRectangle.Intersects(_grabbableFruits[j].FruitRectangle) && _grabbableFruits[j].IsUsed == false)
                     {
-                        _grabbableFruits[j].EnemyUse(_enemies[i]);
+                        Enemy e = _grabbableFruits[j].EnemyUse(_enemies[i]);
+                        if (e != null) _enemies[i] = e;
                         _grabbableFruits[j].IsUsed = true;
                     }
                 }
@@ -462,37 +503,27 @@ namespace Digger.Views
                     // Sprawdź, czy się juz nie przesuwa 
                     if (_enemies[i].IsMoving) continue;
 
-                    // Sprawdź przecięcia tego enemie z otaczajacymi go obiektami
-                    List<Direction> avaliableDirections = new List<Direction>();
+                    _enemies[i].TestMove(_enemies[i], _grounds, _gameField);
+
                     Rectangle upRectangle, downRectangle, rightRectangle, leftRectangle;
                     upRectangle = new Rectangle(_enemies[i].EnemyRectangle.X, _enemies[i].EnemyRectangle.Y - 42, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
                     rightRectangle = new Rectangle(_enemies[i].EnemyRectangle.X + 42, _enemies[i].EnemyRectangle.Y, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
                     downRectangle = new Rectangle(_enemies[i].EnemyRectangle.X, _enemies[i].EnemyRectangle.Y + 42, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
                     leftRectangle = new Rectangle(_enemies[i].EnemyRectangle.X - 42, _enemies[i].EnemyRectangle.Y, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
-                    bool[] freeSpace = new bool[4];
-                    // Przecięcia z ziemią
-                    for (int x = 0; x < Math.Sqrt(_grounds.Length); x++)
-                    {
-                        for (int y = 0; y < Math.Sqrt(_grounds.Length); y++)
-                        {
-                            if (_grounds[x, y].GroundType != GroundType.Free) continue;
 
-                            if (upRectangle.Intersects(_grounds[x, y].Rectangle)) freeSpace[0] = true;
-                            if (rightRectangle.Intersects(_grounds[x, y].Rectangle)) freeSpace[1] = true;
-                            if (downRectangle.Intersects(_grounds[x, y].Rectangle)) freeSpace[2] = true;
-                            if (leftRectangle.Intersects(_grounds[x, y].Rectangle)) freeSpace[3] = true;
+                    bool[] wormInRange = new bool[4];
+                    if (upRectangle.Intersects(_worm.WormRectangle)) wormInRange[0] = true;
+                    if (rightRectangle.Intersects(_worm.WormRectangle)) wormInRange[1] = true;
+                    if (downRectangle.Intersects(_worm.WormRectangle)) wormInRange[2] = true;
+                    if (leftRectangle.Intersects(_worm.WormRectangle)) wormInRange[3] = true;
+                    for (int j = 0; j < wormInRange.Length; j++)
+                    {
+                        if (!_enemies[i].IsFreeze && wormInRange[j] && !_enemies[i].IsKilled)
+                        {
+                            _enemies[i].Attack(_worm);
+                            _enemies[i].Freeze(2000);
                         }
                     }
-                    // Up
-                    if (_gameField.Contains(upRectangle) && freeSpace[0]) avaliableDirections.Add(Direction.Up);
-                    // Right
-                    if (_gameField.Contains(rightRectangle) && freeSpace[1]) avaliableDirections.Add(Direction.Right);
-                    // Down
-                    if (_gameField.Contains(downRectangle) && freeSpace[2]) avaliableDirections.Add(Direction.Down);
-                    // Left
-                    if (_gameField.Contains(leftRectangle) && freeSpace[3]) avaliableDirections.Add(Direction.Left);
-                    // MakeMove
-                    _enemies[i].MakeMove(_enemies[i], avaliableDirections.ToArray());
                 }
                 _enemieMoveElapsedTime = 0;
             }
@@ -504,19 +535,14 @@ namespace Digger.Views
 
                 // Przecięcie enemie z robaczkiem
                 // TODO: tu będzie metoda obserwe
-                if (_worm.WormRectangle.Intersects(_enemies[i].EnemyRectangle) && !_enemies[i].IsKilled)
-                {
-                    _enemies[i].Attack(_worm);
-                    _enemies[i].IsKilled = true;
-                }
-
+                
                 for (int j = 0; j < _shots.Count; j++)
                 {
                     if (_shots[j].ShootSomething) 
                         continue;
                     if (_shots[j].ShotRectangle.Intersects(_enemies[i].EnemyRectangle))
                     {
-                        _enemies[i].IsKilled = true;
+                        _shots[j].ShootEnemy(_enemies[i]);
                         _shots[j].ShootSomething = true;
                     }
                 }
@@ -536,6 +562,173 @@ namespace Digger.Views
             {
                 _shots[i].Update(gameTime);
                 _shots[i].Move();
+            }
+
+            // Aktualizacja kamieni
+            for (int i = 0; i < _stones.Count; i++)
+            {
+                _stones[i].Move();
+                _stones[i].Update(gameTime);
+
+                Rectangle downRectangle = new Rectangle(_stones[i].StoneRectangle.X, _stones[i].StoneRectangle.Y + 42, _stones[i].StoneRectangle.Width, _stones[i].StoneRectangle.Height);
+
+                if (_stones[i].IsMoving)
+                {
+                    // Sprawdź przecięcia z worgami
+                    for (int j = 0; j < _enemies.Count; j++)
+                    {
+                        if (_stones[i].StoneRectangle.Intersects(_enemies[j].EnemyRectangle))
+                        {
+                            _enemies[j].Kill();
+                            _stones[i].Shatter();
+                        }
+                    }
+
+                    continue;
+                }
+
+                // Sprawdź, czy spadał a następnie osiągnęła koniec planszy
+                if (!_gameField.Contains(downRectangle) && _stones[i].WasFalling)
+                {
+                    _stones[i].Shatter();
+                    continue;
+                } 
+
+                Rectangle upRectangle, rightRectangle, leftRectangle;
+                upRectangle = new Rectangle(_stones[i].StoneRectangle.X, _stones[i].StoneRectangle.Y - 42, _stones[i].StoneRectangle.Width, _stones[i].StoneRectangle.Height);
+                rightRectangle = new Rectangle(_stones[i].StoneRectangle.X + 42, _stones[i].StoneRectangle.Y, _stones[i].StoneRectangle.Width, _stones[i].StoneRectangle.Height);
+                leftRectangle = new Rectangle(_stones[i].StoneRectangle.X - 42, _stones[i].StoneRectangle.Y, _stones[i].StoneRectangle.Width, _stones[i].StoneRectangle.Height);
+                bool[] freeSpace = new bool[4];
+                // Przecięcia z ziemią
+                for (int x = 0; x < Math.Sqrt(_grounds.Length); x++)
+                {
+                    for (int y = 0; y < Math.Sqrt(_grounds.Length); y++)
+                    {
+                        if (_grounds[x, y].GroundType != GroundType.Free)
+                        {
+                            if (downRectangle.Intersects(_grounds[x, y].Rectangle) && _stones[i].WasFalling) _stones[i].Shatter();
+                            continue;
+                        }
+
+                        if (upRectangle.Intersects(_grounds[x, y].Rectangle)) freeSpace[0] = true;
+                        if (rightRectangle.Intersects(_grounds[x, y].Rectangle)) freeSpace[1] = true;
+                        if (downRectangle.Intersects(_grounds[x, y].Rectangle) && _gameField.Contains(downRectangle)) freeSpace[2] = true;
+                        if (leftRectangle.Intersects(_grounds[x, y].Rectangle)) freeSpace[3] = true;
+                    }
+                }
+                bool[] ocupatedByStone = new bool[4];
+                for (int j = 0; j < _stones.Count; j++)
+                {
+                    if (upRectangle.Intersects(_stones[j].StoneRectangle)) ocupatedByStone[0] = true;
+                    if (rightRectangle.Intersects(_stones[j].StoneRectangle)) ocupatedByStone[1] = true;
+                    if (downRectangle.Intersects(_stones[j].StoneRectangle)) ocupatedByStone[2] = true;
+                    if (leftRectangle.Intersects(_stones[j].StoneRectangle)) ocupatedByStone[3] = true;
+                }
+
+                // Pytanie, czy robaczek nie jest pod spodem
+                if (downRectangle.Intersects(_worm.WormRectangle)) freeSpace[2] = false;
+
+                if (_worm.WormRectangle.Intersects(_stones[i].StoneRectangle) && _worm.Direction == Direction.Right && _gameField.Contains(rightRectangle) && !ocupatedByStone[1])
+                {
+                    // Można przesunąć w prawo
+                    _stones[i].MakeMove(Direction.Right);
+                    continue;
+                }
+
+                if (_worm.WormRectangle.Intersects(_stones[i].StoneRectangle) && _worm.Direction == Direction.Left && _gameField.Contains(leftRectangle) && !ocupatedByStone[3])
+                {
+                    // Można przesunąć w lewo
+                    _stones[i].MakeMove(Direction.Left);
+                    continue;
+                }
+
+                if (freeSpace[2] && !ocupatedByStone[2]) _stones[i].MakeMove(Direction.Down);
+            }
+
+            // Akutalizacja sakiewek
+            for (int i = 0; i < _purses.Count; i++)
+            {
+                _purses[i].Move();
+                _purses[i].Update(gameTime);
+
+                Rectangle downRectangle = new Rectangle(_purses[i].PurseRectangle.X, _purses[i].PurseRectangle.Y + 42, _purses[i].PurseRectangle.Width, _purses[i].PurseRectangle.Height);
+
+                if (_purses[i].IsMoving)
+                {
+                    // Sprawdź przecięcia z worgami
+                    for (int j = 0; j < _enemies.Count; j++)
+                    {
+                        if (_purses[i].PurseRectangle.Intersects(_enemies[j].EnemyRectangle))
+                        {
+                            _enemies[j].Kill();
+                            Fruit fruit = _purses[i].Shatter();
+                            if (fruit != null) _grabbableFruits.Add(fruit);
+                        }
+                    }   
+                    continue;
+                }
+
+                // Sprawdź, czy spadała a następnie osiągnęła koniec planszy
+                if (!_gameField.Contains(downRectangle) && _purses[i].WasFalling)
+                {
+                    Fruit fruit = _purses[i].Shatter();
+                    if (fruit != null) _grabbableFruits.Add(fruit);
+                    continue;
+                } 
+
+                Rectangle upRectangle, rightRectangle, leftRectangle;
+                upRectangle = new Rectangle(_purses[i].PurseRectangle.X, _purses[i].PurseRectangle.Y - 42, _purses[i].PurseRectangle.Width, _purses[i].PurseRectangle.Height);
+                rightRectangle = new Rectangle(_purses[i].PurseRectangle.X + 42, _purses[i].PurseRectangle.Y, _purses[i].PurseRectangle.Width, _purses[i].PurseRectangle.Height);
+                leftRectangle = new Rectangle(_purses[i].PurseRectangle.X - 42, _purses[i].PurseRectangle.Y, _purses[i].PurseRectangle.Width, _purses[i].PurseRectangle.Height);
+                bool[] freeSpace = new bool[4];
+                // Przecięcia z ziemią
+                for (int x = 0; x < Math.Sqrt(_grounds.Length); x++)
+                {
+                    for (int y = 0; y < Math.Sqrt(_grounds.Length); y++)
+                    {
+                        if (_grounds[x, y].GroundType != GroundType.Free)
+                        {
+                            if (downRectangle.Intersects(_grounds[x, y].Rectangle) && _purses[i].WasFalling)
+                            {
+                                Fruit fruit = _purses[i].Shatter();
+                                if (fruit != null) _grabbableFruits.Add(fruit);
+                            }
+                            continue;
+                        }
+
+                        if (upRectangle.Intersects(_grounds[x, y].Rectangle)) freeSpace[0] = true;
+                        if (rightRectangle.Intersects(_grounds[x, y].Rectangle)) freeSpace[1] = true;
+                        if (downRectangle.Intersects(_grounds[x, y].Rectangle) && _gameField.Contains(downRectangle)) freeSpace[2] = true;
+                        if (leftRectangle.Intersects(_grounds[x, y].Rectangle)) freeSpace[3] = true;
+                    }
+                }
+                bool[] ocupatedByPurse = new bool[4];
+                for (int j = 0; j < _purses.Count; j++)
+                {
+                    if (upRectangle.Intersects(_purses[j].PurseRectangle)) ocupatedByPurse[0] = true;
+                    if (rightRectangle.Intersects(_purses[j].PurseRectangle)) ocupatedByPurse[1] = true;
+                    if (downRectangle.Intersects(_purses[j].PurseRectangle)) ocupatedByPurse[2] = true;
+                    if (leftRectangle.Intersects(_purses[j].PurseRectangle)) ocupatedByPurse[3] = true;
+                }
+
+                // Pytanie, czy robaczek nie jest pod spodem
+                if (downRectangle.Intersects(_worm.WormRectangle)) freeSpace[2] = false;
+
+                if (_worm.WormRectangle.Intersects(_purses[i].PurseRectangle) && _worm.Direction == Direction.Right && _gameField.Contains(rightRectangle) && !ocupatedByPurse[1])
+                {
+                    // Można przesunąć w prawo
+                    _purses[i].MakeMove(Direction.Right);
+                    continue;
+                }
+
+                if (_worm.WormRectangle.Intersects(_purses[i].PurseRectangle) && _worm.Direction == Direction.Left && _gameField.Contains(leftRectangle) && !ocupatedByPurse[3])
+                {
+                    // Można przesunąć w lewo
+                    _purses[i].MakeMove(Direction.Left);
+                    continue;
+                }
+
+                if (freeSpace[2] && !ocupatedByPurse[2]) _purses[i].MakeMove(Direction.Down);
             }
 
             // Przesuwanie robaczka
@@ -575,6 +768,15 @@ namespace Digger.Views
             for (int i = 0; i < _rootenKiwis.Count; i++)
             {
                 if (_rootenKiwis[i].IsUsed) _rootenKiwis.RemoveAt(i);
+            }
+            // Usuwanie sakiewek 
+            for (int i = 0; i < _purses.Count; i++)
+            {
+                if (_purses[i].IsShatter) _purses.RemoveAt(i);
+            }
+            for (int i = 0; i < _stones.Count; i++)
+            {
+                if (_stones[i].IsShatter) _stones.RemoveAt(i);
             }
         }
     }

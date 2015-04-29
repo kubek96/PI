@@ -1,8 +1,10 @@
-﻿using Digger.Game.Common;
+﻿using System;
+using Digger.Game.Common;
 using Digger.Graphic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 
 namespace Digger.Game.Elements
 {
@@ -15,8 +17,8 @@ namespace Digger.Game.Elements
         Rat
     }
 
-    public delegate void EvolveDelegate(Enemy enemy);
-    public delegate void MakeMoveDelegate(Enemy enemy, Direction[] availableDirections);
+    public delegate Enemy EvolveDelegate(Enemy enemy);
+    public delegate void TestMoveDelegate(Enemy enemy, Ground[,] grounds, Rectangle gameField);
     public delegate Shot WebShootDelegate();
     public delegate void ObserveDelegate(Enemy enemy, Worm worm);
     public delegate void AttackDelegate(Worm w);
@@ -29,18 +31,26 @@ namespace Digger.Game.Elements
         private EnemyType _enemyType;
         private int? _life;
         private int _strenght;
+
         private int _speed;
+        private int _startSpeed;
+        private int _slowEffectTime;
+        private int _elapsedSlowTime;
+
         private Direction _direction;
 
         private Point _destination;
         private bool _isDigging;
         private bool _isMoving;
 
+        private int _elapsedFreezeTime;
+        private int _freezeEffectTime;
         private bool _isFreeze;
+
         private bool _isKilled;
 
         private EvolveDelegate _evolve;
-        private MakeMoveDelegate _makeMove;
+        private TestMoveDelegate _testMove;
         private WebShootDelegate _webShoot;
         private ObserveDelegate _observe;
         private AttackDelegate _attack;
@@ -57,32 +67,40 @@ namespace Digger.Game.Elements
             _life = enemy._life;
             _strenght = enemy._strenght;
             _speed = enemy._speed;
+            _startSpeed = enemy._startSpeed;
             _direction = enemy._direction;
 
             _isFreeze = enemy._isFreeze;
             _isKilled = false;
 
             _evolve = enemy._evolve;
-            _makeMove = enemy._makeMove;
+            _testMove = enemy._testMove;
             _webShoot = enemy._webShoot;
             _observe = enemy._observe;
             _attack = enemy._attack;
         }
 
-        public Enemy(EnemyType enemyType, string assetName, int? life, int strenght, int speed, Direction direction, bool isFreeze, EvolveDelegate evolve,MakeMoveDelegate makeMove,
+        public Enemy(EnemyType enemyType, string assetName, int? life, int strenght, int speed, Direction direction, bool isFreeze, EvolveDelegate evolve,TestMoveDelegate testMove,
             WebShootDelegate webShoot, ObserveDelegate observe, AttackDelegate attack)
         {
             _enemyType = enemyType;
             _life = life;
             _strenght = strenght;
-            _speed = speed;
+
+            _speed = _startSpeed = speed;
+            _slowEffectTime = 0;
+            _elapsedSlowTime = 0;
+
             _direction = direction;
+
             _isFreeze = isFreeze;
+            _freezeEffectTime = 0;
+            _elapsedFreezeTime = 0;
             
             _enemyGraphic = new AnimatedGraphic();
 
             _evolve = evolve;
-            _makeMove = makeMove;
+            _testMove = testMove;
             _webShoot = webShoot;
             _observe = observe;
             _attack = attack;
@@ -115,6 +133,22 @@ namespace Digger.Game.Elements
         public void Update(GameTime gameTime)
         {
             _enemyGraphic.Update(gameTime);
+            // Sprawdź, czy nie minął już czas spowolnieniea
+            _elapsedSlowTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (_elapsedSlowTime > _slowEffectTime)
+            {
+                _speed = _startSpeed;
+                _elapsedSlowTime = 0;
+            }
+            if (_isFreeze)
+            {
+                _elapsedFreezeTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (_elapsedFreezeTime > _freezeEffectTime)
+                {
+                    _isFreeze = false;
+                    _elapsedFreezeTime = 0;
+                }
+            }
         }
 
         public bool IsKilled
@@ -147,11 +181,18 @@ namespace Digger.Game.Elements
             set { _isMoving = value; }
         }
 
+        public void Kill()
+        {
+            if (_enemyType == EnemyType.Rat) return;
+            _isKilled = true;
+        }
+
         public void Move()
         {
+            if (_isFreeze) return;
             if (!_isMoving) return;
             if (_isDigging) _speed = 1;
-            else _speed = 3;
+            else _speed = _startSpeed;
 
             if (_destination.X != _enemyRectangle.X)
                 if (_destination.X > _enemyRectangle.X)
@@ -194,6 +235,34 @@ namespace Digger.Game.Elements
             }
         }
 
+        public void SlowDown(int speed, int effectTime)
+        {
+            // Wyrównaj klatki przesunięcia
+            _speed = _speed - speed;
+            Move();
+            // Ustaw nową prędkość
+            _speed = speed;
+            _slowEffectTime = effectTime;
+            _elapsedSlowTime = 0;
+        }
+
+        public void Freeze(int effectTime)
+        {
+            _isFreeze = true;
+            _freezeEffectTime = effectTime;
+            _elapsedFreezeTime = 0;
+        }
+
+        public int? Life
+        {
+            get { return _life; }
+            set
+            {
+                _life = value;
+                if (_life == 0) _isKilled = true;
+            }
+        }
+
         public Direction Direction
         {
             get { return _direction; }
@@ -205,9 +274,9 @@ namespace Digger.Game.Elements
             get { return _evolve; }
         }
 
-        public MakeMoveDelegate MakeMove
+        public TestMoveDelegate TestMove
         {
-            get { return _makeMove; }
+            get { return _testMove; }
         }
 
         public WebShootDelegate WebShoot
@@ -223,6 +292,29 @@ namespace Digger.Game.Elements
         public AttackDelegate Attack
         {
             get { return _attack; }
+        }
+
+        public void MakeMove(Direction direction)
+        {
+            // Podmień pozycję 
+            int x = 0, y = 0;
+            switch (direction)
+            {
+                case Direction.Up:
+                    y -= 42;
+                    break;
+                case Direction.Right:
+                    x += 42;
+                    break;
+                case Direction.Down:
+                    y += 42;
+                    break;
+                case Direction.Left:
+                    x -= 42;
+                    break;
+            }
+            _destination = new Point(_enemyRectangle.X + x, _enemyRectangle.Y + y);
+            _isMoving = true;
         }
     }
 }
