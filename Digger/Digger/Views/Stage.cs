@@ -80,7 +80,7 @@ namespace Digger.Views
             // Drzwi
             _totalEnemiesCount = 8;
             _totalKilledEnemiesCount = 0;
-            _door = new Door(_stageHelper.GenerateEnemies(2,2,1,3), 8000);
+            _door = new Door(_stageHelper.GenerateEnemies(0,0,0,0,1), 8000);
 
             // Wrogowie 
             _enemies = new List<Enemy>();
@@ -605,6 +605,26 @@ namespace Digger.Views
             {
                 _shots[i].Update(gameTime);
                 _shots[i].Move();
+
+                // Zderzenie z sakiewką
+                for (int j = 0; j < _purses.Count; j++)
+                {
+                    if (_purses[j].IsShatter) continue;
+                    if (_shots[i].ShotRectangle.Intersects(_purses[j].PurseRectangle))
+                    {
+                        Fruit f = _purses[j].Shatter();
+                        if (f != null) _grabbableFruits.Add(f);
+                    }
+                }
+                // Zderzenie z kamieniem
+                for (int j = 0; j < _stones.Count; j++)
+                {
+                    if (_stones[j].IsShatter) continue;
+                    if (_shots[i].ShotRectangle.Intersects(_stones[j].StoneRectangle))
+                    {
+                        _stones[j].Shatter();
+                    }
+                }
             }
             for (int i = 0; i < _webShots.Count; i++)
             {
@@ -624,6 +644,26 @@ namespace Digger.Views
                     {
                         _webShots[i].ShootSomething = true;
                         _shots[j].ShootSomething = true;
+                    }
+                }
+
+                // Zderzenie z sakiewką
+                for (int j = 0; j < _purses.Count; j++)
+                {
+                    if (_purses[j].IsShatter) continue;
+                    if (_webShots[i].ShotRectangle.Intersects(_purses[j].PurseRectangle))
+                    {
+                        Fruit f = _purses[j].Shatter();
+                        if (f != null) _grabbableFruits.Add(f);
+                    }
+                }
+                // Zderzenie z kamieniem
+                for (int j = 0; j < _stones.Count; j++)
+                {
+                    if (_stones[j].IsShatter) continue;
+                    if (_webShots[i].ShotRectangle.Intersects(_stones[j].StoneRectangle))
+                    {
+                        _stones[j].Shatter();
                     }
                 }
             }
@@ -690,7 +730,19 @@ namespace Digger.Views
                 }
 
                 // Pytanie, czy robaczek nie jest pod spodem
-                if (downRectangle.Intersects(_worm.WormRectangle)) freeSpace[2] = false;
+                if (downRectangle.Intersects(_worm.WormRectangle))
+                {
+                    // Pytanie czy spadało, czy robaczek dopiero co wykopał dziurę?
+                    if (_stones[i].WasFalling)
+                    {
+                        // Spadało
+                        _stones[i].Shatter();
+                        _worm.Life--;
+                        continue;
+                    }
+                    // Robaczek zrobił dziurę
+                    freeSpace[2] = false;
+                }
 
                 if (_worm.WormRectangle.Intersects(_stones[i].StoneRectangle) && _worm.Direction == Direction.Right && _gameField.Contains(rightRectangle) && !ocupatedByStone[1])
                 {
@@ -776,7 +828,20 @@ namespace Digger.Views
                 }
 
                 // Pytanie, czy robaczek nie jest pod spodem
-                if (downRectangle.Intersects(_worm.WormRectangle)) freeSpace[2] = false;
+                if (downRectangle.Intersects(_worm.WormRectangle))
+                {
+                    // Pytanie czy spadało, czy robaczek dopiero co wykopał dziurę?
+                    if (_purses[i].WasFalling)
+                    {
+                        // Spadało
+                        Fruit f = _purses[i].Shatter();
+                        if (f!=null) _grabbableFruits.Add(f);
+                        _worm.Life--;
+                        continue;
+                    }
+                    // Robaczek zrobił dziurę
+                    freeSpace[2] = false;
+                }
 
                 if (_worm.WormRectangle.Intersects(_purses[i].PurseRectangle) && _worm.Direction == Direction.Right && _gameField.Contains(rightRectangle) && !ocupatedByPurse[1])
                 {

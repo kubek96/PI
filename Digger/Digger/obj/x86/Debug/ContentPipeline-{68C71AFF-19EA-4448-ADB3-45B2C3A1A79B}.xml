@@ -119,15 +119,6 @@
       <Time>2015-04-14T20:07:11.8078443+02:00</Time>
     </Item>
     <Item>
-      <Source>Game\Worm.png</Source>
-      <Name>Game\Worm</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Worm.xnb</Output>
-      <Time>2015-04-28T18:56:46.8285331+02:00</Time>
-    </Item>
-    <Item>
       <Source>Views\Common\MenuFrame.png</Source>
       <Name>Views\Common\MenuFrame</Name>
       <Importer>TextureImporter</Importer>
@@ -162,15 +153,6 @@
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\GoBack.xnb</Output>
       <Time>2015-04-20T10:53:58.6000581+02:00</Time>
-    </Item>
-    <Item>
-      <Source>Fonts\Silkscreen.spritefont</Source>
-      <Name>Fonts\Silkscreen</Name>
-      <Importer>FontDescriptionImporter</Importer>
-      <Processor>FontDescriptionProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Fonts\Silkscreen.xnb</Output>
-      <Time>2015-04-20T13:10:20.7818206+02:00</Time>
     </Item>
     <Item>
       <Source>Views\Common\IBeam.png</Source>
@@ -308,24 +290,6 @@
       <Time>2015-04-20T19:21:45.1095422+02:00</Time>
     </Item>
     <Item>
-      <Source>Game\Door.png</Source>
-      <Name>Game\Door</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Door.xnb</Output>
-      <Time>2015-04-29T17:08:12.0270137+02:00</Time>
-    </Item>
-    <Item>
-      <Source>Game\Enemies\Beetle.png</Source>
-      <Name>Game\Enemies\Beetle</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Enemies\Beetle.xnb</Output>
-      <Time>2015-04-29T15:01:32.7936015+02:00</Time>
-    </Item>
-    <Item>
       <Source>Game\Enemies\Mouse.png</Source>
       <Name>Game\Enemies\Mouse</Name>
       <Importer>TextureImporter</Importer>
@@ -341,7 +305,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Enemies\Rat.xnb</Output>
-      <Time>2015-04-27T23:04:53.4010418+02:00</Time>
+      <Time>2015-05-04T12:54:41.9995838+02:00</Time>
     </Item>
     <Item>
       <Source>Game\Enemies\RedSpider.png</Source>
@@ -360,6 +324,15 @@
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Enemies\Spider.xnb</Output>
       <Time>2015-04-29T16:14:40.9730729+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Worm.png</Source>
+      <Name>Game\Worm</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Worm.xnb</Output>
+      <Time>2015-04-28T18:56:46.8285331+02:00</Time>
     </Item>
     <Item>
       <Source>Game\Interface\Heart.png</Source>
@@ -404,7 +377,25 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Purse.xnb</Output>
-      <Time>2015-04-29T12:01:00.3221402+02:00</Time>
+      <Time>2015-05-04T12:53:00.3818805+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Enemies\Beetle.png</Source>
+      <Name>Game\Enemies\Beetle</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Enemies\Beetle.xnb</Output>
+      <Time>2015-04-29T15:01:32.7936015+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Door.png</Source>
+      <Name>Game\Door</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Door.xnb</Output>
+      <Time>2015-04-29T17:08:12.0270137+02:00</Time>
     </Item>
     <Item>
       <Source>Game\Shots\WebShot.png</Source>
@@ -414,6 +405,15 @@
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Shots\WebShot.xnb</Output>
       <Time>2015-04-29T22:27:09.4876986+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Fonts\Silkscreen.spritefont</Source>
+      <Name>Fonts\Silkscreen</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Fonts\Silkscreen.xnb</Output>
+      <Time>2015-04-20T13:10:20.7818206+02:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

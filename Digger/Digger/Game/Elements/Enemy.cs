@@ -51,11 +51,11 @@ namespace Digger.Game.Elements
         private bool _addAsNew;
         private bool _sawWorm;
 
-        private EvolveDelegate _evolve;
-        private TestMoveDelegate _testMove;
-        private WebShootDelegate _webShoot;
-        private ObserveDelegate _observe;
-        private AttackDelegate _attack;
+        protected EvolveDelegate _evolve;
+        protected TestMoveDelegate _testMove;
+        protected WebShootDelegate _webShoot;
+        protected ObserveDelegate _observe;
+        protected AttackDelegate _attack;
 
         /// <summary>
         /// Konstruktor kopiujący
@@ -131,7 +131,7 @@ namespace Digger.Game.Elements
             _enemyRectangle = new Rectangle();
         }
 
-        public void Initialize(Rectangle rectangle)
+        public virtual void Initialize(Rectangle rectangle)
         {
             _enemyRectangle = rectangle;
             _enemyGraphic.Initialize(new Vector2(_enemyRectangle.X + 10, _enemyRectangle.Y + 10), 22, 20, 1, 100, Color.White);

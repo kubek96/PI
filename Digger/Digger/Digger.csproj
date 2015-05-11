@@ -84,6 +84,7 @@
     <Compile Include="Game\Elements\Shot.cs" />
     <Compile Include="Game\Elements\Stone.cs" />
     <Compile Include="Game\Elements\Worm.cs" />
+    <Compile Include="Game\Specified\Rat.cs" />
     <Compile Include="Graphic\AnimatedGraphic.cs" />
     <Compile Include="Views\BestScores.cs" />
     <Compile Include="Views\Common\Control\Button.cs" />

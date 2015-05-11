@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Digger.Game.Elements;
+using Digger.Game.Specified;
 using Microsoft.Xna.Framework;
 using System.Linq;
 
@@ -94,7 +95,11 @@ namespace Digger.Game.Common
                                 {
                                     if (grounds[x, y].GroundType == GroundType.Free) continue;
                                     if (grounds[x, y].Rectangle.X != enemy.EnemyRectangle.X) continue;
-                                    if (enemy.EnemyRectangle.Y > grounds[x, y].Rectangle.Y && grounds[x, y].Rectangle.Y > worm.WormRectangle.Y) break;
+                                    if (enemy.EnemyRectangle.Y > grounds[x, y].Rectangle.Y && grounds[x, y].Rectangle.Y > worm.WormRectangle.Y)
+                                    {
+                                        enemy.SawWorm = false;
+                                        return;
+                                    }
                                 }
                             }
                             enemy.SawWorm = true;
@@ -109,7 +114,11 @@ namespace Digger.Game.Common
                                 {
                                     if (grounds[x, y].GroundType == GroundType.Free) continue;
                                     if (grounds[x, y].Rectangle.X != enemy.EnemyRectangle.X) continue;
-                                    if (enemy.EnemyRectangle.Y < grounds[x, y].Rectangle.Y && grounds[x, y].Rectangle.Y < worm.WormRectangle.Y) break;
+                                    if (enemy.EnemyRectangle.Y < grounds[x, y].Rectangle.Y && grounds[x, y].Rectangle.Y < worm.WormRectangle.Y)
+                                    {
+                                        enemy.SawWorm = false;
+                                        return;
+                                    }
                                 }
                             }
                             enemy.SawWorm = true;
@@ -124,7 +133,11 @@ namespace Digger.Game.Common
                                 {
                                     if (grounds[x, y].GroundType == GroundType.Free) continue;
                                     if (grounds[x, y].Rectangle.Y != enemy.EnemyRectangle.Y) continue;
-                                    if (enemy.EnemyRectangle.X < grounds[x, y].Rectangle.X && grounds[x, y].Rectangle.X < worm.WormRectangle.X) break;
+                                    if (enemy.EnemyRectangle.X < grounds[x, y].Rectangle.X && grounds[x, y].Rectangle.X < worm.WormRectangle.X)
+                                    {
+                                        enemy.SawWorm = false;
+                                        return;
+                                    }
                                 }
                             }
                             enemy.SawWorm = true;
@@ -139,7 +152,12 @@ namespace Digger.Game.Common
                                 {
                                     if (grounds[x, y].GroundType == GroundType.Free) continue;
                                     if (grounds[x, y].Rectangle.Y != enemy.EnemyRectangle.Y) continue;
-                                    if (enemy.EnemyRectangle.X > grounds[x, y].Rectangle.X && grounds[x, y].Rectangle.X > worm.WormRectangle.X) break;
+                                    if (enemy.EnemyRectangle.X > grounds[x, y].Rectangle.X &&
+                                        grounds[x, y].Rectangle.X > worm.WormRectangle.X)
+                                    {
+                                        enemy.SawWorm = false; 
+                                        return;
+                                    }
                                 }
                             }
                             enemy.SawWorm = true;
@@ -377,7 +395,7 @@ namespace Digger.Game.Common
                     }
                     return s;
                 }, null, _enemyTemplates[EnemyType.Mouse].Attack));
-            _enemyTemplates.Add(EnemyType.Rat, new Enemy(EnemyType.Rat, "Game/Enemies/Rat", null, 10, 7, Direction.Left, false, null, null, null, null, null));
+            _enemyTemplates.Add(EnemyType.Rat, new Rat(EnemyType.Rat, "Game/Enemies/Rat", null, 10, 7, Direction.Left, false, null, null, null, null, null));
 
             _shotTemplates = new Dictionary<ShotType, Shot>();
             _shotTemplates.Add(ShotType.Acid, new Shot(ShotType.Acid, "Game/Shots/AcidShot", enemy => enemy.Freeze(5000)));
