@@ -18,7 +18,8 @@ namespace Digger.Game.Common
             _fruitsTemplates = new Dictionary<FruitType, Fruit>();
             _fruitsTemplates.Add(FruitType.Lemon, new Fruit(FruitType.Lemon, "Game/Fruits/Lemon", worm => worm.AcidShoots += 5, delegate(Enemy enemy)
             {
-                return enemy.Evolve(enemy);
+                if (enemy.Evolve!= null) return enemy.Evolve(enemy);
+                return null;
             }));
             _fruitsTemplates.Add(FruitType.Orange, new Fruit(FruitType.Orange, "Game/Fruits/Orange", worm => worm.VenomShoots += 5, _fruitsTemplates[FruitType.Lemon].EnemyUse));
             _fruitsTemplates.Add(FruitType.Kiwi, new Fruit(FruitType.Kiwi, "Game/Fruits/Kiwi", worm => worm.KiwisCount++,
@@ -395,7 +396,7 @@ namespace Digger.Game.Common
                     }
                     return s;
                 }, null, _enemyTemplates[EnemyType.Mouse].Attack));
-            _enemyTemplates.Add(EnemyType.Rat, new Rat(EnemyType.Rat, "Game/Enemies/Rat", null, 10, 7, Direction.Left, false, null, null, null, null, null));
+            _enemyTemplates.Add(EnemyType.Rat, new Rat(EnemyType.Rat, "Game/Enemies/Rat", null, 10, 3, Direction.Left, false, null, null, null, null, null));
 
             _shotTemplates = new Dictionary<ShotType, Shot>();
             _shotTemplates.Add(ShotType.Acid, new Shot(ShotType.Acid, "Game/Shots/AcidShot", enemy => enemy.Freeze(5000)));

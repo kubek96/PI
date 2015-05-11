@@ -46,6 +46,11 @@ namespace Digger.Game.Elements
             _isFreeze = false;
         }
 
+        public Point Destination
+        {
+            get { return _destination; }
+        }
+
         public int CandyCount
         {
             get { return _candyCount; }

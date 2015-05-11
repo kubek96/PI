@@ -149,6 +149,7 @@ namespace Digger.Game.Elements
         {
             _enemyGraphic.Update(gameTime);
             // Sprawdź, czy nie minął już czas spowolnieniea
+            if (_sawWorm) return;
             _elapsedSlowTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
             if (_elapsedSlowTime > _slowEffectTime)
             {
@@ -213,7 +214,7 @@ namespace Digger.Game.Elements
             if (_isFreeze) return;
             if (!_isMoving) return;
             if (_isDigging) _speed = 1;
-            else _speed = _startSpeed;
+            if (!_sawWorm) _speed = _startSpeed;
 
             if (_destination.X != _enemyRectangle.X)
                 if (_destination.X > _enemyRectangle.X)
@@ -337,6 +338,17 @@ namespace Digger.Game.Elements
             }
             _destination = new Point(_enemyRectangle.X + x, _enemyRectangle.Y + y);
             _isMoving = true;
+        }
+
+        public void MoveFaster(int speed)
+        {
+            // Wyrównaj klatki przesunięcia
+            _speed = speed - _speed;
+            _isMoving = true;
+            _sawWorm = true;
+            Move();
+            // Ustaw nową prędkość
+            _speed = speed;
         }
     }
 }
