@@ -61,7 +61,7 @@ namespace Digger.Views
             _background.Initialize(new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
             _menuFrame.Initialize(new Vector2((screenWidth - _menuFrame.Image.Width) / 2, (screenHeight - _menuFrame.Image.Height) / 2), Color.White);
 
-            _menu[0].ButtonGraphic.Initialize(new Vector2((screenWidth / 2) + 100, (screenHeight / 2) + 150), _menu[0].ButtonGraphic.Image.Width / 3, _menu[0].ButtonGraphic.Image.Height, 1, 100, Color.White);
+            _menu[0].ButtonGraphic.Initialize(new Vector2((screenWidth / 2) + 80, (screenHeight / 2) + 150), _menu[0].ButtonGraphic.Image.Width / 3, _menu[0].ButtonGraphic.Image.Height, 1, 100, Color.White);
             _menu[1].ButtonGraphic.Initialize(new Vector2((screenWidth / 2) - 300, (screenHeight / 2) + 150), 340, 25, 1, 100, Color.White);
             _menu[2].ButtonGraphic.Initialize(new Vector2(screenWidth - 360, 20), 340, 25, 1, 100, Color.White);
 

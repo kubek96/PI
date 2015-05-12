@@ -89,7 +89,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\Options.xnb</Output>
-      <Time>2015-04-14T17:23:09.3357611+02:00</Time>
+      <Time>2015-05-12T17:50:15.8846149+02:00</Time>
     </Item>
     <Item>
       <Source>Views\Menu\Clouds.png</Source>
@@ -143,7 +143,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\Play.xnb</Output>
-      <Time>2015-04-20T11:14:44.7910573+02:00</Time>
+      <Time>2015-05-12T17:43:15.2948678+02:00</Time>
     </Item>
     <Item>
       <Source>Views\NavigationButtons\GoBack.png</Source>
@@ -441,7 +441,61 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\Common\TransparentBackground.xnb</Output>
-      <Time>2015-05-12T16:43:09.4971702+02:00</Time>
+      <Time>2015-05-12T18:07:21.3043639+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\NavigationButtons\Continue.png</Source>
+      <Name>Views\NavigationButtons\Continue</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\Continue.xnb</Output>
+      <Time>2015-05-12T17:40:24.2214663+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\NavigationButtons\MainMenu.png</Source>
+      <Name>Views\NavigationButtons\MainMenu</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\MainMenu.xnb</Output>
+      <Time>2015-05-12T17:51:09.0407248+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\OptionsButtons\Off.png</Source>
+      <Name>Views\OptionsButtons\Off</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\OptionsButtons\Off.xnb</Output>
+      <Time>2015-05-12T19:23:53.7112793+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\OptionsButtons\On.png</Source>
+      <Name>Views\OptionsButtons\On</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\OptionsButtons\On.xnb</Output>
+      <Time>2015-05-12T19:23:53.7152797+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\OptionsButtons\Arrows.png</Source>
+      <Name>Views\OptionsButtons\Arrows</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\OptionsButtons\Arrows.xnb</Output>
+      <Time>2015-05-12T19:32:59.2580665+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\OptionsButtons\Wsad.png</Source>
+      <Name>Views\OptionsButtons\Wsad</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\OptionsButtons\Wsad.xnb</Output>
+      <Time>2015-05-12T19:33:08.8335512+02:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

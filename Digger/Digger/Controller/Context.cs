@@ -14,10 +14,6 @@ namespace Digger.Controller
     {
         private static string playerXmlFileName = "DiggerPlayers.xml";
 
-
-        public bool IsGamePaused { get; set; }
-
-
         private IXnaUseable _currentView;
         private ContentManager _content;
         private bool _readyToExit;
@@ -29,13 +25,9 @@ namespace Digger.Controller
             _content = content;
             _readyToExit = false;
             _players = new List<Player>();
-            IsGamePaused = false;
-
-            //playerXmlUri = new Uri("DiggerPlayers.xml");
 
             // Wczytaj graczy z pliku 
             LoadPlayersFromSerializedFile();
-            
         }
 
         public void LoadPlayersFromSerializedFile()

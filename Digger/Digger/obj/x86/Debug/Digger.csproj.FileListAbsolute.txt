@@ -54,3 +54,9 @@ C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x8
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Sounds\Sound1.wma
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\Common\TransparentBackground.xnb
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\obj\x86\Debug\Digger.csprojResolveAssemblyReference.cache
+C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\Continue.xnb
+C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\MainMenu.xnb
+C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\OptionsButtons\Off.xnb
+C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\OptionsButtons\On.xnb
+C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\OptionsButtons\Arrows.xnb
+C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\OptionsButtons\Wsad.xnb

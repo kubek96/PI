@@ -103,6 +103,7 @@
     <Compile Include="Graphic\ParallaxingGraphic.cs" />
     <Compile Include="Views\Exit.cs" />
     <Compile Include="Views\Help.cs" />
+    <Compile Include="Views\InGameHelp.cs" />
     <Compile Include="Views\LoadStage.cs" />
     <Compile Include="Views\Menu.cs" />
     <Compile Include="Views\NewGame.cs" />

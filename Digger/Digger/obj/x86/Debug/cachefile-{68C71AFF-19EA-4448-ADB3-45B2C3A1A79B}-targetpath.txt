@@ -48,3 +48,9 @@ Content\Fonts\Silkscreen.xnb
 Content\Sounds\Sound1.xnb
 Content\Sounds\Sound1.wma
 Content\Views\Common\TransparentBackground.xnb
+Content\Views\NavigationButtons\Continue.xnb
+Content\Views\NavigationButtons\MainMenu.xnb
+Content\Views\OptionsButtons\Off.xnb
+Content\Views\OptionsButtons\On.xnb
+Content\Views\OptionsButtons\Arrows.xnb
+Content\Views\OptionsButtons\Wsad.xnb

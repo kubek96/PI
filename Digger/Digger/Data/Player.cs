@@ -23,5 +23,10 @@ namespace Digger.Data
             UserKeyboraPreferences = KeyboradLayout.Arrows;
             IsMusicOn = true;
         }
+
+        public Player()
+        {
+            
+        }
     }
 }

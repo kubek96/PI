@@ -52,16 +52,20 @@ namespace Digger.Views
         private Song _song;
 
         // Pause
+        private bool _isGamePaused;
         private Pause _pause;
         private Options _options;
-        //private Help _help;
+        private InGameHelp _help;
 
         public Stage()
         {
             _stageHelper = new StageHelper();
+
             _pause = new Pause();
+            _isGamePaused = false;
+
             _options = new Options();
-            //_help = new Help();
+            _help = new InGameHelp();
 
             // Tło
             _background = new FixedGraphic();
@@ -326,17 +330,111 @@ namespace Digger.Views
 
 
             // Dodaj rysowanie Pause
-            if (Game1.Context.IsGamePaused)
+            if (_isGamePaused)
             {
+                if (_pause.ShowOptions)
+                {
+                    _options.Draw(spriteBatch, gameTime);
+                    return;
+                }
+                if (_pause.ShowHelp)
+                {
+                    _help.Draw(spriteBatch, gameTime);
+                    return;
+                }
                 _pause.Draw(spriteBatch, gameTime);
             }
         }
 
         public void Update(GameTime gameTime)
         {
-            // Obsługuj ruch robaczka
+            #region Update
+
+            _worm.Update(gameTime);
+            _door.Update(gameTime);
+
+            for (int i = 0; i < _enemies.Count; i++)
+            {
+                _enemies[i].Update(gameTime);
+            }
+            for (int i = 0; i < _shots.Count; i++)
+            {
+                _shots[i].Update(gameTime);
+            }
+            for (int i = 0; i < _webShots.Count; i++)
+            {
+                _webShots[i].Update(gameTime);
+            }
+            for (int i = 0; i < _stones.Count; i++)
+            {
+                _stones[i].Update(gameTime);
+            }
+            for (int i = 0; i < _purses.Count; i++)
+            {
+                _purses[i].Update(gameTime);
+            }
+
+            #endregion
+
+            #region Music
+            if (!Game1.Context.Player.IsMusicOn) MediaPlayer.Stop();
+            else
+            {
+                if (MediaPlayer.State == MediaState.Stopped)
+                {
+                    MediaPlayer.Play(_song);
+                } 
+            }
+            #endregion
+
             KeyboardState newKeyboardState = Keyboard.GetState();
             Keys[] keys = newKeyboardState.GetPressedKeys();
+
+            #region Pause
+            // Czy wciśnięto spacje lub p
+            for (int i = 0; i < keys.Length; i++)
+            {
+                if (keys[i] != Keys.Space && keys[i] != Keys.P) continue;
+
+                _isGamePaused = true;
+                _pause.Close = false;
+            }
+
+            // Czy pause
+            if (_isGamePaused)
+            {
+                if (_pause.ShowOptions)
+                {
+                    _options.Update(gameTime);
+                    if (_options.Close)
+                    {
+                        _options.Close = false;
+                        _pause.ElapsedGoBackTime = 0;
+                        _pause.ShowOptions = false;
+                    }
+                    return;
+                }
+
+                if (_pause.ShowHelp)
+                {
+                    _help.Update(gameTime);
+                    if (_help.Close)
+                    {
+                        _help.Close = false;
+                        _pause.ElapsedGoBackTime = 0;
+                        _pause.ShowHelp = false;
+                    }
+                    return;
+                }
+
+                _pause.Update(gameTime);
+                if (_pause.Close) _isGamePaused = false;
+                return;
+            }
+            #endregion
+
+            // Obsługuj ruch robaczka
+
 
             _elapsedTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
             _nextEnemieElapsedTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -523,9 +621,6 @@ namespace Digger.Views
                 }
             }
 
-            _worm.Update(gameTime);
-            _door.Update(gameTime);
-
             // Generuj kolejnych przeciwników
             if (_nextEnemieElapsedTime > _door.TimeToNextEnemie)
             {
@@ -603,7 +698,6 @@ namespace Digger.Views
             for (int i = 0; i < _enemies.Count; i++)
             {
                 _enemies[i].Move();
-                _enemies[i].Update(gameTime);
 
                 for (int j = 0; j < _shots.Count; j++)
                 {
@@ -629,7 +723,6 @@ namespace Digger.Views
             // Akutalizacja strzałów
             for (int i = 0; i < _shots.Count; i++)
             {
-                _shots[i].Update(gameTime);
                 _shots[i].Move();
 
                 // Zderzenie z sakiewką
@@ -654,7 +747,6 @@ namespace Digger.Views
             }
             for (int i = 0; i < _webShots.Count; i++)
             {
-                _webShots[i].Update(gameTime);
                 _webShots[i].Move();
 
                 if (_webShots[i].ShotRectangle.Intersects(_worm.WormRectangle) && !_webShots[i].ShootSomething)
@@ -698,7 +790,6 @@ namespace Digger.Views
             for (int i = 0; i < _stones.Count; i++)
             {
                 _stones[i].Move();
-                _stones[i].Update(gameTime);
 
                 Rectangle downRectangle = new Rectangle(_stones[i].StoneRectangle.X, _stones[i].StoneRectangle.Y + 42, _stones[i].StoneRectangle.Width, _stones[i].StoneRectangle.Height);
 
@@ -799,7 +890,6 @@ namespace Digger.Views
             for (int i = 0; i < _purses.Count; i++)
             {
                 _purses[i].Move();
-                _purses[i].Update(gameTime);
 
                 Rectangle downRectangle = new Rectangle(_purses[i].PurseRectangle.X, _purses[i].PurseRectangle.Y + 42, _purses[i].PurseRectangle.Width, _purses[i].PurseRectangle.Height);
 
@@ -978,8 +1068,7 @@ namespace Digger.Views
                 if (_stones[i].IsShatter) _stones.RemoveAt(i);
             }
 
-            // Music
-            if (!Game1.Context.Player.IsMusicOn) MediaPlayer.Stop();
+            
         }
     }
 }
