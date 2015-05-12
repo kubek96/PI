@@ -407,6 +407,15 @@
       <Time>2015-04-29T22:27:09.4876986+02:00</Time>
     </Item>
     <Item>
+      <Source>Views\Common\Logo.png</Source>
+      <Name>Views\Common\Logo</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\Common\Logo.xnb</Output>
+      <Time>2015-05-12T14:39:16.7458075+02:00</Time>
+    </Item>
+    <Item>
       <Source>Fonts\Silkscreen.spritefont</Source>
       <Name>Fonts\Silkscreen</Name>
       <Importer>FontDescriptionImporter</Importer>
@@ -414,6 +423,25 @@
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Fonts\Silkscreen.xnb</Output>
       <Time>2015-04-20T13:10:20.7818206+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Sounds\Sound1.mp3</Source>
+      <Name>Sounds\Sound1</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Sounds\Sound1.xnb</Output>
+      <Extra>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Sounds\Sound1.wma</Extra>
+      <Time>2015-05-12T16:21:27.1137538+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\Common\TransparentBackground.png</Source>
+      <Name>Views\Common\TransparentBackground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\Common\TransparentBackground.xnb</Output>
+      <Time>2015-05-12T16:43:09.4971702+02:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

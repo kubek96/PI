@@ -15,6 +15,12 @@ namespace Digger.Views.Common.Control
         private AnimatedGraphic _iBeam;
         private Keys[] _lastPressedKeys;
 
+        public string Text
+        {
+            get { return _string; }
+            set { _string = value; }
+        }
+
         public Input(string label ="")
         {
             _string = label;

@@ -64,11 +64,11 @@ namespace Digger.Views
             _groundBuffer.LoadContent(content, "Views/Menu/GroundBuffer");
 
             _menuFrame.LoadContent(content, "Views/Common/MenuFrame");
-            _menu[0].LoadContent(content, "Views/NavigationButtons/NewGame", null);
-            _menu[1].LoadContent(content, "Views/NavigationButtons/LoadGame", null);
-            _menu[2].LoadContent(content, "Views/NavigationButtons/BestScores", null);
-            _menu[3].LoadContent(content, "Views/NavigationButtons/Help", null);
-            _menu[4].LoadContent(content, "Views/NavigationButtons/Exit", null);
+            _menu[0].LoadContent(content, "Views/NavigationButtons/NewGame");
+            _menu[1].LoadContent(content, "Views/NavigationButtons/LoadGame");
+            _menu[2].LoadContent(content, "Views/NavigationButtons/BestScores");
+            _menu[3].LoadContent(content, "Views/NavigationButtons/Help");
+            _menu[4].LoadContent(content, "Views/NavigationButtons/Exit");
         }
 
         /// <summary>

@@ -14,13 +14,18 @@ namespace Digger.Views.Common.Control
         private AnimatedGraphic _buttonGraphic;
         private Type _navigationType;
         private MouseState _mouseState; // czy myszka znajduje się nad obiektem
+        private int? _passingParatemer;
+        private Label _label;
         
-        public Button(Type navigationType)
+        public Button(Type navigationType, int? args = null, string label=null)
         {
             _mouseState = MouseState.MouseLeave;
             _navigationType = navigationType;
+            _passingParatemer = args;
 
             _buttonGraphic = new AnimatedGraphic();
+            if (label != null) _label = new Label(label);
+            else _label = null;
         }
 
         public AnimatedGraphic ButtonGraphic
@@ -35,29 +40,36 @@ namespace Digger.Views.Common.Control
             set { _mouseState = value; }
         }
 
-        public void LoadContent(ContentManager content, string buttonGraphic, string buttonAnimation = null)
+        public Label Label
         {
-            _buttonGraphic.LoadContent(content, buttonGraphic);
+            get { return _label; }
+        }
+
+        public void LoadContent(ContentManager content, string assetName)
+        {
+            if (_label != null)
+            {
+                _label.LoadContent(content, assetName); 
+                return;
+            }
+            _buttonGraphic.LoadContent(content, assetName);
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            //if (_mouseState == MouseState.MouseOn)
-            //{
-            //    //_buttonGraphic.
-            //    return;    
-            //}
-
-            //if (_mouseState == MouseState.Click)
-            //{
-            //    return;  
-            //}
+            if (_label != null)
+            {
+                _label.Draw(spriteBatch);
+                return;
+            }
 
             _buttonGraphic.Draw(spriteBatch);
         }
 
         public void Update(GameTime gameTime)
         {
+            if (_label != null) return;
+
             if (_mouseState == MouseState.MouseOn)
             {
                 _buttonGraphic.MoveToFrame(1);

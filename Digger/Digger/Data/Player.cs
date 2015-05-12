@@ -1,26 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Digger.Data.Control;
 using Digger.Game.Common;
 using Digger.Game.Elements;
 using Microsoft.Xna.Framework.Input;
+using Keyboard = Digger.Data.Control.Keyboard;
 
 namespace Digger.Data
 {
+    [Serializable]
     public class Player
     {
-        private Dictionary<Keys, Direction> _userControls;
+        public KeyboradLayout UserKeyboraPreferences { get; set; } 
+        public int Points { get; set; }
+        public string Name { get; set; }
+        public int Level { get; set; }
+        public bool IsMusicOn { get; set; }
 
-        public Player()
+        public Player(string playerName)
         {
-            _userControls = new Dictionary<Keys, Direction>(4);
-            _userControls.Add(Keys.Up, Direction.Up);
-            _userControls.Add(Keys.Right, Direction.Right);
-            _userControls.Add(Keys.Down, Direction.Down);
-            _userControls.Add(Keys.Left, Direction.Left); 
-        }
-
-        public Dictionary<Keys, Direction> UserControls
-        {
-            get { return _userControls; }
+            Name = playerName;
+            UserKeyboraPreferences = KeyboradLayout.Arrows;
+            IsMusicOn = true;
         }
     }
 }

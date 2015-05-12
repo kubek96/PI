@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\Context.cs" />
+    <Compile Include="Data\Control\Keyboard.cs" />
     <Compile Include="Data\Player.cs" />
     <Compile Include="Game\Common\Direction.cs" />
     <Compile Include="Game\Common\StageHelper.cs" />
@@ -105,6 +106,8 @@
     <Compile Include="Views\LoadStage.cs" />
     <Compile Include="Views\Menu.cs" />
     <Compile Include="Views\NewGame.cs" />
+    <Compile Include="Views\Options.cs" />
+    <Compile Include="Views\Pause.cs" />
     <Compile Include="Views\Stage.cs" />
   </ItemGroup>
   <ItemGroup>

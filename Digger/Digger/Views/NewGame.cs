@@ -1,4 +1,6 @@
-﻿using Digger.Graphic;
+﻿using Digger.Controller;
+using Digger.Data;
+using Digger.Graphic;
 using Digger.Views.Common;
 using Digger.Views.Common.Control;
 using Microsoft.Xna.Framework;
@@ -96,6 +98,15 @@ namespace Digger.Views
                     // Jeżeli kliknięty to szalej
                     if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                     {
+                        // Dokonaj szybkiej walidacji
+                        if (i == 0)
+                        {
+                            // Czy wprowadzono imię gracza?
+                            if (_userName.Text.Trim() == "") continue;
+                            // Utwórz nowego gracza
+                            Game1.Context.CreateNewPlayer(_userName.Text);
+                        }
+
                         _menu[i].MouseState = MouseState.Click;
                         continue;
                     }

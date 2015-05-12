@@ -25,31 +25,31 @@ namespace Digger.Game.Elements
 
     public class Enemy
     {
-        private AnimatedGraphic _enemyGraphic;
-        private Rectangle _enemyRectangle;
+        protected AnimatedGraphic _enemyGraphic;
+        protected Rectangle _enemyRectangle;
 
-        private EnemyType _enemyType;
-        private int? _life;
-        private int _strenght;
+        protected EnemyType _enemyType;
+        protected int? _life;
+        protected int _strenght;
 
-        private int _speed;
-        private int _startSpeed;
-        private int _slowEffectTime;
-        private int _elapsedSlowTime;
+        protected int _speed;
+        protected int _startSpeed;
+        protected int _slowEffectTime;
+        protected int _elapsedSlowTime;
 
-        private Direction _direction;
+        protected Direction _direction;
 
-        private Point _destination;
-        private bool _isDigging;
-        private bool _isMoving;
+        protected Point _destination;
+        protected bool _isDigging;
+        protected bool _isMoving;
 
-        private int _elapsedFreezeTime;
-        private int _freezeEffectTime;
-        private bool _isFreeze;
+        protected int _elapsedFreezeTime;
+        protected int _freezeEffectTime;
+        protected bool _isFreeze;
 
-        private bool _isKilled;
-        private bool _addAsNew;
-        private bool _sawWorm;
+        protected bool _isKilled;
+        protected bool _addAsNew;
+        protected bool _sawWorm;
 
         protected EvolveDelegate _evolve;
         protected TestMoveDelegate _testMove;
@@ -173,7 +173,7 @@ namespace Digger.Game.Elements
             set { _addAsNew = value; }
         }
 
-        public bool IsKilled
+        public virtual bool IsKilled
         {
             get { return _isKilled; }
             set { _isKilled = value; }

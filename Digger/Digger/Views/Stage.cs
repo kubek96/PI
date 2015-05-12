@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace Digger.Views
 {
@@ -48,9 +49,19 @@ namespace Digger.Views
         private Label _interfaceLifeX;
         private Label _interfaceLifeCount;
 
+        private Song _song;
+
+        // Pause
+        private Pause _pause;
+        private Options _options;
+        //private Help _help;
+
         public Stage()
         {
             _stageHelper = new StageHelper();
+            _pause = new Pause();
+            _options = new Options();
+            //_help = new Help();
 
             // Tło
             _background = new FixedGraphic();
@@ -124,6 +135,8 @@ namespace Digger.Views
         public void LoadContent(ContentManager content)
         {
             _background.LoadContent(content, "Views/Common/Background");
+
+            _song = content.Load<Song>("Sounds/Sound1");
 
             Random rnd = new Random();
             for (int i = 0; i < Math.Sqrt(_grounds.Length); i++)
@@ -232,6 +245,10 @@ namespace Digger.Views
             _interfaceLife.Initialize(new Vector2(x, y - 210), Color.White);
             _interfaceLifeX.Initialize(new Vector2(x+60, y - 200));
             _interfaceLifeCount.Initialize(new Vector2(x + 100, y - 200));
+
+            // Music
+            if (Game1.Context.Player.IsMusicOn) MediaPlayer.Play(_song);
+            MediaPlayer.IsRepeating = true;
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
@@ -306,6 +323,13 @@ namespace Digger.Views
             _interfaceLifeCount.Draw(spriteBatch);
 
             _worm.Draw(spriteBatch);
+
+
+            // Dodaj rysowanie Pause
+            if (Game1.Context.IsGamePaused)
+            {
+                _pause.Draw(spriteBatch, gameTime);
+            }
         }
 
         public void Update(GameTime gameTime)
@@ -325,7 +349,8 @@ namespace Digger.Views
                 // Klawisz w dole
 
                 // Ruch:
-                if (!Game1.Context.Player.UserControls.ContainsKey(keys[i]))
+                //if (!Game1.Context.Player.UserControls.ContainsKey(keys[i]))
+                if (!Digger.Data.Control.Keyboard.Layout[Game1.Context.Player.UserKeyboraPreferences].ContainsKey(keys[i]))
                 {
                     // Budowanie grudek ziemi
                     if (!_lastPressedKeys.Contains(Keys.D5) && keys[i] == Keys.D5 && _worm.MudCount > 0)
@@ -430,13 +455,14 @@ namespace Digger.Views
                 }
 
                 // Sprawdź, czy po ruchu gracz jest wewnątrz obszaru grania
-                if (!_gameField.Contains(_worm.TestMove(Game1.Context.Player.UserControls[keys[i]]))) 
+                //if (!_gameField.Contains(_worm.TestMove(Game1.Context.Player.UserControls[keys[i]]))) 
+                if (!_gameField.Contains(_worm.TestMove(Digger.Data.Control.Keyboard.Layout[Game1.Context.Player.UserKeyboraPreferences][keys[i]]))) 
                     continue;
                 // Sprawdź czy robaczek nie w ruchu
                 if (_worm.IsMoving) 
                     continue;
 
-                _worm.MakeMove(Game1.Context.Player.UserControls[keys[i]]);
+                _worm.MakeMove(Digger.Data.Control.Keyboard.Layout[Game1.Context.Player.UserKeyboraPreferences][keys[i]]);
                
                 _elapsedTime = 0;
             }
@@ -720,13 +746,21 @@ namespace Digger.Views
                         if (leftRectangle.Intersects(_grounds[x, y].Rectangle)) freeSpace[3] = true;
                     }
                 }
-                bool[] ocupatedByStone = new bool[4];
+                bool[] ocupated = new bool[4];
                 for (int j = 0; j < _stones.Count; j++)
                 {
-                    if (upRectangle.Intersects(_stones[j].StoneRectangle)) ocupatedByStone[0] = true;
-                    if (rightRectangle.Intersects(_stones[j].StoneRectangle)) ocupatedByStone[1] = true;
-                    if (downRectangle.Intersects(_stones[j].StoneRectangle)) ocupatedByStone[2] = true;
-                    if (leftRectangle.Intersects(_stones[j].StoneRectangle)) ocupatedByStone[3] = true;
+                    if (upRectangle.Intersects(_stones[j].StoneRectangle)) ocupated[0] = true;
+                    if (rightRectangle.Intersects(_stones[j].StoneRectangle)) ocupated[1] = true;
+                    if (downRectangle.Intersects(_stones[j].StoneRectangle)) ocupated[2] = true;
+                    if (leftRectangle.Intersects(_stones[j].StoneRectangle)) ocupated[3] = true;
+                }
+                // Czy nie zawadza mu sakiewka?
+                for (int j = 0; j < _purses.Count; j++)
+                {
+                    if (upRectangle.Intersects(_purses[j].PurseRectangle)) ocupated[0] = true;
+                    if (rightRectangle.Intersects(_purses[j].PurseRectangle)) ocupated[1] = true;
+                    if (downRectangle.Intersects(_purses[j].PurseRectangle)) ocupated[2] = true;
+                    if (leftRectangle.Intersects(_purses[j].PurseRectangle)) ocupated[3] = true;
                 }
 
                 // Pytanie, czy robaczek nie jest pod spodem
@@ -744,21 +778,21 @@ namespace Digger.Views
                     freeSpace[2] = false;
                 }
 
-                if (_worm.WormRectangle.Intersects(_stones[i].StoneRectangle) && _worm.Direction == Direction.Right && _gameField.Contains(rightRectangle) && !ocupatedByStone[1])
+                if (_worm.WormRectangle.Intersects(_stones[i].StoneRectangle) && _worm.Direction == Direction.Right && _gameField.Contains(rightRectangle) && !ocupated[1])
                 {
                     // Można przesunąć w prawo
                     _stones[i].MakeMove(Direction.Right);
                     continue;
                 }
 
-                if (_worm.WormRectangle.Intersects(_stones[i].StoneRectangle) && _worm.Direction == Direction.Left && _gameField.Contains(leftRectangle) && !ocupatedByStone[3])
+                if (_worm.WormRectangle.Intersects(_stones[i].StoneRectangle) && _worm.Direction == Direction.Left && _gameField.Contains(leftRectangle) && !ocupated[3])
                 {
                     // Można przesunąć w lewo
                     _stones[i].MakeMove(Direction.Left);
                     continue;
                 }
 
-                if (freeSpace[2] && !ocupatedByStone[2]) _stones[i].MakeMove(Direction.Down);
+                if (freeSpace[2] && !ocupated[2]) _stones[i].MakeMove(Direction.Down);
             }
 
             // Akutalizacja sakiewek
@@ -818,13 +852,21 @@ namespace Digger.Views
                         if (leftRectangle.Intersects(_grounds[x, y].Rectangle)) freeSpace[3] = true;
                     }
                 }
-                bool[] ocupatedByPurse = new bool[4];
+                bool[] ocupated = new bool[4];
                 for (int j = 0; j < _purses.Count; j++)
                 {
-                    if (upRectangle.Intersects(_purses[j].PurseRectangle)) ocupatedByPurse[0] = true;
-                    if (rightRectangle.Intersects(_purses[j].PurseRectangle)) ocupatedByPurse[1] = true;
-                    if (downRectangle.Intersects(_purses[j].PurseRectangle)) ocupatedByPurse[2] = true;
-                    if (leftRectangle.Intersects(_purses[j].PurseRectangle)) ocupatedByPurse[3] = true;
+                    if (upRectangle.Intersects(_purses[j].PurseRectangle)) ocupated[0] = true;
+                    if (rightRectangle.Intersects(_purses[j].PurseRectangle)) ocupated[1] = true;
+                    if (downRectangle.Intersects(_purses[j].PurseRectangle)) ocupated[2] = true;
+                    if (leftRectangle.Intersects(_purses[j].PurseRectangle)) ocupated[3] = true;
+                }
+                // Czy nie przeszkadza mu kamien?
+                for (int j = 0; j < _stones.Count; j++)
+                {
+                    if (upRectangle.Intersects(_stones[j].StoneRectangle)) ocupated[0] = true;
+                    if (rightRectangle.Intersects(_stones[j].StoneRectangle)) ocupated[1] = true;
+                    if (downRectangle.Intersects(_stones[j].StoneRectangle)) ocupated[2] = true;
+                    if (leftRectangle.Intersects(_stones[j].StoneRectangle)) ocupated[3] = true;
                 }
 
                 // Pytanie, czy robaczek nie jest pod spodem
@@ -843,21 +885,21 @@ namespace Digger.Views
                     freeSpace[2] = false;
                 }
 
-                if (_worm.WormRectangle.Intersects(_purses[i].PurseRectangle) && _worm.Direction == Direction.Right && _gameField.Contains(rightRectangle) && !ocupatedByPurse[1])
+                if (_worm.WormRectangle.Intersects(_purses[i].PurseRectangle) && _worm.Direction == Direction.Right && _gameField.Contains(rightRectangle) && !ocupated[1])
                 {
                     // Można przesunąć w prawo
                     _purses[i].MakeMove(Direction.Right);
                     continue;
                 }
 
-                if (_worm.WormRectangle.Intersects(_purses[i].PurseRectangle) && _worm.Direction == Direction.Left && _gameField.Contains(leftRectangle) && !ocupatedByPurse[3])
+                if (_worm.WormRectangle.Intersects(_purses[i].PurseRectangle) && _worm.Direction == Direction.Left && _gameField.Contains(leftRectangle) && !ocupated[3])
                 {
                     // Można przesunąć w lewo
                     _purses[i].MakeMove(Direction.Left);
                     continue;
                 }
 
-                if (freeSpace[2] && !ocupatedByPurse[2]) _purses[i].MakeMove(Direction.Down);
+                if (freeSpace[2] && !ocupated[2]) _purses[i].MakeMove(Direction.Down);
             }
 
             // Przesuwanie robaczka
@@ -935,6 +977,9 @@ namespace Digger.Views
             {
                 if (_stones[i].IsShatter) _stones.RemoveAt(i);
             }
+
+            // Music
+            if (!Game1.Context.Player.IsMusicOn) MediaPlayer.Stop();
         }
     }
 }

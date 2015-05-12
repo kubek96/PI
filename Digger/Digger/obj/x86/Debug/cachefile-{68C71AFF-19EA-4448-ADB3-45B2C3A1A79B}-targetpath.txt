@@ -43,4 +43,8 @@ Content\Game\Purse.xnb
 Content\Game\Enemies\Beetle.xnb
 Content\Game\Door.xnb
 Content\Game\Shots\WebShot.xnb
+Content\Views\Common\Logo.xnb
 Content\Fonts\Silkscreen.xnb
+Content\Sounds\Sound1.xnb
+Content\Sounds\Sound1.wma
+Content\Views\Common\TransparentBackground.xnb
