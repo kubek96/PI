@@ -236,51 +236,6 @@
       <Time>2015-04-20T19:21:45.0945238+02:00</Time>
     </Item>
     <Item>
-      <Source>Game\Fruits\RedFive.png</Source>
-      <Name>Game\Fruits\RedFive</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\RedFive.xnb</Output>
-      <Time>2015-04-20T19:21:45.0965256+02:00</Time>
-    </Item>
-    <Item>
-      <Source>Game\Fruits\RedFour.png</Source>
-      <Name>Game\Fruits\RedFour</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\RedFour.xnb</Output>
-      <Time>2015-04-20T19:21:45.0985278+02:00</Time>
-    </Item>
-    <Item>
-      <Source>Game\Fruits\RedOne.png</Source>
-      <Name>Game\Fruits\RedOne</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\RedOne.xnb</Output>
-      <Time>2015-04-20T19:21:45.1015485+02:00</Time>
-    </Item>
-    <Item>
-      <Source>Game\Fruits\RedThree.png</Source>
-      <Name>Game\Fruits\RedThree</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\RedThree.xnb</Output>
-      <Time>2015-04-20T19:21:45.1045505+02:00</Time>
-    </Item>
-    <Item>
-      <Source>Game\Fruits\RedTwo.png</Source>
-      <Name>Game\Fruits\RedTwo</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\RedTwo.xnb</Output>
-      <Time>2015-04-20T19:21:45.1065347+02:00</Time>
-    </Item>
-    <Item>
       <Source>Game\Fruits\Watermelon.png</Source>
       <Name>Game\Fruits\Watermelon</Name>
       <Importer>TextureImporter</Importer>
@@ -441,7 +396,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\Common\TransparentBackground.xnb</Output>
-      <Time>2015-05-12T18:07:21.3043639+02:00</Time>
+      <Time>2015-05-12T22:10:38.4957307+02:00</Time>
     </Item>
     <Item>
       <Source>Views\NavigationButtons\Continue.png</Source>
@@ -496,6 +451,24 @@
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\OptionsButtons\Wsad.xnb</Output>
       <Time>2015-05-12T19:33:08.8335512+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Game\Fruits\Red.png</Source>
+      <Name>Game\Fruits\Red</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\Red.xnb</Output>
+      <Time>2015-04-20T19:21:45.0965256+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Views\Help\Instruction.png</Source>
+      <Name>Views\Help\Instruction</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\Help\Instruction.xnb</Output>
+      <Time>2015-05-12T22:07:41.1912552+02:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

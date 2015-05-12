@@ -31,11 +31,6 @@ C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x8
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\Lemon.xnb
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\Orange.xnb
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\Plum.xnb
-C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\RedFive.xnb
-C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\RedFour.xnb
-C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\RedOne.xnb
-C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\RedThree.xnb
-C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\RedTwo.xnb
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\Watermelon.xnb
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Door.xnb
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Enemies\Beetle.xnb
@@ -60,3 +55,5 @@ C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x8
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\OptionsButtons\On.xnb
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\OptionsButtons\Arrows.xnb
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\OptionsButtons\Wsad.xnb
+C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\Red.xnb
+C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\Help\Instruction.xnb

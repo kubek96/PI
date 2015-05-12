@@ -31,7 +31,7 @@ namespace Digger.Game.Common
             _fruitsTemplates.Add(FruitType.Watermelon, new Fruit(FruitType.Watermelon, "Game/Fruits/Watermelon", worm => worm.MudCount++, _fruitsTemplates[FruitType.Lemon].EnemyUse));
             _fruitsTemplates.Add(FruitType.Plum, new Fruit(FruitType.Plum, "Game/Fruits/Plum", worm => worm.PlumsCount++, _fruitsTemplates[FruitType.Lemon].EnemyUse));
             _fruitsTemplates.Add(FruitType.Candy, new Fruit(FruitType.Candy, "Game/Fruits/Candy", worm => worm.CandyCount++, _fruitsTemplates[FruitType.Lemon].EnemyUse));
-            _fruitsTemplates.Add(FruitType.RedFruit, new Fruit(FruitType.RedFruit, "Game/Fruits/RedOne", worm => worm.RedFruits++,
+            _fruitsTemplates.Add(FruitType.RedFruit, new Fruit(FruitType.RedFruit, "Game/Fruits/Red", worm => worm.RedFruits++,
                 delegate(Enemy enemy)
                 {
                     Enemy e = new Enemy(_enemyTemplates[EnemyType.Rat]);

@@ -18,7 +18,8 @@ namespace Digger.Views
         private Button _exit;
         private Button _previousPage;
 
-        // Elementy gry
+        // Elementy okna
+        private FixedGraphic _instruction;
 
         public Help()
         {
@@ -27,7 +28,10 @@ namespace Digger.Views
 
             // Nagłówek
             _logo = new FixedGraphic();
-            _header = new Label("Help:");
+            _header = new Label("Help");
+
+            // Częśc główna okna
+            _instruction = new FixedGraphic();
 
             // Nawigacja
             _previousPage = new Button(typeof(Menu));
@@ -45,6 +49,8 @@ namespace Digger.Views
             _background.LoadContent(content, "Views/Common/Background");
             _logo.LoadContent(content, "Views/Common/Logo");
 
+            _instruction.LoadContent(content, "Views/Help/Instruction");
+
             _previousPage.LoadContent(content, "Views/NavigationButtons/GoBack");
             _exit.LoadContent(content, "Views/NavigationButtons/Exit");
 
@@ -60,6 +66,8 @@ namespace Digger.Views
             _exit.ButtonGraphic.Initialize(new Vector2(screenWidth - 360, 50), 340, 25, 1, 100, Color.White);
             _previousPage.ButtonGraphic.Initialize(new Vector2(0, 50), 340, 25, 1, 100, Color.White);
 
+            _instruction.Initialize(new Vector2((screenWidth - _instruction.Image.Width) / 2, 240), Color.White);
+
             _header.Initialize(new Vector2(screenWidth / 2, 150));
             _logo.Initialize(new Vector2((screenWidth - _logo.Image.Width) / 2, 20), Color.White);
         }
@@ -69,6 +77,8 @@ namespace Digger.Views
             _background.Draw(spriteBatch);
 
             _logo.Draw(spriteBatch);
+
+            _instruction.Draw(spriteBatch);
 
             _previousPage.Draw(spriteBatch, gameTime);
             _exit.Draw(spriteBatch, gameTime);

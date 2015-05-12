@@ -195,28 +195,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Game\Fruits\RedFive.png">
-      <Name>RedFive</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Game\Fruits\RedFour.png">
-      <Name>RedFour</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Game\Fruits\RedOne.png">
-      <Name>RedOne</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Game\Fruits\RedThree.png">
-      <Name>RedThree</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Game\Fruits\RedTwo.png">
-      <Name>RedTwo</Name>
+    <Compile Include="Game\Fruits\Red.png">
+      <Name>Red</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -366,6 +346,13 @@
   <ItemGroup>
     <Compile Include="Views\OptionsButtons\Wsad.png">
       <Name>Wsad</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Views\Help\Instruction.png">
+      <Name>Instruction</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
