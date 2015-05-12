@@ -38,6 +38,7 @@ namespace Digger.Views
         private List<Shot> _webShots; 
         private List<Stone> _stones;
         private List<Purse> _purses;
+        private int _level;
 
         private int _redFruitsCount;
 
@@ -57,7 +58,7 @@ namespace Digger.Views
         private Options _options;
         private InGameHelp _help;
 
-        public Stage()
+        public Stage(int level)
         {
             _stageHelper = new StageHelper();
 
@@ -66,6 +67,8 @@ namespace Digger.Views
 
             _options = new Options();
             _help = new InGameHelp();
+
+            _level = level;
 
             // Tło
             _background = new FixedGraphic();
@@ -93,9 +96,16 @@ namespace Digger.Views
             _rootenKiwis = new List<Fruit>();
 
             // Drzwi
-            _totalEnemiesCount = 8;
+            _totalEnemiesCount = 0;
+            int[] enemiesCount = new int[5];
+            for (int i = 0; i < 5; i++) enemiesCount[i] = 0;
+            for (int i = 0; i < _stageHelper.EnemiesLevelCount[_level].Count; i++)
+            {
+                _totalEnemiesCount += _stageHelper.EnemiesLevelCount[_level][(EnemyType) i];
+                enemiesCount[i] = _stageHelper.EnemiesLevelCount[_level][(EnemyType)i];
+            }
+            _door = new Door(_stageHelper.GenerateEnemies(enemiesCount[0], enemiesCount[1], enemiesCount[2], enemiesCount[3], enemiesCount[4]), 8000);
             _totalKilledEnemiesCount = 0;
-            _door = new Door(_stageHelper.GenerateEnemies(0,0,0,0,1), 8000);
 
             // Wrogowie 
             _enemies = new List<Enemy>();
@@ -198,7 +208,7 @@ namespace Digger.Views
                 }
             }
 
-            Point[] freeGrounds = _stageHelper.GenerateFreeGroundsCoordinates(3);
+            Point[] freeGrounds = _stageHelper.GenerateFreeGroundsCoordinates(3+_level);
             for (int i = 0; i < freeGrounds.Length; i++)
             {
                 _grounds[freeGrounds[i].X, freeGrounds[i].Y].GroundType = GroundType.Free;

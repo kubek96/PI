@@ -11,7 +11,8 @@ namespace Digger.Game.Common
     {
         private Dictionary<FruitType, Fruit> _fruitsTemplates;
         private Dictionary<EnemyType, Enemy> _enemyTemplates;
-        private Dictionary<ShotType, Shot> _shotTemplates; 
+        private Dictionary<ShotType, Shot> _shotTemplates;
+        private Dictionary<int, Dictionary<EnemyType, int>> _enemiesLevelCount;
 
         public StageHelper()
         {
@@ -402,6 +403,55 @@ namespace Digger.Game.Common
             _shotTemplates.Add(ShotType.Acid, new Shot(ShotType.Acid, "Game/Shots/AcidShot", enemy => enemy.Freeze(5000)));
             _shotTemplates.Add(ShotType.Venom, new Shot(ShotType.Venom, "Game/Shots/VenomShot", enemy => enemy.Life--));
             _shotTemplates.Add(ShotType.Web, new Shot(ShotType.Web, "Game/Shots/WebShot", null));
+
+            _enemiesLevelCount = new Dictionary<int, Dictionary<EnemyType, int>>();
+            for (int i = 0; i < 7; i++)
+            {
+                _enemiesLevelCount.Add(i, new Dictionary<EnemyType, int>());
+                _enemiesLevelCount[i].Add(EnemyType.Mouse, 5);
+            }
+
+            // Myszy
+            _enemiesLevelCount[1][EnemyType.Mouse] += 1;
+            _enemiesLevelCount[4][EnemyType.Mouse] += 1;
+
+            // Poziomy 2 do 6
+            // Żuk lub pająk:
+            Random rnd = new Random();
+            for (int i = 2; i < 7; i++)
+            {
+                if (rnd.Next(100) > 50) _enemiesLevelCount[i].Add(EnemyType.Spider, 1);
+                else _enemiesLevelCount[i].Add(EnemyType.Beetle, 1);
+            }
+            
+            // Czerwony pająk
+            for (int i = 3; i < 7; i++)
+            {
+                _enemiesLevelCount[i].Add(EnemyType.RedSpider, 1);
+            }
+            _enemiesLevelCount[4][EnemyType.RedSpider] += 1;
+
+            if (rnd.Next(100) > 50)
+            {
+                if (_enemiesLevelCount[5].ContainsKey(EnemyType.Spider)) _enemiesLevelCount[5][EnemyType.Spider] += 1;
+                else _enemiesLevelCount[5].Add(EnemyType.Spider, 1);
+            }
+            else
+            {
+                if (_enemiesLevelCount[5].ContainsKey(EnemyType.Beetle)) _enemiesLevelCount[5][EnemyType.Beetle] += 1;
+                else _enemiesLevelCount[5].Add(EnemyType.Beetle, 1);
+            }
+
+            if (rnd.Next(100) > 50)
+            {
+                if (_enemiesLevelCount[6].ContainsKey(EnemyType.Spider)) _enemiesLevelCount[6][EnemyType.Spider] += 1;
+                else _enemiesLevelCount[6].Add(EnemyType.Spider, 1);
+            }
+            else
+            {
+                if (_enemiesLevelCount[6].ContainsKey(EnemyType.Beetle)) _enemiesLevelCount[6][EnemyType.Beetle] += 1;
+                else _enemiesLevelCount[6].Add(EnemyType.Beetle, 1);
+            }
         }
 
         public Point[] GenerateFreeGroundsCoordinates(int n, int width=20, int height=20)
@@ -577,6 +627,11 @@ namespace Digger.Game.Common
         public Dictionary<EnemyType, Enemy> EnemyTemplates
         {
             get { return _enemyTemplates; }
+        }
+
+        public Dictionary<int, Dictionary<EnemyType, int>> EnemiesLevelCount
+        {
+            get { return _enemiesLevelCount; }
         }
     }
 }

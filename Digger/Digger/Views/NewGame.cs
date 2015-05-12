@@ -105,6 +105,8 @@ namespace Digger.Views
                             if (_userName.Text.Trim() == "") continue;
                             // Utwórz nowego gracza
                             Game1.Context.CreateNewPlayer(_userName.Text);
+                            Navigator.NavigateTo(typeof(Stage), 0);
+                            continue;
                         }
 
                         _menu[i].MouseState = MouseState.Click;

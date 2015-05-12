@@ -91,8 +91,16 @@ namespace Digger.Views
             {
                 for (int i = 0; i < Game1.Context.Players.Count; i++)
                 {
-                    _players[i, 0].Initialize(new Vector2(360, 360 + i * 40));
-                    _players[i, 1].Initialize(new Vector2(600, 360 + i * 40));
+                    _players[i, 0].Initialize(new Vector2((screenWidth/2) - 150, 230 + i * 40));
+                    _players[i, 1].Initialize(new Vector2((screenWidth / 2) +160, 230 + i * 40));
+                    if (i%2 != 0)
+                    {
+                        _players[i, 0].Color = _players[i, 1].Color = Color.White;
+                    }
+                    else
+                    {
+                        _players[i, 0].Color = _players[i, 1].Color = Color.Yellow;
+                    }
                 }
             }
 

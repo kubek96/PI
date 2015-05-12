@@ -95,7 +95,7 @@ namespace Digger.Views
             {
                 for (int i = 0; i < Game1.Context.Players.Count; i++)
                 {
-                    _players[i].Label.Initialize(new Vector2(screenWidth / 2,360+40*i));
+                    _players[i].Label.Initialize(new Vector2(screenWidth / 2,230+40*i));
                 }
             }
 
@@ -166,6 +166,27 @@ namespace Digger.Views
             else
             {
                 _exit.MouseState = MouseState.MouseLeave;
+            }
+
+            for (int i = 0; i < _players.Length; i++)
+            {
+                _players[i].Update(gameTime);
+
+                if (_players[i].Label.Rectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                {
+                    // Jeżeli kliknięty to szalej
+                    if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                    {
+                        _players[i].MouseState = MouseState.Click;
+                        continue;
+                    }
+
+                    // Zmień wyglad buttona
+                    _players[i].MouseState = MouseState.MouseOn;
+                    continue;
+                }
+
+                _players[i].MouseState = MouseState.MouseLeave;
             }
         }
     }

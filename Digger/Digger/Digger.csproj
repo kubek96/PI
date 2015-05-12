@@ -110,6 +110,7 @@
     <Compile Include="Views\Options.cs" />
     <Compile Include="Views\Pause.cs" />
     <Compile Include="Views\Stage.cs" />
+    <Compile Include="Views\Win.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

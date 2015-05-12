@@ -68,7 +68,21 @@ namespace Digger.Views.Common.Control
 
         public void Update(GameTime gameTime)
         {
-            if (_label != null) return;
+            if (_label != null)
+            {
+                if (_mouseState == MouseState.MouseOn)
+                {
+                    _label.Color = Color.Yellow;
+                    return;
+                }
+                if (_mouseState == MouseState.Click)
+                {
+                    _label.Color = Color.Magenta;
+                    return;
+                }
+                _label.Color = Color.White;
+                return;
+            }
 
             if (_mouseState == MouseState.MouseOn)
             {
