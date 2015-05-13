@@ -236,6 +236,15 @@
       <Time>2015-04-20T19:21:45.0945238+02:00</Time>
     </Item>
     <Item>
+      <Source>Game\Fruits\Red.png</Source>
+      <Name>Game\Fruits\Red</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\Red.xnb</Output>
+      <Time>2015-04-20T19:21:45.0965256+02:00</Time>
+    </Item>
+    <Item>
       <Source>Game\Fruits\Watermelon.png</Source>
       <Name>Game\Fruits\Watermelon</Name>
       <Importer>TextureImporter</Importer>
@@ -371,25 +380,6 @@
       <Time>2015-05-12T14:39:16.7458075+02:00</Time>
     </Item>
     <Item>
-      <Source>Fonts\Silkscreen.spritefont</Source>
-      <Name>Fonts\Silkscreen</Name>
-      <Importer>FontDescriptionImporter</Importer>
-      <Processor>FontDescriptionProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Fonts\Silkscreen.xnb</Output>
-      <Time>2015-04-20T13:10:20.7818206+02:00</Time>
-    </Item>
-    <Item>
-      <Source>Sounds\Sound1.mp3</Source>
-      <Name>Sounds\Sound1</Name>
-      <Importer>Mp3Importer</Importer>
-      <Processor>SongProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Sounds\Sound1.xnb</Output>
-      <Extra>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Sounds\Sound1.wma</Extra>
-      <Time>2015-05-12T16:21:27.1137538+02:00</Time>
-    </Item>
-    <Item>
       <Source>Views\Common\TransparentBackground.png</Source>
       <Name>Views\Common\TransparentBackground</Name>
       <Importer>TextureImporter</Importer>
@@ -453,15 +443,6 @@
       <Time>2015-05-12T19:33:08.8335512+02:00</Time>
     </Item>
     <Item>
-      <Source>Game\Fruits\Red.png</Source>
-      <Name>Game\Fruits\Red</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\Red.xnb</Output>
-      <Time>2015-04-20T19:21:45.0965256+02:00</Time>
-    </Item>
-    <Item>
       <Source>Views\Help\Instruction.png</Source>
       <Name>Views\Help\Instruction</Name>
       <Importer>TextureImporter</Importer>
@@ -487,6 +468,25 @@
       <Options>None</Options>
       <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\TryAgain.xnb</Output>
       <Time>2015-05-13T14:08:25.8088369+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Fonts\Silkscreen.spritefont</Source>
+      <Name>Fonts\Silkscreen</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Fonts\Silkscreen.xnb</Output>
+      <Time>2015-04-20T13:10:20.7818206+02:00</Time>
+    </Item>
+    <Item>
+      <Source>Sounds\Sound1.mp3</Source>
+      <Name>Sounds\Sound1</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Sounds\Sound1.xnb</Output>
+      <Extra>C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Sounds\Sound1.wma</Extra>
+      <Time>2015-05-12T16:21:27.1137538+02:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

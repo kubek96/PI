@@ -29,7 +29,7 @@ namespace Digger.Game.Elements
     /// <summary>
     /// Klasa wroga.
     /// </summary>
-    public class Enemy
+    public class Enemy : IMoveable
     {
         protected AnimatedGraphic _enemyGraphic;
         protected Rectangle _rectangle;

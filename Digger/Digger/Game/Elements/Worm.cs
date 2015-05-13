@@ -32,20 +32,7 @@ namespace Digger.Game.Elements
         private bool _isDigging;
         private bool _isMoving;
 
-        public Worm()
-        {
-            _wormGraphic = new AnimatedGraphic();
-            _framesCount = 0;
-            _speed = _lastSpeed = 3;
-            _redFruits = 0;
-            _isDigging = false;
-            _isMoving = false;
-            _life = 10;
-            _elapsedSpeedTime = 0;
-            _speedEffectTime = 0;
-            _isFreeze = false;
-        }
-
+        #region Properties
         public Point Destination
         {
             get { return _destination; }
@@ -137,6 +124,27 @@ namespace Digger.Game.Elements
             set { _direction = value; }
         }
 
+        public bool IsMoving
+        {
+            get { return _isMoving; }
+        }
+
+        #endregion
+
+        public Worm()
+        {
+            _wormGraphic = new AnimatedGraphic();
+            _framesCount = 0;
+            _speed = _lastSpeed = 3;
+            _redFruits = 0;
+            _isDigging = false;
+            _isMoving = false;
+            _life = 10;
+            _elapsedSpeedTime = 0;
+            _speedEffectTime = 0;
+            _isFreeze = false;
+        }
+
         public void LoadContent(ContentManager content, string assetName)
         {
             _wormGraphic.LoadContent(content, assetName);
@@ -205,11 +213,6 @@ namespace Digger.Game.Elements
         public void Heal()
         {
             _life = 10;
-        }
-
-        public bool IsMoving
-        {
-            get { return _isMoving; }
         }
 
         public void MakeMove(Direction direction)

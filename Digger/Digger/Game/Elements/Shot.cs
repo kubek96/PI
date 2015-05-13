@@ -7,6 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Digger.Game.Elements
 {
+    /// <summary>
+    /// Enumerator pozwalaj¹cy stwierdziæ typ strza³u.
+    /// </summary>
     public enum ShotType
     {
         Acid,
@@ -16,16 +19,54 @@ namespace Digger.Game.Elements
 
     public delegate void ShootEnemy(Enemy enemy);
 
-    public class Shot
+    /// <summary>
+    /// Klasa strza³ów.
+    /// </summary>
+    public class Shot : IMoveable
     {
         private AnimatedGraphic _shotGraphic;
-        private Rectangle _shotRectangle;
+        private Rectangle _rectangle;
         private Direction _direction;
         private ShotType _shotType;
         private int _speed;
         private bool _shootSomething;
         private ShootEnemy _shootEnemy;
 
+        #region Properites
+
+        /// <summary>
+        /// Metoda zestrzelenia wroga.
+        /// </summary>
+        public ShootEnemy ShootEnemy
+        {
+            get { return _shootEnemy; }
+        }
+
+        /// <summary>
+        /// Obszar zajmowany przez strza³
+        /// </summary>
+        public Rectangle Rectangle
+        {
+            get { return _rectangle; }
+        }
+
+        /// <summary>
+        /// Czy coœ ju¿ zosta³o zestrzelone?
+        /// </summary>
+        public bool ShootSomething
+        {
+            get { return _shootSomething; }
+            set { _shootSomething = value; }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Konstruktor.
+        /// </summary>
+        /// <param name="shotType">Typ strza³u.</param>
+        /// <param name="assetName">Œcie¿ka do zasobu grafiki strza³u.</param>
+        /// <param name="shootEnemy">Funkcja zestrzelenia wroga.</param>
         public Shot(ShotType shotType, string assetName, ShootEnemy shootEnemy)
         {
             _shotType = shotType;
@@ -36,16 +77,10 @@ namespace Digger.Game.Elements
             _shootEnemy = shootEnemy;
         }
 
-        public ShootEnemy ShootEnemy
-        {
-            get { return _shootEnemy; }
-        }
-
-        public Rectangle ShotRectangle
-        {
-            get { return _shotRectangle; }
-        }
-
+        /// <summary>
+        /// Konstruktor kopiuj¹cy.
+        /// </summary>
+        /// <param name="shot">Obiekt wzorcowy.</param>
         public Shot(Shot shot)
         {
             _shotGraphic = shot._shotGraphic.Clone();
@@ -54,55 +89,79 @@ namespace Digger.Game.Elements
             _shootEnemy = shot._shootEnemy;
         }
 
+        /// <summary>
+        /// Meotda wczytuj¹ca grafikê strza³u.
+        /// </summary>
+        /// <param name="content">Obiekt managera zasobów.</param>
+        /// <param name="assetName">Œcie¿ka do zasobu grafiki.</param>
         public void LoadContent(ContentManager content, string assetName)
         {
             _shotGraphic.LoadContent(content, assetName);
         }
 
+        /// <summary>
+        /// Metoda inicjalizuj¹ca po³o¿enie pocz¹tkowe strza³u.
+        /// </summary>
+        /// <param name="rectangle">Obszar zajmowany na pocz¹tku przez strza³.</param>
+        /// <param name="direction">Kierunek strza³u.</param>
         public void Initialize(Rectangle rectangle, Direction direction)
         {
             _direction = direction;
-            _shotRectangle = rectangle;
-            _shotGraphic.Initialize(new Vector2(_shotRectangle.X + 15, _shotRectangle.Y + 15), 10, 10, 2, 100, Color.White);
+            _rectangle = rectangle;
+            _shotGraphic.Initialize(new Vector2(_rectangle.X + 15, _rectangle.Y + 15), 10, 10, 2, 100, Color.White);
         }
 
+        /// <summary>
+        /// Metoda rysuj¹ca obiekt strza³u.
+        /// </summary>
+        /// <param name="spriteBatch">Pow³oka graficzna.</param>
         public void Draw(SpriteBatch spriteBatch)
         {
             _shotGraphic.Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// Metoda aktualizuj¹ca grafikê strza³u.
+        /// </summary>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Update(GameTime gameTime)
         {
             _shotGraphic.Update(gameTime);
         }
 
-        public bool ShootSomething
-        {
-            get { return _shootSomething; }
-            set { _shootSomething = value; }
-        }
-
+        /// <summary>
+        /// Metoda poruszania strza³u.
+        /// </summary>
         public void Move()
         {
             switch (_direction)
             {
                 case Direction.Up:
-                    _shotRectangle = new Rectangle(_shotRectangle.X, _shotRectangle.Y - _speed, _shotRectangle.Width, _shotRectangle.Height);
+                    _rectangle = new Rectangle(_rectangle.X, _rectangle.Y - _speed, _rectangle.Width, _rectangle.Height);
                     _shotGraphic.Position = new Vector2(_shotGraphic.Position.X, _shotGraphic.Position.Y - _speed);
                     break;
                 case Direction.Right:
-                    _shotRectangle = new Rectangle(_shotRectangle.X + _speed, _shotRectangle.Y, _shotRectangle.Width, _shotRectangle.Height);
+                    _rectangle = new Rectangle(_rectangle.X + _speed, _rectangle.Y, _rectangle.Width, _rectangle.Height);
                     _shotGraphic.Position = new Vector2(_shotGraphic.Position.X + _speed, _shotGraphic.Position.Y);
                     break;
                 case Direction.Down:
-                    _shotRectangle = new Rectangle(_shotRectangle.X, _shotRectangle.Y + _speed, _shotRectangle.Width, _shotRectangle.Height);
+                    _rectangle = new Rectangle(_rectangle.X, _rectangle.Y + _speed, _rectangle.Width, _rectangle.Height);
                     _shotGraphic.Position = new Vector2(_shotGraphic.Position.X, _shotGraphic.Position.Y + _speed);
                     break;
                 case Direction.Left:
-                    _shotRectangle = new Rectangle(_shotRectangle.X - _speed, _shotRectangle.Y, _shotRectangle.Width, _shotRectangle.Height);
+                    _rectangle = new Rectangle(_rectangle.X - _speed, _rectangle.Y, _rectangle.Width, _rectangle.Height);
                     _shotGraphic.Position = new Vector2(_shotGraphic.Position.X - _speed, _shotGraphic.Position.Y);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Metoda wykoania ruchu.
+        /// </summary>
+        /// <param name="direction"></param>
+        public void MakeMove(Direction direction)
+        {
+            _direction = direction;
         }
     }
 }

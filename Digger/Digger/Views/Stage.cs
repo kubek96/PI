@@ -290,7 +290,7 @@ namespace Digger.Views
                 // Zrób tak, żeby na siebie nie nachodziły (sprawdź, czy już nie została ta pozycja wylosowana)
                 for (int j = 0; j < i; j++)
                 {
-                    if (_stones[j].StoneRectangle.X == x && _stones[j].StoneRectangle.Y == y)
+                    if (_stones[j].Rectangle.X == x && _stones[j].Rectangle.Y == y)
                     {
                         i--;
                         c = true;
@@ -323,7 +323,7 @@ namespace Digger.Views
                 // Zrób tak, żeby na siebie nie nachodziły (sprawdź, czy już nie została ta pozycja wylosowana)
                 for (int j = 0; j < i; j++)
                 {
-                    if ((_purses[j].PurseRectangle.X == x && _purses[j].PurseRectangle.Y == y))
+                    if ((_purses[j].Rectangle.X == x && _purses[j].Rectangle.Y == y))
                     {
                         i--;
                         c = true;
@@ -332,7 +332,7 @@ namespace Digger.Views
                 }
                 for (int j = 0; j < _stones.Count; j++)
                 {
-                    if (_stones[j].StoneRectangle.X == x && _stones[j].StoneRectangle.Y == y)
+                    if (_stones[j].Rectangle.X == x && _stones[j].Rectangle.Y == y)
                     {
                         i--;
                         c = true;
@@ -365,7 +365,7 @@ namespace Digger.Views
                 // Zrób tak, żeby na siebie nie nachodziły (sprawdź, czy już nie została ta pozycja wylosowana)
                 for (int j = 0; j < _purses.Count; j++)
                 {
-                    if ((_purses[j].PurseRectangle.X == x && _purses[j].PurseRectangle.Y == y))
+                    if ((_purses[j].Rectangle.X == x && _purses[j].Rectangle.Y == y))
                     {
                         i--;
                         c = true;
@@ -374,7 +374,7 @@ namespace Digger.Views
                 }
                 for (int j = 0; j < _stones.Count; j++)
                 {
-                    if (_stones[j].StoneRectangle.X == x && _stones[j].StoneRectangle.Y == y)
+                    if (_stones[j].Rectangle.X == x && _stones[j].Rectangle.Y == y)
                     {
                         i--;
                         c = true;
@@ -808,7 +808,7 @@ namespace Digger.Views
                     // Czy strzał osiągnął ziemię
                     for (int i = 0; i < _shots.Count; i++)
                     {
-                        if (_shots[i].ShotRectangle.Intersects(_grounds[x, y].Rectangle))
+                        if (_shots[i].Rectangle.Intersects(_grounds[x, y].Rectangle))
                         {
                             _shots[i].ShootSomething = true;
                         }
@@ -817,7 +817,7 @@ namespace Digger.Views
                     // Czy strzał tego ego no weba osiągnął ziemię
                     for (int i = 0; i < _webShots.Count; i++)
                     {
-                        if (_webShots[i].ShotRectangle.Intersects(_grounds[x, y].Rectangle))
+                        if (_webShots[i].Rectangle.Intersects(_grounds[x, y].Rectangle))
                         {
                             _webShots[i].ShootSomething = true;
                         }
@@ -935,7 +935,7 @@ namespace Digger.Views
                 {
                     if (_shots[j].ShootSomething) 
                         continue;
-                    if (_shots[j].ShotRectangle.Intersects(_enemies[i].Rectangle))
+                    if (_shots[j].Rectangle.Intersects(_enemies[i].Rectangle))
                     {
                         _shots[j].ShootEnemy(_enemies[i]);
                         _shots[j].ShootSomething = true;
@@ -966,7 +966,7 @@ namespace Digger.Views
                 for (int j = 0; j < _purses.Count; j++)
                 {
                     if (_purses[j].IsShatter) continue;
-                    if (_shots[i].ShotRectangle.Intersects(_purses[j].PurseRectangle))
+                    if (_shots[i].Rectangle.Intersects(_purses[j].Rectangle))
                     {
                         Fruit f = _purses[j].Shatter();
                         if (f != null) _grabbableFruits.Add(f);
@@ -976,7 +976,7 @@ namespace Digger.Views
                 for (int j = 0; j < _stones.Count; j++)
                 {
                     if (_stones[j].IsShatter) continue;
-                    if (_shots[i].ShotRectangle.Intersects(_stones[j].StoneRectangle))
+                    if (_shots[i].Rectangle.Intersects(_stones[j].Rectangle))
                     {
                         _stones[j].Shatter();
                     }
@@ -989,7 +989,7 @@ namespace Digger.Views
             {
                 _webShots[i].Move();
 
-                if (_webShots[i].ShotRectangle.Intersects(_worm.WormRectangle) && !_webShots[i].ShootSomething)
+                if (_webShots[i].Rectangle.Intersects(_worm.WormRectangle) && !_webShots[i].ShootSomething)
                 {
                     _webShots[i].ShootSomething = true;
                     _worm.MoveSlower(1,5000);
@@ -998,7 +998,7 @@ namespace Digger.Views
                 // Zderzenie dwóch shots
                 for (int j = 0; j < _shots.Count; j++)
                 {
-                    if (_webShots[i].ShotRectangle.Intersects(_shots[j].ShotRectangle) && !_webShots[i].ShootSomething && !_shots[j].ShootSomething)
+                    if (_webShots[i].Rectangle.Intersects(_shots[j].Rectangle) && !_webShots[i].ShootSomething && !_shots[j].ShootSomething)
                     {
                         _webShots[i].ShootSomething = true;
                         _shots[j].ShootSomething = true;
@@ -1009,7 +1009,7 @@ namespace Digger.Views
                 for (int j = 0; j < _purses.Count; j++)
                 {
                     if (_purses[j].IsShatter) continue;
-                    if (_webShots[i].ShotRectangle.Intersects(_purses[j].PurseRectangle))
+                    if (_webShots[i].Rectangle.Intersects(_purses[j].Rectangle))
                     {
                         Fruit f = _purses[j].Shatter();
                         if (f != null) _grabbableFruits.Add(f);
@@ -1019,7 +1019,7 @@ namespace Digger.Views
                 for (int j = 0; j < _stones.Count; j++)
                 {
                     if (_stones[j].IsShatter) continue;
-                    if (_webShots[i].ShotRectangle.Intersects(_stones[j].StoneRectangle))
+                    if (_webShots[i].Rectangle.Intersects(_stones[j].Rectangle))
                     {
                         _stones[j].Shatter();
                     }
@@ -1033,14 +1033,14 @@ namespace Digger.Views
             {
                 _stones[i].Move();
 
-                Rectangle downRectangle = new Rectangle(_stones[i].StoneRectangle.X, _stones[i].StoneRectangle.Y + 42, _stones[i].StoneRectangle.Width, _stones[i].StoneRectangle.Height);
+                Rectangle downRectangle = new Rectangle(_stones[i].Rectangle.X, _stones[i].Rectangle.Y + 42, _stones[i].Rectangle.Width, _stones[i].Rectangle.Height);
 
                 if (_stones[i].IsMoving)
                 {
                     // Sprawdź przecięcia z worgami
                     for (int j = 0; j < _enemies.Count; j++)
                     {
-                        if (_stones[i].StoneRectangle.Intersects(_enemies[j].Rectangle))
+                        if (_stones[i].Rectangle.Intersects(_enemies[j].Rectangle))
                         {
                             _enemies[j].Kill();
                             _stones[i].Shatter();
@@ -1058,9 +1058,9 @@ namespace Digger.Views
                 } 
 
                 Rectangle upRectangle, rightRectangle, leftRectangle;
-                upRectangle = new Rectangle(_stones[i].StoneRectangle.X, _stones[i].StoneRectangle.Y - 42, _stones[i].StoneRectangle.Width, _stones[i].StoneRectangle.Height);
-                rightRectangle = new Rectangle(_stones[i].StoneRectangle.X + 42, _stones[i].StoneRectangle.Y, _stones[i].StoneRectangle.Width, _stones[i].StoneRectangle.Height);
-                leftRectangle = new Rectangle(_stones[i].StoneRectangle.X - 42, _stones[i].StoneRectangle.Y, _stones[i].StoneRectangle.Width, _stones[i].StoneRectangle.Height);
+                upRectangle = new Rectangle(_stones[i].Rectangle.X, _stones[i].Rectangle.Y - 42, _stones[i].Rectangle.Width, _stones[i].Rectangle.Height);
+                rightRectangle = new Rectangle(_stones[i].Rectangle.X + 42, _stones[i].Rectangle.Y, _stones[i].Rectangle.Width, _stones[i].Rectangle.Height);
+                leftRectangle = new Rectangle(_stones[i].Rectangle.X - 42, _stones[i].Rectangle.Y, _stones[i].Rectangle.Width, _stones[i].Rectangle.Height);
                 bool[] freeSpace = new bool[4];
                 // Przecięcia z ziemią
                 for (int x = 0; x < Math.Sqrt(_grounds.Length); x++)
@@ -1082,18 +1082,18 @@ namespace Digger.Views
                 bool[] ocupated = new bool[4];
                 for (int j = 0; j < _stones.Count; j++)
                 {
-                    if (upRectangle.Intersects(_stones[j].StoneRectangle)) ocupated[0] = true;
-                    if (rightRectangle.Intersects(_stones[j].StoneRectangle)) ocupated[1] = true;
-                    if (downRectangle.Intersects(_stones[j].StoneRectangle)) ocupated[2] = true;
-                    if (leftRectangle.Intersects(_stones[j].StoneRectangle)) ocupated[3] = true;
+                    if (upRectangle.Intersects(_stones[j].Rectangle)) ocupated[0] = true;
+                    if (rightRectangle.Intersects(_stones[j].Rectangle)) ocupated[1] = true;
+                    if (downRectangle.Intersects(_stones[j].Rectangle)) ocupated[2] = true;
+                    if (leftRectangle.Intersects(_stones[j].Rectangle)) ocupated[3] = true;
                 }
                 // Czy nie zawadza mu sakiewka?
                 for (int j = 0; j < _purses.Count; j++)
                 {
-                    if (upRectangle.Intersects(_purses[j].PurseRectangle)) ocupated[0] = true;
-                    if (rightRectangle.Intersects(_purses[j].PurseRectangle)) ocupated[1] = true;
-                    if (downRectangle.Intersects(_purses[j].PurseRectangle)) ocupated[2] = true;
-                    if (leftRectangle.Intersects(_purses[j].PurseRectangle)) ocupated[3] = true;
+                    if (upRectangle.Intersects(_purses[j].Rectangle)) ocupated[0] = true;
+                    if (rightRectangle.Intersects(_purses[j].Rectangle)) ocupated[1] = true;
+                    if (downRectangle.Intersects(_purses[j].Rectangle)) ocupated[2] = true;
+                    if (leftRectangle.Intersects(_purses[j].Rectangle)) ocupated[3] = true;
                 }
 
                 // Pytanie, czy robaczek nie jest pod spodem
@@ -1111,14 +1111,14 @@ namespace Digger.Views
                     freeSpace[2] = false;
                 }
 
-                if (_worm.WormRectangle.Intersects(_stones[i].StoneRectangle) && _worm.Direction == Direction.Right && _gameField.Contains(rightRectangle) && !ocupated[1])
+                if (_worm.WormRectangle.Intersects(_stones[i].Rectangle) && _worm.Direction == Direction.Right && _gameField.Contains(rightRectangle) && !ocupated[1])
                 {
                     // Można przesunąć w prawo
                     _stones[i].MakeMove(Direction.Right);
                     continue;
                 }
 
-                if (_worm.WormRectangle.Intersects(_stones[i].StoneRectangle) && _worm.Direction == Direction.Left && _gameField.Contains(leftRectangle) && !ocupated[3])
+                if (_worm.WormRectangle.Intersects(_stones[i].Rectangle) && _worm.Direction == Direction.Left && _gameField.Contains(leftRectangle) && !ocupated[3])
                 {
                     // Można przesunąć w lewo
                     _stones[i].MakeMove(Direction.Left);
@@ -1136,14 +1136,14 @@ namespace Digger.Views
             {
                 _purses[i].Move();
 
-                Rectangle downRectangle = new Rectangle(_purses[i].PurseRectangle.X, _purses[i].PurseRectangle.Y + 42, _purses[i].PurseRectangle.Width, _purses[i].PurseRectangle.Height);
+                Rectangle downRectangle = new Rectangle(_purses[i].Rectangle.X, _purses[i].Rectangle.Y + 42, _purses[i].Rectangle.Width, _purses[i].Rectangle.Height);
 
                 if (_purses[i].IsMoving)
                 {
                     // Sprawdź przecięcia z worgami
                     for (int j = 0; j < _enemies.Count; j++)
                     {
-                        if (_purses[i].PurseRectangle.Intersects(_enemies[j].Rectangle))
+                        if (_purses[i].Rectangle.Intersects(_enemies[j].Rectangle))
                         {
                             _enemies[j].Kill();
                             Fruit fruit = _purses[i].Shatter();
@@ -1162,9 +1162,9 @@ namespace Digger.Views
                 } 
 
                 Rectangle upRectangle, rightRectangle, leftRectangle;
-                upRectangle = new Rectangle(_purses[i].PurseRectangle.X, _purses[i].PurseRectangle.Y - 42, _purses[i].PurseRectangle.Width, _purses[i].PurseRectangle.Height);
-                rightRectangle = new Rectangle(_purses[i].PurseRectangle.X + 42, _purses[i].PurseRectangle.Y, _purses[i].PurseRectangle.Width, _purses[i].PurseRectangle.Height);
-                leftRectangle = new Rectangle(_purses[i].PurseRectangle.X - 42, _purses[i].PurseRectangle.Y, _purses[i].PurseRectangle.Width, _purses[i].PurseRectangle.Height);
+                upRectangle = new Rectangle(_purses[i].Rectangle.X, _purses[i].Rectangle.Y - 42, _purses[i].Rectangle.Width, _purses[i].Rectangle.Height);
+                rightRectangle = new Rectangle(_purses[i].Rectangle.X + 42, _purses[i].Rectangle.Y, _purses[i].Rectangle.Width, _purses[i].Rectangle.Height);
+                leftRectangle = new Rectangle(_purses[i].Rectangle.X - 42, _purses[i].Rectangle.Y, _purses[i].Rectangle.Width, _purses[i].Rectangle.Height);
                 bool[] freeSpace = new bool[4];
                 // Przecięcia z ziemią
                 for (int x = 0; x < Math.Sqrt(_grounds.Length); x++)
@@ -1190,18 +1190,18 @@ namespace Digger.Views
                 bool[] ocupated = new bool[4];
                 for (int j = 0; j < _purses.Count; j++)
                 {
-                    if (upRectangle.Intersects(_purses[j].PurseRectangle)) ocupated[0] = true;
-                    if (rightRectangle.Intersects(_purses[j].PurseRectangle)) ocupated[1] = true;
-                    if (downRectangle.Intersects(_purses[j].PurseRectangle)) ocupated[2] = true;
-                    if (leftRectangle.Intersects(_purses[j].PurseRectangle)) ocupated[3] = true;
+                    if (upRectangle.Intersects(_purses[j].Rectangle)) ocupated[0] = true;
+                    if (rightRectangle.Intersects(_purses[j].Rectangle)) ocupated[1] = true;
+                    if (downRectangle.Intersects(_purses[j].Rectangle)) ocupated[2] = true;
+                    if (leftRectangle.Intersects(_purses[j].Rectangle)) ocupated[3] = true;
                 }
                 // Czy nie przeszkadza mu kamien?
                 for (int j = 0; j < _stones.Count; j++)
                 {
-                    if (upRectangle.Intersects(_stones[j].StoneRectangle)) ocupated[0] = true;
-                    if (rightRectangle.Intersects(_stones[j].StoneRectangle)) ocupated[1] = true;
-                    if (downRectangle.Intersects(_stones[j].StoneRectangle)) ocupated[2] = true;
-                    if (leftRectangle.Intersects(_stones[j].StoneRectangle)) ocupated[3] = true;
+                    if (upRectangle.Intersects(_stones[j].Rectangle)) ocupated[0] = true;
+                    if (rightRectangle.Intersects(_stones[j].Rectangle)) ocupated[1] = true;
+                    if (downRectangle.Intersects(_stones[j].Rectangle)) ocupated[2] = true;
+                    if (leftRectangle.Intersects(_stones[j].Rectangle)) ocupated[3] = true;
                 }
 
                 // Pytanie, czy robaczek nie jest pod spodem
@@ -1220,14 +1220,14 @@ namespace Digger.Views
                     freeSpace[2] = false;
                 }
 
-                if (_worm.WormRectangle.Intersects(_purses[i].PurseRectangle) && _worm.Direction == Direction.Right && _gameField.Contains(rightRectangle) && !ocupated[1])
+                if (_worm.WormRectangle.Intersects(_purses[i].Rectangle) && _worm.Direction == Direction.Right && _gameField.Contains(rightRectangle) && !ocupated[1])
                 {
                     // Można przesunąć w prawo
                     _purses[i].MakeMove(Direction.Right);
                     continue;
                 }
 
-                if (_worm.WormRectangle.Intersects(_purses[i].PurseRectangle) && _worm.Direction == Direction.Left && _gameField.Contains(leftRectangle) && !ocupated[3])
+                if (_worm.WormRectangle.Intersects(_purses[i].Rectangle) && _worm.Direction == Direction.Left && _gameField.Contains(leftRectangle) && !ocupated[3])
                 {
                     // Można przesunąć w lewo
                     _purses[i].MakeMove(Direction.Left);
@@ -1313,11 +1313,11 @@ namespace Digger.Views
             // Usuwanie strzalow, ktore cos osiagnely
             for (int i = 0; i < _shots.Count; i++)
             {
-                if (_shots[i].ShootSomething || !_gameField.Contains(_shots[i].ShotRectangle)) _shots.RemoveAt(i);
+                if (_shots[i].ShootSomething || !_gameField.Contains(_shots[i].Rectangle)) _shots.RemoveAt(i);
             }
             for (int i = 0; i < _webShots.Count; i++)
             {
-                if (_webShots[i].ShootSomething || !_gameField.Contains(_webShots[i].ShotRectangle)) _webShots.RemoveAt(i);
+                if (_webShots[i].ShootSomething || !_gameField.Contains(_webShots[i].Rectangle)) _webShots.RemoveAt(i);
             }
             // Usuwanie kiwi
             for (int i = 0; i < _rootenKiwis.Count; i++)

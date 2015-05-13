@@ -6,10 +6,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Digger.Game.Elements
 {
-    public class Stone
+    public class Stone : IMoveable
     {
         private AnimatedGraphic _stoneGraphic;
-        private Rectangle _stoneRectangle;
+        private Rectangle _rectangle;
 
         private int _speed;
 
@@ -19,10 +19,51 @@ namespace Digger.Game.Elements
         private bool _isShatter;
         private bool _wasFalling;
 
+        #region Properties
+        /// <summary>
+        /// Informacja o tym, czy kamień spadał.
+        /// </summary>
+        public bool WasFalling
+        {
+            get { return _wasFalling; }
+        }
+
+        /// <summary>
+        /// Czy kamień już się roztrzaskał?
+        /// </summary>
+        public bool IsShatter
+        {
+            get { return _isShatter; }
+        }
+
+        /// <summary>
+        /// Czy kamień porusza się?
+        /// </summary>
+        public bool IsMoving
+        {
+            get { return _isMoving; }
+            set { _isMoving = value; }
+        }
+
+        /// <summary>
+        /// Obszar zajmowany przez kamień.
+        /// </summary>
+        public Rectangle Rectangle
+        {
+            get { return _rectangle; }
+            set { _rectangle = value; }
+        }
+        #endregion
+
+        /// <summary>
+        /// Konstruktor kamienia.
+        /// Nie porusza się, nie spada.
+        /// Jego prędkość to 6.
+        /// </summary>
         public Stone()
         {
             _stoneGraphic = new AnimatedGraphic();
-            _stoneRectangle = new Rectangle();
+            _rectangle = new Rectangle();
             _destination = new Point();
             _isMoving = false;
             _speed = 6;
@@ -30,17 +71,30 @@ namespace Digger.Game.Elements
             _wasFalling = false;
         }
 
+        /// <summary>
+        /// Wczytuje grafikę kamienia.
+        /// </summary>
+        /// <param name="content">Manager zasobów.</param>
+        /// <param name="assetName">Ścieżka do zasobu grafiki.</param>
         public void LoadContent(ContentManager content, string assetName)
         {
             _stoneGraphic.LoadContent(content, assetName);
         }
 
+        /// <summary>
+        /// Metoda inicjalizująca pozycję kamienia.
+        /// </summary>
+        /// <param name="rectangle">Pozycja kamienia.</param>
         public void Initialize(Rectangle rectangle)
         {
-            _stoneRectangle = rectangle;
-            _stoneGraphic.Initialize(new Vector2(_stoneRectangle.X + 5, _stoneRectangle.Y + 10), 30, 25, 1, 100, Color.White);
+            _rectangle = rectangle;
+            _stoneGraphic.Initialize(new Vector2(_rectangle.X + 5, _rectangle.Y + 10), 30, 25, 1, 100, Color.White);
         }
 
+        /// <summary>
+        /// Metoda rysująca kamień.
+        /// </summary>
+        /// <param name="spriteBatch">Powłoka graficzna.</param>
         public void Draw(SpriteBatch spriteBatch)
         {
             if (_isMoving) _stoneGraphic.MoveToFrame(1);
@@ -49,26 +103,27 @@ namespace Digger.Game.Elements
             _stoneGraphic.Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// Metoda aktualizująca grafikę kamienia.
+        /// </summary>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Update(GameTime gameTime)
         {
             _stoneGraphic.Update(gameTime);
         }
 
-        public bool WasFalling
-        {
-            get { return _wasFalling; }
-        }
-
+        /// <summary>
+        /// Metoda roztrzaskująca kamień.
+        /// </summary>
         public void Shatter()
         {
             _isShatter = true;
         }
 
-        public bool IsShatter
-        {
-            get { return _isShatter; }
-        }
-
+        /// <summary>
+        /// Funkcja inicjalizująca wykonywanie ruchu w zadanym kierunku.
+        /// </summary>
+        /// <param name="direction">Kierunek poruszania.</param>
         public void MakeMove(Direction direction)
         {
             int x = 0, y = 0;
@@ -88,54 +143,46 @@ namespace Digger.Game.Elements
                     x -= 42;
                     break;
             }
-            _destination = new Point(_stoneRectangle.X + x, _stoneRectangle.Y + y);
+            _destination = new Point(_rectangle.X + x, _rectangle.Y + y);
             _isMoving = true;
         }
 
+        /// <summary>
+        /// Metoda wykonująca faktyczny ruch.
+        /// </summary>
         public void Move()
         {
             if (!_isMoving) return;
 
-            if (_destination.X != _stoneRectangle.X)
-                if (_destination.X > _stoneRectangle.X)
+            if (_destination.X != _rectangle.X)
+                if (_destination.X > _rectangle.X)
                 {
-                    _stoneRectangle = new Rectangle(_stoneRectangle.X + _speed, _stoneRectangle.Y, _stoneRectangle.Width, _stoneRectangle.Height);
+                    _rectangle = new Rectangle(_rectangle.X + _speed, _rectangle.Y, _rectangle.Width, _rectangle.Height);
                     _stoneGraphic.Position = new Vector2(_stoneGraphic.Position.X + _speed, _stoneGraphic.Position.Y);
                 }
                 else
                 {
-                    _stoneRectangle = new Rectangle(_stoneRectangle.X - _speed, _stoneRectangle.Y, _stoneRectangle.Width, _stoneRectangle.Height);
+                    _rectangle = new Rectangle(_rectangle.X - _speed, _rectangle.Y, _rectangle.Width, _rectangle.Height);
                     _stoneGraphic.Position = new Vector2(_stoneGraphic.Position.X - _speed, _stoneGraphic.Position.Y);
                 }
 
-            if (_destination.Y != _stoneRectangle.Y)
-                if (_destination.Y > _stoneRectangle.Y)
+            if (_destination.Y != _rectangle.Y)
+                if (_destination.Y > _rectangle.Y)
                 {
-                    _stoneRectangle = new Rectangle(_stoneRectangle.X, _stoneRectangle.Y + _speed, _stoneRectangle.Width, _stoneRectangle.Height);
+                    _rectangle = new Rectangle(_rectangle.X, _rectangle.Y + _speed, _rectangle.Width, _rectangle.Height);
                     _stoneGraphic.Position = new Vector2(_stoneGraphic.Position.X, _stoneGraphic.Position.Y + _speed);
                 }
                 else
                 {
-                    _stoneRectangle = new Rectangle(_stoneRectangle.X, _stoneRectangle.Y - _speed, _stoneRectangle.Width, _stoneRectangle.Height);
+                    _rectangle = new Rectangle(_rectangle.X, _rectangle.Y - _speed, _rectangle.Width, _rectangle.Height);
                     _stoneGraphic.Position = new Vector2(_stoneGraphic.Position.X, _stoneGraphic.Position.Y - _speed);
                 }
 
-            if (_stoneRectangle.X == _destination.X && _stoneRectangle.Y == _destination.Y)
+            if (_rectangle.X == _destination.X && _rectangle.Y == _destination.Y)
             {
                 _isMoving = false;
             }
         }
-
-        public bool IsMoving
-        {
-            get { return _isMoving; }
-            set { _isMoving = value; }
-        }
-
-        public Rectangle StoneRectangle
-        {
-            get { return _stoneRectangle; }
-            set { _stoneRectangle = value; }
-        }
+        
     }
 }
