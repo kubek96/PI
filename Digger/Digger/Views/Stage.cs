@@ -830,7 +830,7 @@ namespace Digger.Views
             // Przecięcia z owocami
             for (int j = 0; j < _grabbableFruits.Count; j++)
             {
-                if (_worm.WormRectangle.Intersects(_grabbableFruits[j].FruitRectangle) && _grabbableFruits[j].IsUsed == false)
+                if (_worm.WormRectangle.Intersects(_grabbableFruits[j].Rectangle) && _grabbableFruits[j].IsUsed == false)
                 {
                     _grabbableFruits[j].PlayerUse(_worm);
                     _grabbableFruits[j].IsUsed = true;
@@ -839,7 +839,7 @@ namespace Digger.Views
             // Przecięcia z czerwonymi owocami
             for (int j = 0; j < _redFruits.Count; j++)
             {
-                if (_worm.WormRectangle.Intersects(_redFruits[j].FruitRectangle) && _redFruits[j].IsUsed == false)
+                if (_worm.WormRectangle.Intersects(_redFruits[j].Rectangle) && _redFruits[j].IsUsed == false)
                 {
                     _redFruits[j].PlayerUse(_worm);
                     _redFruits[j].IsUsed = true;
@@ -899,7 +899,7 @@ namespace Digger.Views
                     if (_enemies[i].EnemyType == EnemyType.Rat) continue;
                     for (int j = 0; j < _grabbableFruits.Count; j++)
                     {
-                        if (_enemies[i].Rectangle.Intersects(_grabbableFruits[j].FruitRectangle) && _grabbableFruits[j].IsUsed == false)
+                        if (_enemies[i].Rectangle.Intersects(_grabbableFruits[j].Rectangle) && _grabbableFruits[j].IsUsed == false)
                         {
                             Enemy e = _grabbableFruits[j].EnemyUse(_enemies[i]);
                             _grabbableFruits[j].IsUsed = true;
@@ -946,7 +946,7 @@ namespace Digger.Views
                 #region Przecięcia eniemies z zgniłymi owcami
                 for (int j = 0; j < _rootenKiwis.Count; j++)
                 {
-                    if (_rootenKiwis[j].FruitRectangle.Intersects(_enemies[i].Rectangle))
+                    if (_rootenKiwis[j].Rectangle.Intersects(_enemies[i].Rectangle))
                     {
                         _rootenKiwis[j].EnemyUse(_enemies[i]);
                         _rootenKiwis[j].IsUsed = true;
