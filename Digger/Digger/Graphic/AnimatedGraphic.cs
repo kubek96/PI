@@ -4,6 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Digger.Graphic
 {
+    /// <summary>
+    /// Klasa animowanej grafiki. 
+    /// Dziedziczy po grafice statycznej.
+    /// </summary>
     public class AnimatedGraphic : FixedGraphic
     {
         private Rectangle _sourceRectangle;
@@ -18,32 +22,72 @@ namespace Digger.Graphic
         private bool _active;
         private bool _looping;
 
+        /// <summary>
+        /// Konstruktor.
+        /// </summary>
         public AnimatedGraphic()
         {
             _destRectangle = new Rectangle();
             _sourceRectangle = new Rectangle();
         }
 
+        #region Properites
+
+        /// <summary>
+        /// Pozycja grafiki.
+        /// </summary>
         public Vector2 Position
         {
             get { return _position; }
             set { _position = value; }
         }
 
+        /// <summary>
+        /// Szerokość wyświetlanej ramki.
+        /// </summary>
         public int FrameWidth
         {
             get { return _frameWidth; }
         }
 
+        /// <summary>
+        /// Wysokość wyświetlanej ramki.
+        /// </summary>
         public int FrameHeight
         {
             get { return _frameHeight; }
         }
 
         /// <summary>
-        /// Allows the game component to perform any initialization it needs to before starting
-        /// to run.  This is where it can query for any required services and load content.
+        /// Czy grafika jest aktywna?
         /// </summary>
+        public bool Active
+        {
+            get { return _active; }
+            set { _active = value; }
+        }
+
+        /// <summary>
+        /// Czas jednej wyświetlania jednej ramki.
+        /// </summary>
+        public int FrameTime
+        {
+            get { return _frameTime; }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Inicjalizacjia
+        /// </summary>
+        /// <param name="position">Pozycja docelowa.</param>
+        /// <param name="frameWidth">Szerokość jednej ramki.</param>
+        /// <param name="frameHeight">Wysokość jednej ramki.</param>
+        /// <param name="frameCount">Ilość ramek.</param>
+        /// <param name="frameTime">Czas wyświetlania jednej ramki.</param>
+        /// <param name="color">Kolor tła obrazu.</param>
+        /// <param name="looping">Czy animacja jest zapętlona?</param>
+        /// <param name="scale">Skala.</param>
         public void Initialize(Vector2 position, int frameWidth,
                                         int frameHeight, int frameCount, int frameTime,
                                         Color color, bool looping = true, float scale = 1)
@@ -65,9 +109,9 @@ namespace Digger.Graphic
         }
 
         /// <summary>
-        /// Allows the game component to update itself.
+        /// Funkcja uaktualniająca animację grafiki.
         /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Update(GameTime gameTime)
         {
             if (_active == false)
@@ -97,6 +141,10 @@ namespace Digger.Graphic
                                           (int)(_frameWidth * _scale), (int)(_frameHeight * _scale));
         }
 
+        /// <summary>
+        /// Rysowanie grafiki.
+        /// </summary>
+        /// <param name="spriteBatch">Powłoka graficzna.</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (_active)
@@ -106,23 +154,20 @@ namespace Digger.Graphic
             }
         }
 
-        public bool Active
-        {
-            get { return _active; }
-            set { _active = value; }
-        }
-
-        public int FrameTime
-        {
-            get { return _frameTime; }
-        }
-
+        /// <summary>
+        /// Metoda umożliwiająca przesunięcie wyświetlanej grafiki do innej ramki.
+        /// </summary>
+        /// <param name="frameNumber">Numer ramki docelowej.</param>
         public void MoveToFrame(int frameNumber)
         {
             _currentFrame = frameNumber;
             _sourceRectangle = new Rectangle(_currentFrame * _frameWidth, 0, _frameWidth, _frameHeight);
         }
 
+        /// <summary>
+        /// Metoda klonująca grafikę.
+        /// </summary>
+        /// <returns>Nowy obiekt animowanej grafiki.</returns>
         public AnimatedGraphic Clone()
         {
             AnimatedGraphic temp = new AnimatedGraphic();

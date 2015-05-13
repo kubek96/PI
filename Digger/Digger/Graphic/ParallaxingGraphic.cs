@@ -5,11 +5,23 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Digger.Graphic
 {
+    /// <summary>
+    /// Klasa parallaksyjnej grafiki.
+    /// Dziedziczy po grafice statycznej.
+    /// </summary>
     public class ParallaxingGraphic : FixedGraphic
     {
         private Vector2[] _positions;
         private int _speed;
 
+        /// <summary>
+        /// Inicjalizacja na zadanej pozycji z zadana prędkością przesuania.
+        /// </summary>
+        /// <param name="position">Pozycja.</param>
+        /// <param name="color">Kolor tła. Biały dla przeźroczystości.</param>
+        /// <param name="screenWidth">Szerokość ekranu.</param>
+        /// <param name="speed">Prędkość przesuwania grafiki.</param>
+        /// <param name="scale">Skala.</param>
         public void Initialize(Vector2 position, Color color, int screenWidth, int speed, float scale = 1)
         {
             base.Initialize(position, color, scale);
@@ -25,6 +37,9 @@ namespace Digger.Graphic
             _speed = speed;
         }
 
+        /// <summary>
+        /// Metoda uakutualniająca pozycję grafiki.
+        /// </summary>
         public new void Update()
         {
             for (int i = 0; i < _positions.Length; i++)
@@ -45,6 +60,10 @@ namespace Digger.Graphic
             }
         } 
 
+        /// <summary>
+        /// Metoda rysująca.
+        /// </summary>
+        /// <param name="spriteBatch">Powłoka graficzna.</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
             for (int i = 0; i < _positions.Length; i++)

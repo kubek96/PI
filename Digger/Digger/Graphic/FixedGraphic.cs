@@ -4,6 +4,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Digger.Graphic
 {
+    /// <summary>
+    /// Klasa grafiki statycznej.
+    /// </summary>
     public class FixedGraphic
     {
         protected Texture2D _image;
@@ -15,15 +18,42 @@ namespace Digger.Graphic
         protected float _scale;
         protected bool _isVisible;
 
+        #region Properites
+
+        /// <summary>
+        /// Docelowa pozycja grafiki.
+        /// </summary>
+        public Rectangle DestRectangle
+        {
+            get { return _destRectangle; }
+        }
+
+        /// <summary>
+        /// Właściwy obraz.
+        /// </summary>
+        public Texture2D Image
+        {
+            get { return _image; }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Metoda pozwalająca na załadowanie grafiki z zasobnika.
+        /// </summary>
+        /// <param name="content">Zasobnik.</param>
+        /// <param name="assetName">Ścieżka do zasobu grafiki.</param>
         public virtual void LoadContent(ContentManager content, string assetName)
         {
             _image = content.Load<Texture2D>(assetName);
         }
 
         /// <summary>
-        /// Allows the game component to perform any initialization it needs to before starting
-        /// to run.  This is where it can query for any required services and load content.
+        /// Inicjalizacja obiektu na wskazanej pozycji.
         /// </summary>
+        /// <param name="position">Pozycja.</param>
+        /// <param name="color">Kolor tła. Biały dla przeźroczystości.</param>
+        /// <param name="scale">Skala.</param>
         public void Initialize(Vector2 position, Color color, float scale = 1)
         {
             _backColor = color;
@@ -33,6 +63,12 @@ namespace Digger.Graphic
             _destRectangle = new Rectangle((int)_position.X, (int)_position.Y, _image.Width, _image.Height);
         }
 
+        /// <summary>
+        /// Inicjalizacja obiektu na wskazanym obszarze.
+        /// </summary>
+        /// <param name="destRectangle">Obszar.</param>
+        /// <param name="color">Kolor tła. Biały dla przeźroczystości.</param>
+        /// <param name="scale">Skala.</param>
         public void Initialize(Rectangle destRectangle, Color color, float scale = 1)
         {
             _backColor = color;
@@ -41,14 +77,9 @@ namespace Digger.Graphic
         }
 
         /// <summary>
-        /// Allows the game component to update itself.
+        /// Metoda klonująca obiekt grafiki statycznej.
         /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        public void Update()
-        {
-
-        }
-
+        /// <returns>Kopia grafiki.</returns>
         public FixedGraphic Clone()
         {
             FixedGraphic temp = new FixedGraphic();
@@ -61,21 +92,15 @@ namespace Digger.Graphic
             return temp;
         }
 
+        /// <summary>
+        /// Metoda rysująca.
+        /// </summary>
+        /// <param name="spriteBatch">Powłoka graficzna.</param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             //if (_position != null) spriteBatch.Draw(_image, _position, _backColor);
             //if (_destRectangle != null) 
             spriteBatch.Draw(_image, _destRectangle, _backColor);
-        }
-
-        public Rectangle DestRectangle
-        {
-            get { return _destRectangle; }
-        }
-
-        public Texture2D Image
-        {
-            get { return _image; }
         }
     }
 }
