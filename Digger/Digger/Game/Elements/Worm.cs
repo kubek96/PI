@@ -33,65 +33,98 @@ namespace Digger.Game.Elements
         private bool _isMoving;
 
         #region Properties
+        /// <summary>
+        /// Kiedunek doceloweg porusznai się robaczka.
+        /// </summary>
         public Point Destination
         {
             get { return _destination; }
         }
 
+        /// <summary>
+        /// Ile ma cukierków?
+        /// </summary>
         public int CandyCount
         {
             get { return _candyCount; }
             set { _candyCount = value; }
         }
 
+        /// <summary>
+        /// Ile ma śliwek?
+        /// </summary>
         public int PlumsCount
         {
             get { return _plumsCount; }
             set { _plumsCount = value; }
         }
 
+        /// <summary>
+        /// Ile może zbudować grudek ziemi?
+        /// </summary>
         public int MudCount
         {
             get { return _mudCount; }
             set { _mudCount = value; }
         }
 
+        /// <summary>
+        /// Ile ma kiwi?
+        /// </summary>
         public int KiwisCount
         {
             get { return _kiwisCount; }
             set { _kiwisCount = value; }
         }
 
+        /// <summary>
+        /// Prędkość robaczka.
+        /// </summary>
         public int Speed
         {
             get { return _speed; }
             set { _speed = value; }
         }
 
+        /// <summary>
+        /// Liczba kwasowych strzałów.
+        /// </summary>
         public int AcidShoots
         {
             get { return _acidShoots; }
             set { _acidShoots = value; }
         }
 
+        /// <summary>
+        /// Liczba zgromadzonych czerwonych owoców.
+        /// </summary>
         public int RedFruits
         {
             get { return _redFruits; }
             set { _redFruits = value; }
         }
 
+        /// <summary>
+        /// Liczba ramek grafiki robaczka.
+        /// </summary>
         public int FramesCount
         {
             get { return _framesCount; }
             set { _framesCount = value; }
         }
 
+        /// <summary>
+        /// Liczba trujacych strzałów robaczka.
+        /// </summary>
         public int VenomShoots
         {
             get { return _venomShoots; }
             set { _venomShoots = value; }
         }
 
+        /// <summary>
+        /// Czy robaczek kopie?
+        /// </summary>
         public bool IsDigging
         {
             get { return _isDigging; }
@@ -102,28 +135,43 @@ namespace Digger.Game.Elements
             }
         }
 
+        /// <summary>
+        /// Liczba żyć robaczka.
+        /// </summary>
         public int Life
         {
             get { return _life; }
             set { _life = value; }
         }
 
+        /// <summary>
+        /// Grafika robaczka.
+        /// </summary>
         public AnimatedGraphic WormGraphic
         {
             get { return _wormGraphic; }
         }
-
+        
+        /// <summary>
+        /// Pozycja robaczka.
+        /// </summary>
         public Rectangle WormRectangle
         {
             get { return _wormRectangle; }
         }
 
+        /// <summary>
+        /// Kierunek, w którym przemieszcza się robaczek.
+        /// </summary>
         public Direction Direction
         {
             get { return _direction; }
             set { _direction = value; }
         }
 
+        /// <summary>
+        /// Czy robaczek się przemieszcza?
+        /// </summary>
         public bool IsMoving
         {
             get { return _isMoving; }
@@ -131,6 +179,11 @@ namespace Digger.Game.Elements
 
         #endregion
 
+
+        /// <summary>
+        /// Konstruktor.
+        /// Życie robaczka to 10.
+        /// </summary>
         public Worm()
         {
             _wormGraphic = new AnimatedGraphic();
@@ -145,17 +198,30 @@ namespace Digger.Game.Elements
             _isFreeze = false;
         }
 
+        /// <summary>
+        /// Wczytuje grafikę robaczka.
+        /// </summary>
+        /// <param name="content">Manager zasobów.</param>
+        /// <param name="assetName">Ścieżka do zasobu grafiki.</param>
         public void LoadContent(ContentManager content, string assetName)
         {
             _wormGraphic.LoadContent(content, assetName);
         }
-
+        
+        /// <summary>
+        /// Metoda inicjalizująca robaczka na wskazanej pozycji.
+        /// </summary>
+        /// <param name="rectangle">Pozycja.</param>
         public void Initialize(Rectangle rectangle)
         {
             _wormRectangle = rectangle;
             _wormGraphic.Initialize(new Vector2(_wormRectangle.X+10,_wormRectangle.Y+10), 22, 20, 1, 100, Color.White);
         }
 
+        /// <summary>
+        /// Metoda rysująca robaczka.
+        /// </summary>
+        /// <param name="spriteBatch">Powłoka graficzna.</param>
         public void Draw(SpriteBatch spriteBatch)
         {
             if (_isMoving) _wormGraphic.MoveToFrame(1);
@@ -164,6 +230,10 @@ namespace Digger.Game.Elements
             _wormGraphic.Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// Metoda aktualizująca robaczka zgodnie z jego logiką.
+        /// </summary>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Update(GameTime gameTime)
         {
             _wormGraphic.Update(gameTime);
@@ -186,6 +256,11 @@ namespace Digger.Game.Elements
             }
         }
 
+        /// <summary>
+        /// Przyśpieszenie robaczka na zadany czas przy użyciu śliwki.
+        /// </summary>
+        /// <param name="speed">Nowa prędkość.</param>
+        /// <param name="effectTime">Czas efektu.</param>
         public void MoveFaster(int speed, int effectTime)
         {
             if (_plumsCount == 0) return;
@@ -199,6 +274,11 @@ namespace Digger.Game.Elements
             _elapsedSpeedTime = 0;
         }
 
+        /// <summary>
+        /// Metoda spowalniająca robaczka.
+        /// </summary>
+        /// <param name="speed">Nowa prędkość.</param>
+        /// <param name="effectTime">Czas trwania efektu.</param>
         public void MoveSlower(int speed, int effectTime)
         {
             // Wyrównaj klatki przesunięcia
@@ -210,11 +290,18 @@ namespace Digger.Game.Elements
             _elapsedSpeedTime = 0;
         }
 
+        /// <summary>
+        /// Uzdrowienie.
+        /// </summary>
         public void Heal()
         {
             _life = 10;
         }
 
+        /// <summary>
+        /// Inicjalizacja procesu wykonywania ruchu.
+        /// </summary>
+        /// <param name="direction">Kierunek, w którym ma zostać wykonany ruch.</param>
         public void MakeMove(Direction direction)
         {
             if (_isFreeze) return;
@@ -249,7 +336,10 @@ namespace Digger.Game.Elements
                     break;
             }
         }
-
+        
+        /// <summary>
+        /// Faktyczny proces wykonania ruchu.
+        /// </summary>
         public void Move()
         {
             if (!_isMoving) return;
@@ -289,6 +379,11 @@ namespace Digger.Game.Elements
             }
         }
 
+        /// <summary>
+        /// Metoda pozwalająca na sprawdzenie, czy można w danym kierunku wykonać ruch.
+        /// </summary>
+        /// <param name="direction">Kierunek, w którm ma zostać zbadany ruch.</param>
+        /// <returns>Położenie po ruchu lub pusta przestrzeń.</returns>
         public Rectangle TestMove(Direction direction)
         {
             switch (direction)

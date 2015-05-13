@@ -8,6 +8,11 @@ using Microsoft.Xna.Framework;
 
 namespace Digger.Game.Specified
 {
+    /// <summary>
+    /// Klasa wyspecjalizowana dla Szczura.
+    /// Zawiera zaimplementowane algorytmy A* oraz przesukiwanie drzewa w głąb.
+    /// Z podowu naprzemiennego stosowania obu tych algorytmów muszą one być zaimplementowane razem.
+    /// </summary>
     public class Rat : Enemy
     {
         private bool[,] _visitedGrounds;
@@ -31,6 +36,21 @@ namespace Digger.Game.Specified
         {
         }
 
+        /// <summary>
+        /// Konstruktor tworzący nowy obiekt szczura.
+        /// </summary>
+        /// <param name="enemyType">Typ wroga.</param>
+        /// <param name="assetName">Nazwa zasobu grafiki wroga.</param>
+        /// <param name="life">Liczba życia wroga.</param>
+        /// <param name="strenght">Siła ataku.</param>
+        /// <param name="speed">Prędkość będąca dzielnikiem liczby 42.</param>
+        /// <param name="direction">Kierunek początkowego porusznia się.</param>
+        /// <param name="isFreeze">Czy jest zatrzymany w miejscu.</param>
+        /// <param name="evolve">Delegatura do funkcji ewolucji.</param>
+        /// <param name="testMove">Delegatura do funkcji testowania ruchu.</param>
+        /// <param name="webShoot">Delegatura do funkcji strzelania.</param>
+        /// <param name="observe">Delegatura do funkcji obserwowania w poszukiwaniu robaczka.</param>
+        /// <param name="attack">Delegatura do funckji ataku na robaczka.</param>
         public Rat(EnemyType enemyType, string assetName, int? life, int strenght, int speed, Direction direction, bool isFreeze, EvolveDelegate evolve, TestMoveDelegate testMove, WebShootDelegate webShoot, ObserveDelegate observe, AttackDelegate attack) : base(enemyType, assetName, life, strenght, speed, direction, isFreeze, evolve, testMove, webShoot, observe, attack)
         {
             _testMove = TestMove;
@@ -57,22 +77,41 @@ namespace Digger.Game.Specified
             //_aStarGrounds = new List<Ground>();
         }
 
+        /// <summary>
+        /// Metoda inicjalizująca szczura w zadanej pozycji.
+        /// </summary>
+        /// <param name="startPosition">Pozycja.</param>
         public override void Initialize(Rectangle startPosition)
         {
             base.Initialize(startPosition);
         }
 
+        /// <summary>
+        /// Metoda ataku.
+        /// </summary>
+        /// <param name="worm">Obiekt robaczka.</param>
         public void Attack(Worm worm)
         {
             worm.Life = 0;
         }
 
+        /// <summary>
+        /// Czy szczur jest zabity? Nie jest.
+        /// </summary>
         public override bool IsKilled
         {
             get { return _isKilled; }
             set { _isKilled = false; } // Igoruj
         }
 
+        /// <summary>
+        /// Metoda obserwacji/nasłuchiwania otoczenia.
+        /// Zostaje ona podana jako delegat do Observe.
+        /// To tu wykonywany jest A*.
+        /// </summary>
+        /// <param name="enemy">Obiekt szczura.</param>
+        /// <param name="worm">Obiekt robaczka.</param>
+        /// <param name="grounds">Tablica ziemi.</param>
         public void Observe(Enemy enemy, Worm worm, Ground[,] grounds)
         {
             enemy.SawWorm = false;
@@ -360,6 +399,14 @@ namespace Digger.Game.Specified
             enemy.SawWorm = false;
         }
 
+        /// <summary>
+        /// Metoda testu czy w daną stronę można się poruszać.
+        /// Jeżeli można, inicjalizowana jest operacja poruszania w zadanym kierunku.
+        /// Metoda podawana jako delegat do TestMove.
+        /// </summary>
+        /// <param name="enemy">Obiekt szczura.</param>
+        /// <param name="grounds">Tablica ziemi.</param>
+        /// <param name="gameField">Obszar gry.</param>
         public void TestMove(Enemy enemy, Ground[,] grounds, Rectangle gameField)
         {
             // Sprawdź, czy nie jesteś na samym początku planszy
