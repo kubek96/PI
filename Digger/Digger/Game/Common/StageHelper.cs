@@ -31,9 +31,7 @@ namespace Digger.Game.Common
                 }));
             _fruitsTemplates.Add(FruitType.Watermelon, new Fruit(FruitType.Watermelon, "Game/Fruits/Watermelon", worm => worm.MudCount++, _fruitsTemplates[FruitType.Lemon].EnemyUse));
             _fruitsTemplates.Add(FruitType.Plum, new Fruit(FruitType.Plum, "Game/Fruits/Plum", worm => worm.PlumsCount++, _fruitsTemplates[FruitType.Lemon].EnemyUse));
-            _fruitsTemplates.Add(FruitType.Candy, new Fruit(FruitType.Candy, "Game/Fruits/Candy", worm => worm.CandyCount++, _fruitsTemplates[FruitType.Lemon].EnemyUse));
-            _fruitsTemplates.Add(FruitType.RedFruit, new Fruit(FruitType.RedFruit, "Game/Fruits/Red", worm => worm.RedFruits++,
-                delegate(Enemy enemy)
+            _fruitsTemplates.Add(FruitType.Candy, new Fruit(FruitType.Candy, "Game/Fruits/Candy", worm => worm.CandyCount++, delegate(Enemy enemy)
                 {
                     Enemy e = new Enemy(_enemyTemplates[EnemyType.Rat]);
                     e.Initialize(enemy.EnemyRectangle);
@@ -41,6 +39,7 @@ namespace Digger.Game.Common
                     e.AddAsNew = true;
                     return e;
                 }));
+            _fruitsTemplates.Add(FruitType.RedFruit, new Fruit(FruitType.RedFruit, "Game/Fruits/Red", worm => worm.RedFruits++, null));
 
             //---------
             _enemyTemplates = new Dictionary<EnemyType, Enemy>();
@@ -598,15 +597,16 @@ namespace Digger.Game.Common
                     continue;
                 }
 
-                fruitType = next >= 85
-                    ? FruitType.Candy
-                    : next >= 70
-                        ? FruitType.Kiwi
-                        : next >= 55
-                            ? FruitType.Plum
-                            : next >= 40
-                                ? FruitType.Watermelon
-                                : next >= 20 ? FruitType.Orange : FruitType.Lemon;
+                fruitType = FruitType.Candy;
+                //fruitType = next >= 85
+                //    ? FruitType.Candy
+                //    : next >= 70
+                //        ? FruitType.Kiwi
+                //        : next >= 55
+                //            ? FruitType.Plum
+                //            : next >= 40
+                //                ? FruitType.Watermelon
+                //                : next >= 20 ? FruitType.Orange : FruitType.Lemon;
 
                 purses.Add(new Purse(new Fruit(_fruitsTemplates[fruitType])));
             }

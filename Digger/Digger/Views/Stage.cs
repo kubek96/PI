@@ -20,6 +20,7 @@ namespace Digger.Views
         private static StageHelper _stageHelper = new StageHelper();
         private static int _redFruitsCount = 10;
 
+        #region Logika gry
         private FixedGraphic _background;
         private Worm _worm;
         private Ground[,] _grounds;
@@ -40,6 +41,7 @@ namespace Digger.Views
         private List<Stone> _stones;
         private List<Purse> _purses;
         private int _level;
+        #endregion
 
         #region Interfejs
         private Fruit[] _interfaceFruits;
@@ -63,6 +65,7 @@ namespace Digger.Views
 
         private Song _song;
 
+        #region Widoki
         // Pause
         private bool _isGamePaused;
         private Pause _pauseView;
@@ -73,6 +76,7 @@ namespace Digger.Views
         private Win _winView;
         // Lose
         private Lose _loseView;
+        #endregion
 
         public Stage(int level)
         {
@@ -170,10 +174,10 @@ namespace Digger.Views
             _interfaceRedFruitXs = new Label("x");
             _interfaceRedFruitCounts = new Label(_worm.RedFruits.ToString());
 
-            _interfaceLevel = new Label("Level no.");
+            _interfaceLevel = new Label("Level");
             _interfaceLevelNumber = new Label(_level.ToString());
 
-            _interfacePoints = new Label("Points: ");
+            _interfacePoints = new Label("Points");
             _interfacePointsCount = new Label(Game1.Context.Player.Points.ToString());
 
             #endregion
@@ -395,19 +399,19 @@ namespace Digger.Views
             }
 
             y = screenHeight / 2;
-            _interfaceLife.Initialize(new Vector2(x, y - 210), Color.White);
-            _interfaceLifeX.Initialize(new Vector2(x+60, y - 200));
-            _interfaceLifeCount.Initialize(new Vector2(x + 100, y - 200));
+            _interfaceLife.Initialize(new Vector2(x+11, y - 160), Color.White);
+            _interfaceLifeX.Initialize(new Vector2(x+60, y - 150));
+            _interfaceLifeCount.Initialize(new Vector2(x + 100, y - 150));
 
-            _interfaceRedFruit.Initialize(new Rectangle(x, y-210, 40,40));
-            _interfaceRedFruitXs.Initialize(new Vector2(x+60,y-200));
-            _interfaceRedFruitCounts.Initialize(new Vector2(x+100,y-200));
+            _interfaceRedFruit.Initialize(new Rectangle(x, y-137, 40,40));
+            _interfaceRedFruitXs.Initialize(new Vector2(x+60,y-110));
+            _interfaceRedFruitCounts.Initialize(new Vector2(x+100,y-110));
 
-            _interfaceLevel.Initialize(new Vector2(x, 200));
-            _interfaceLevelNumber.Initialize(new Vector2(x+100,200));
+            _interfaceLevel.Initialize(new Vector2(x+80, 170));
+            _interfaceLevelNumber.Initialize(new Vector2(x+80,210));
 
-            _interfacePoints.Initialize(new Vector2(x, 100));
-            _interfacePointsCount.Initialize(new Vector2(x+100,100));
+            _interfacePoints.Initialize(new Vector2(x+80, 70));
+            _interfacePointsCount.Initialize(new Vector2(x+80,110));
 
             #endregion
 
@@ -891,11 +895,14 @@ namespace Digger.Views
                         }
                     }
 
+                    // Jeżeli szczur kontynuuj bez porównywania z owockami
+                    if (_enemies[i].EnemyType == EnemyType.Rat) continue;
                     for (int j = 0; j < _grabbableFruits.Count; j++)
                     {
                         if (_enemies[i].EnemyRectangle.Intersects(_grabbableFruits[j].FruitRectangle) && _grabbableFruits[j].IsUsed == false)
                         {
                             Enemy e = _grabbableFruits[j].EnemyUse(_enemies[i]);
+                            _grabbableFruits[j].IsUsed = true;
 
                             if (e == null) continue;
 
@@ -913,8 +920,6 @@ namespace Digger.Views
 
                             _enemies.Add(_door.ReleaseNewEnemyNow(e));
                             _totalEnemiesCount++;
-
-                            _grabbableFruits[j].IsUsed = true;
                         }
                     }
                 }
@@ -1244,7 +1249,11 @@ namespace Digger.Views
             {
                 Enemy e = _door.OpenDoor();
                 // Ew. dodaj szczura
-                if (e != null) _enemies.Add(e);
+                if (e != null)
+                {
+                    _enemies.Add(e);
+                    _door.Rat = null;
+                }
             }
             #endregion
 

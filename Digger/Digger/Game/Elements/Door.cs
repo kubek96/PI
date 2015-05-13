@@ -91,5 +91,11 @@ namespace Digger.Game.Elements
             enemy.Initialize(_doorRectangle);
             return enemy;
         }
+
+        public Enemy Rat
+        {
+            get { return _rat; }
+            set { _rat = value; }
+        }
     }
 }
