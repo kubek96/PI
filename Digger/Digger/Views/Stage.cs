@@ -18,6 +18,7 @@ namespace Digger.Views
     public class Stage : IXnaUseable
     {
         private static StageHelper _stageHelper = new StageHelper();
+        private static int _redFruitsCount = 10;
 
         private FixedGraphic _background;
         private Worm _worm;
@@ -40,8 +41,7 @@ namespace Digger.Views
         private List<Purse> _purses;
         private int _level;
 
-        private int _redFruitsCount;
-
+        #region Interfejs
         private Fruit[] _interfaceFruits;
         private Label[] _interfaceFruitsXs;
         private Label[] _interfaceFruitsCounts;
@@ -49,6 +49,17 @@ namespace Digger.Views
         private FixedGraphic _interfaceLife;
         private Label _interfaceLifeX;
         private Label _interfaceLifeCount;
+
+        private Fruit _interfaceRedFruit;
+        private Label _interfaceRedFruitXs;
+        private Label _interfaceRedFruitCounts;
+
+        private Label _interfaceLevel;
+        private Label _interfaceLevelNumber;
+
+        private Label _interfacePoints;
+        private Label _interfacePointsCount;
+        #endregion
 
         private Song _song;
 
@@ -65,20 +76,23 @@ namespace Digger.Views
 
         public Stage(int level)
         {
+            _level = level;
+
+            #region Widoki
             _pauseView = new Pause();
             _isGamePaused = false;
 
             _optionsView = new Options();
             _helpView = new InGameHelp();
 
-            _level = level;
-
             // Win
             _winView = new Win(_level + 1);
 
             // Lose
             _loseView = new Lose(_level);
+            #endregion
 
+            #region Logika gry
             // Tło
             _background = new FixedGraphic();
 
@@ -99,7 +113,6 @@ namespace Digger.Views
             _lastPressedKeys = new Keys[0];
 
             // Owoce
-            _redFruitsCount = 10;
             _redFruits = _stageHelper.GenerateRedFruits(_redFruitsCount);
             _grabbableFruits = new List<Fruit>();
             _rootenKiwis = new List<Fruit>();
@@ -132,7 +145,9 @@ namespace Digger.Views
             // Sakiewki
             _purses = _stageHelper.GeneratePurses(10);
 
-            // Interfejs użytkownika
+            #endregion
+
+            #region Interfejs użytkownika
             _interfaceFruits = _stageHelper.GenerateInterfaceFruits();
             _interfaceFruitsXs = new Label[6];
             for (int i = 0; i < _interfaceFruitsXs.Length; i++)
@@ -151,6 +166,18 @@ namespace Digger.Views
             _interfaceLifeX = new Label("x");
             _interfaceLifeCount = new Label(_worm.Life.ToString());
 
+            _interfaceRedFruit = new Fruit(_stageHelper.FruitsTemplates[FruitType.RedFruit]);
+            _interfaceRedFruitXs = new Label("x");
+            _interfaceRedFruitCounts = new Label(_worm.RedFruits.ToString());
+
+            _interfaceLevel = new Label("Level no.");
+            _interfaceLevelNumber = new Label(_level.ToString());
+
+            _interfacePoints = new Label("Points: ");
+            _interfacePointsCount = new Label(Game1.Context.Player.Points.ToString());
+
+            #endregion
+
             // Wczytaj zawartość
             LoadContent(Game1.Context.Content);
 
@@ -160,9 +187,13 @@ namespace Digger.Views
 
         public void LoadContent(ContentManager content)
         {
-            _background.LoadContent(content, "Views/Common/Background");
-
+            #region Muzyka
             _song = content.Load<Song>("Sounds/Sound1");
+            #endregion
+
+            #region Elementy gry
+
+            _background.LoadContent(content, "Views/Common/Background");
 
             Random rnd = new Random();
             for (int i = 0; i < Math.Sqrt(_grounds.Length); i++)
@@ -189,7 +220,9 @@ namespace Digger.Views
                 _purses[i].LoadContent(content, "Game/Purse");
             }
 
-            // Elementy interfejsu użytkownika
+            #endregion
+
+            #region Elementy interfejsu użytkownika
             for (int i = 0; i < _interfaceFruitsXs.Length; i++)
             {
                 _interfaceFruitsXs[i].LoadContent(content, "Fonts/Silkscreen");
@@ -199,10 +232,23 @@ namespace Digger.Views
             _interfaceLife.LoadContent(content, "Game/Interface/Heart");
             _interfaceLifeX.LoadContent(content, "Fonts/Silkscreen");
             _interfaceLifeCount.LoadContent(content, "Fonts/Silkscreen");
+
+            _interfaceRedFruitXs.LoadContent(content, "Fonts/Silkscreen");
+            _interfaceRedFruitCounts.LoadContent(content, "Fonts/Silkscreen");
+
+            _interfaceLevel.LoadContent(content, "Fonts/Silkscreen");
+            _interfaceLevelNumber.LoadContent(content, "Fonts/Silkscreen");
+
+            _interfacePoints.LoadContent(content, "Fonts/Silkscreen");
+            _interfacePointsCount.LoadContent(content, "Fonts/Silkscreen");
+
+            #endregion
         }
 
         public void Initialize()
         {
+            #region Elementy gry
+
             int screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             int screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
@@ -335,7 +381,9 @@ namespace Digger.Views
                 _redFruits[i].Initialize(new Rectangle(x, y, 40, 40));
             }
 
-            // Inicjalizuj obiekty interfesju użytkownika
+            #endregion
+
+            #region Inicjalizuj obiekty interfesju użytkownika
             x = horizontalShift/4;
             y = screenHeight/2;
             for (int i = 0; i < _interfaceFruits.Length; i++)
@@ -351,13 +399,28 @@ namespace Digger.Views
             _interfaceLifeX.Initialize(new Vector2(x+60, y - 200));
             _interfaceLifeCount.Initialize(new Vector2(x + 100, y - 200));
 
-            // Music
+            _interfaceRedFruit.Initialize(new Rectangle(x, y-210, 40,40));
+            _interfaceRedFruitXs.Initialize(new Vector2(x+60,y-200));
+            _interfaceRedFruitCounts.Initialize(new Vector2(x+100,y-200));
+
+            _interfaceLevel.Initialize(new Vector2(x, 200));
+            _interfaceLevelNumber.Initialize(new Vector2(x+100,200));
+
+            _interfacePoints.Initialize(new Vector2(x, 100));
+            _interfacePointsCount.Initialize(new Vector2(x+100,100));
+
+            #endregion
+
+            #region Music
             if (Game1.Context.Player.IsMusicOn) MediaPlayer.Play(_song);
             MediaPlayer.IsRepeating = true;
+            #endregion
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
+            #region Elementy gry
+
             _background.Draw(spriteBatch);
 
             for (int i = 0; i < Math.Sqrt(_grounds.Length); i++)
@@ -415,7 +478,11 @@ namespace Digger.Views
                 _webShots[i].Draw(spriteBatch);
             }
 
-            // Elementy interfejsu użytkownika
+            _worm.Draw(spriteBatch);
+
+            #endregion
+
+            #region Elementy interfejsu użytkownika
             for (int i = 0; i < _interfaceFruits.Length; i++)
             {
                 _interfaceFruits[i].Draw(spriteBatch);
@@ -426,8 +493,17 @@ namespace Digger.Views
             _interfaceLifeX.Draw(spriteBatch);
             _interfaceLifeCount.Draw(spriteBatch);
 
-            _worm.Draw(spriteBatch);
+            _interfaceRedFruit.Draw(spriteBatch);
+            _interfaceRedFruitXs.Draw(spriteBatch);
+            _interfaceRedFruitCounts.Draw(spriteBatch);
 
+            _interfaceLevel.Draw(spriteBatch);
+            _interfaceLevelNumber.Draw(spriteBatch);
+
+            _interfacePoints.Draw(spriteBatch);
+            _interfacePointsCount.Draw(spriteBatch);
+
+            #endregion
 
             #region Pause
             if (_isGamePaused)
@@ -1199,6 +1275,10 @@ namespace Digger.Views
             _interfaceFruitsCounts[4].Text = _worm.MudCount.ToString();
             _interfaceFruitsCounts[5].Text = _worm.CandyCount.ToString();
             _interfaceLifeCount.Text = _worm.Life.ToString();
+
+            _interfaceRedFruitCounts.Text = _worm.RedFruits.ToString();
+            _interfacePointsCount.Text = Game1.Context.Player.Points.ToString();
+
             #endregion
 
             #region Obsługa usuwania elementów
