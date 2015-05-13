@@ -876,10 +876,10 @@ namespace Digger.Views
                     }
 
                     Rectangle upRectangle, downRectangle, rightRectangle, leftRectangle;
-                    upRectangle = new Rectangle(_enemies[i].EnemyRectangle.X, _enemies[i].EnemyRectangle.Y - 42, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
-                    rightRectangle = new Rectangle(_enemies[i].EnemyRectangle.X + 42, _enemies[i].EnemyRectangle.Y, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
-                    downRectangle = new Rectangle(_enemies[i].EnemyRectangle.X, _enemies[i].EnemyRectangle.Y + 42, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
-                    leftRectangle = new Rectangle(_enemies[i].EnemyRectangle.X - 42, _enemies[i].EnemyRectangle.Y, _enemies[i].EnemyRectangle.Width, _enemies[i].EnemyRectangle.Height);
+                    upRectangle = new Rectangle(_enemies[i].Rectangle.X, _enemies[i].Rectangle.Y - 42, _enemies[i].Rectangle.Width, _enemies[i].Rectangle.Height);
+                    rightRectangle = new Rectangle(_enemies[i].Rectangle.X + 42, _enemies[i].Rectangle.Y, _enemies[i].Rectangle.Width, _enemies[i].Rectangle.Height);
+                    downRectangle = new Rectangle(_enemies[i].Rectangle.X, _enemies[i].Rectangle.Y + 42, _enemies[i].Rectangle.Width, _enemies[i].Rectangle.Height);
+                    leftRectangle = new Rectangle(_enemies[i].Rectangle.X - 42, _enemies[i].Rectangle.Y, _enemies[i].Rectangle.Width, _enemies[i].Rectangle.Height);
 
                     bool[] wormInRange = new bool[4];
                     if (upRectangle.Intersects(_worm.WormRectangle)) wormInRange[0] = true;
@@ -899,7 +899,7 @@ namespace Digger.Views
                     if (_enemies[i].EnemyType == EnemyType.Rat) continue;
                     for (int j = 0; j < _grabbableFruits.Count; j++)
                     {
-                        if (_enemies[i].EnemyRectangle.Intersects(_grabbableFruits[j].FruitRectangle) && _grabbableFruits[j].IsUsed == false)
+                        if (_enemies[i].Rectangle.Intersects(_grabbableFruits[j].FruitRectangle) && _grabbableFruits[j].IsUsed == false)
                         {
                             Enemy e = _grabbableFruits[j].EnemyUse(_enemies[i]);
                             _grabbableFruits[j].IsUsed = true;
@@ -935,7 +935,7 @@ namespace Digger.Views
                 {
                     if (_shots[j].ShootSomething) 
                         continue;
-                    if (_shots[j].ShotRectangle.Intersects(_enemies[i].EnemyRectangle))
+                    if (_shots[j].ShotRectangle.Intersects(_enemies[i].Rectangle))
                     {
                         _shots[j].ShootEnemy(_enemies[i]);
                         _shots[j].ShootSomething = true;
@@ -946,7 +946,7 @@ namespace Digger.Views
                 #region Przecięcia eniemies z zgniłymi owcami
                 for (int j = 0; j < _rootenKiwis.Count; j++)
                 {
-                    if (_rootenKiwis[j].FruitRectangle.Intersects(_enemies[i].EnemyRectangle))
+                    if (_rootenKiwis[j].FruitRectangle.Intersects(_enemies[i].Rectangle))
                     {
                         _rootenKiwis[j].EnemyUse(_enemies[i]);
                         _rootenKiwis[j].IsUsed = true;
@@ -1040,7 +1040,7 @@ namespace Digger.Views
                     // Sprawdź przecięcia z worgami
                     for (int j = 0; j < _enemies.Count; j++)
                     {
-                        if (_stones[i].StoneRectangle.Intersects(_enemies[j].EnemyRectangle))
+                        if (_stones[i].StoneRectangle.Intersects(_enemies[j].Rectangle))
                         {
                             _enemies[j].Kill();
                             _stones[i].Shatter();
@@ -1143,7 +1143,7 @@ namespace Digger.Views
                     // Sprawdź przecięcia z worgami
                     for (int j = 0; j < _enemies.Count; j++)
                     {
-                        if (_purses[i].PurseRectangle.Intersects(_enemies[j].EnemyRectangle))
+                        if (_purses[i].PurseRectangle.Intersects(_enemies[j].Rectangle))
                         {
                             _enemies[j].Kill();
                             Fruit fruit = _purses[i].Shatter();

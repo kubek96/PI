@@ -8,6 +8,9 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Digger.Game.Elements
 {
+    /// <summary>
+    /// Enumerator pozwalający na jednoznaczne zidentyfikowanie typu wroga.
+    /// </summary>
     public enum EnemyType
     {
         Mouse,
@@ -23,10 +26,13 @@ namespace Digger.Game.Elements
     public delegate void ObserveDelegate(Enemy enemy, Worm worm, Ground[,] grounds);
     public delegate void AttackDelegate(Worm w);
 
+    /// <summary>
+    /// Klasa wroga.
+    /// </summary>
     public class Enemy
     {
         protected AnimatedGraphic _enemyGraphic;
-        protected Rectangle _enemyRectangle;
+        protected Rectangle _rectangle;
 
         protected EnemyType _enemyType;
         protected int? _life;
@@ -57,10 +63,161 @@ namespace Digger.Game.Elements
         protected ObserveDelegate _observe;
         protected AttackDelegate _attack;
 
+        #region Properties
+
+        /// <summary>
+        /// Typ wroga.
+        /// </summary>
+        public EnemyType EnemyType
+        {
+            get { return _enemyType; }
+        }
+
+        /// <summary>
+        /// Informacja o tym, czy w zasięgu wzroku/węchu/słuchu wroga jest robaczek.
+        /// </summary>
+        public bool SawWorm
+        {
+            get { return _sawWorm; }
+            set { _sawWorm = value; }
+        }
+
+        /// <summary>
+        /// Czy został dodany jako nowy wróg.
+        /// </summary>
+        public bool AddAsNew
+        {
+            get { return _addAsNew; }
+            set { _addAsNew = value; }
+        }
+
+        /// <summary>
+        /// Czy przypadkiem nie jest już martwy.
+        /// </summary>
+        public virtual bool IsKilled
+        {
+            get { return _isKilled; }
+            set { _isKilled = value; }
+        }
+
+        /// <summary>
+        /// Czy jest zamrożony/zatrzymany.
+        /// </summary>
+        public bool IsFreeze
+        {
+            get { return _isFreeze; }
+            set { _isFreeze = value; }
+        }
+
+        /// <summary>
+        /// Kierunek poruszania się wroga.
+        /// </summary>
+        public Point Destination
+        {
+            get { return _destination; }
+            set { _destination = value; }
+        }
+
+        /// <summary>
+        /// Informacja o tym, czy kopie w ziemi.
+        /// </summary>
+        public bool IsDigging
+        {
+            get { return _isDigging; }
+            set { _isDigging = value; }
+        }
+
+        /// <summary>
+        /// Informacja o tym, czy się porusza.
+        /// </summary>
+        public bool IsMoving
+        {
+            get { return _isMoving; }
+            set { _isMoving = value; }
+        }
+
+        /// <summary>
+        /// Życie wroga.
+        /// Przy zejściu do wartości 0 uśmierca wroga.
+        /// </summary>
+        public int? Life
+        {
+            get { return _life; }
+            set
+            {
+                _life = value;
+                if (_life == 0) _isKilled = true;
+            }
+        }
+
+        /// <summary>
+        /// Kiedunek poruszania się wroga.
+        /// </summary>
+        public Direction Direction
+        {
+            get { return _direction; }
+            set { _direction = value; }
+        }
+
+        /// <summary>
+        /// Obszar zajmowany przez wroga.
+        /// </summary>
+        public Rectangle Rectangle
+        {
+            get { return _rectangle; }
+            set
+            {
+                _rectangle = value;
+                _enemyGraphic.Position = new Vector2(_rectangle.X + 10, _rectangle.Y + 10);
+            }
+        }
+
+        /// <summary>
+        /// Funkcja ewolucji.
+        /// </summary>
+        public EvolveDelegate Evolve
+        {
+            get { return _evolve; }
+        }
+
+        /// <summary>
+        /// Funkcja sprawdzenia możliwości ruchu.
+        /// </summary>
+        public TestMoveDelegate TestMove
+        {
+            get { return _testMove; }
+        }
+
+        /// <summary>
+        /// Funkcja strzału.
+        /// </summary>
+        public WebShootDelegate WebShoot
+        {
+            get { return _webShoot; }
+        }
+
+        /// <summary>
+        /// Funkcja obserowania/nasłuchiwania/węchu otoczenia.
+        /// </summary>
+        public ObserveDelegate Observe
+        {
+            get { return _observe; }
+        }
+
+        /// <summary>
+        /// Funkcja ataku.
+        /// </summary>
+        public AttackDelegate Attack
+        {
+            get { return _attack; }
+        }
+
+        #endregion
+
         /// <summary>
         /// Konstruktor kopiujący
         /// </summary>
-        /// <param name="enemy"></param>
+        /// <param name="enemy">Obiekt wzorcowy</param>
         public Enemy(Enemy enemy)
         {
             _enemyGraphic = enemy._enemyGraphic.Clone();
@@ -83,6 +240,21 @@ namespace Digger.Game.Elements
             _sawWorm = enemy._sawWorm;
         }
 
+        /// <summary>
+        /// Konstruktor.
+        /// </summary>
+        /// <param name="enemyType">Typ wroga.</param>
+        /// <param name="assetName">Nazwa zasobu grafiki wroga.</param>
+        /// <param name="life">Liczba życia wroga.</param>
+        /// <param name="strenght">Siła ataku.</param>
+        /// <param name="speed">Prędkość będąca dzielnikiem liczby 42.</param>
+        /// <param name="direction">Kierunek początkowego porusznia się.</param>
+        /// <param name="isFreeze">Czy jest zatrzymany w miejscu.</param>
+        /// <param name="evolve">Delegatura do funkcji ewolucji.</param>
+        /// <param name="testMove">Delegatura do funkcji testowania ruchu.</param>
+        /// <param name="webShoot">Delegatura do funkcji strzelania.</param>
+        /// <param name="observe">Delegatura do funkcji obserwowania w poszukiwaniu robaczka.</param>
+        /// <param name="attack">Delegatura do funckji ataku na robaczka.</param>
         public Enemy(EnemyType enemyType, string assetName, int? life, int strenght, int speed, Direction direction, bool isFreeze, EvolveDelegate evolve,TestMoveDelegate testMove,
             WebShootDelegate webShoot, ObserveDelegate observe, AttackDelegate attack)
         {
@@ -114,29 +286,40 @@ namespace Digger.Game.Elements
             _sawWorm = false;
         }
 
-        public EnemyType EnemyType
+        /// <summary>
+        /// Funkcja uśmiercająca wroga.
+        /// </summary>
+        public void Kill()
         {
-            get { return _enemyType; }
+            if (_enemyType == EnemyType.Rat) return;
+            _isKilled = true;
         }
 
-        public bool SawWorm
-        {
-            get { return _sawWorm; }
-            set { _sawWorm = value; }
-        }
-
+        /// <summary>
+        /// Funkcja ładująca grafikę wroga oraz inicjalizuja obiekt jego położenia.
+        /// </summary>
+        /// <param name="content">Manager zasobów.</param>
+        /// <param name="assetName">Ścieżka zasobu grafiki wroga.</param>
         public void LoadContent(ContentManager content, string assetName)
         {
             _enemyGraphic.LoadContent(content, assetName);
-            _enemyRectangle = new Rectangle();
+            _rectangle = new Rectangle();
         }
 
+        /// <summary>
+        /// Metoda inicjalizująca położenie wroga.
+        /// </summary>
+        /// <param name="rectangle">Obszar.</param>
         public virtual void Initialize(Rectangle rectangle)
         {
-            _enemyRectangle = rectangle;
-            _enemyGraphic.Initialize(new Vector2(_enemyRectangle.X + 10, _enemyRectangle.Y + 10), 22, 20, 1, 100, Color.White);
+            _rectangle = rectangle;
+            _enemyGraphic.Initialize(new Vector2(_rectangle.X + 10, _rectangle.Y + 10), 22, 20, 1, 100, Color.White);
         }
 
+        /// <summary>
+        /// Metoda wykonująca rysowanie wroga.
+        /// </summary>
+        /// <param name="spriteBatch">Powłoka graficzna.</param>
         public void Draw(SpriteBatch spriteBatch)
         {
             if (_isMoving) _enemyGraphic.MoveToFrame(1);
@@ -145,6 +328,10 @@ namespace Digger.Game.Elements
             _enemyGraphic.Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// Medota obsługująca logikę zachowania postaci wroga.
+        /// </summary>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Update(GameTime gameTime)
         {
             _enemyGraphic.Update(gameTime);
@@ -167,48 +354,9 @@ namespace Digger.Game.Elements
             }
         }
 
-        public bool AddAsNew
-        {
-            get { return _addAsNew; }
-            set { _addAsNew = value; }
-        }
-
-        public virtual bool IsKilled
-        {
-            get { return _isKilled; }
-            set { _isKilled = value; }
-        }
-
-        public bool IsFreeze
-        {
-            get { return _isFreeze; }
-            set { _isFreeze = value; }
-        }
-
-        public Point Destination
-        {
-            get { return _destination; }
-            set { _destination = value; }
-        }
-
-        public bool IsDigging
-        {
-            get { return _isDigging; }
-            set { _isDigging = value; }
-        }
-
-        public bool IsMoving
-        {
-            get { return _isMoving; }
-            set { _isMoving = value; }
-        }
-
-        public void Kill()
-        {
-            if (_enemyType == EnemyType.Rat) return;
-            _isKilled = true;
-        }
-
+        /// <summary>
+        /// Wykoananie ruch w celu osiągnięcia odpowiedniego punktu docelowego.
+        /// </summary>
         public void Move()
         {
             if (_isFreeze) return;
@@ -216,47 +364,42 @@ namespace Digger.Game.Elements
             if (_isDigging) _speed = 1;
             if (!_sawWorm) _speed = _startSpeed;
 
-            if (_destination.X != _enemyRectangle.X)
-                if (_destination.X > _enemyRectangle.X)
+            if (_destination.X != _rectangle.X)
+                if (_destination.X > _rectangle.X)
                 {
-                    _enemyRectangle = new Rectangle(_enemyRectangle.X + _speed, _enemyRectangle.Y, _enemyRectangle.Width, _enemyRectangle.Height);
+                    _rectangle = new Rectangle(_rectangle.X + _speed, _rectangle.Y, _rectangle.Width, _rectangle.Height);
                     _enemyGraphic.Position = new Vector2(_enemyGraphic.Position.X + _speed, _enemyGraphic.Position.Y);
                 }
                 else
                 {
-                    _enemyRectangle = new Rectangle(_enemyRectangle.X - _speed, _enemyRectangle.Y, _enemyRectangle.Width, _enemyRectangle.Height);
+                    _rectangle = new Rectangle(_rectangle.X - _speed, _rectangle.Y, _rectangle.Width, _rectangle.Height);
                     _enemyGraphic.Position = new Vector2(_enemyGraphic.Position.X - _speed, _enemyGraphic.Position.Y);
                 }
 
-            if (_destination.Y != _enemyRectangle.Y)
-                if (_destination.Y > _enemyRectangle.Y)
+            if (_destination.Y != _rectangle.Y)
+                if (_destination.Y > _rectangle.Y)
                 {
-                    _enemyRectangle = new Rectangle(_enemyRectangle.X, _enemyRectangle.Y + _speed, _enemyRectangle.Width, _enemyRectangle.Height);
+                    _rectangle = new Rectangle(_rectangle.X, _rectangle.Y + _speed, _rectangle.Width, _rectangle.Height);
                     _enemyGraphic.Position = new Vector2(_enemyGraphic.Position.X, _enemyGraphic.Position.Y + _speed);
                 }
                 else
                 {
-                    _enemyRectangle = new Rectangle(_enemyRectangle.X, _enemyRectangle.Y - _speed, _enemyRectangle.Width, _enemyRectangle.Height);
+                    _rectangle = new Rectangle(_rectangle.X, _rectangle.Y - _speed, _rectangle.Width, _rectangle.Height);
                     _enemyGraphic.Position = new Vector2(_enemyGraphic.Position.X, _enemyGraphic.Position.Y - _speed);
                 }
 
-            if (_enemyRectangle.X == _destination.X && _enemyRectangle.Y == _destination.Y)
+            if (_rectangle.X == _destination.X && _rectangle.Y == _destination.Y)
             {
                 _isMoving = false;
                 _isDigging = false;
             }
         }
 
-        public Rectangle EnemyRectangle
-        {
-            get { return _enemyRectangle; }
-            set
-            {
-                _enemyRectangle = value;
-                _enemyGraphic.Position = new Vector2(_enemyRectangle.X + 10, _enemyRectangle.Y + 10);
-            }
-        }
-
+        /// <summary>
+        /// Medota wykonująca spowolnienie wroga.
+        /// </summary>
+        /// <param name="speed">Nowa prędkość.</param>
+        /// <param name="effectTime">Czas trwania efektu.</param>
         public void SlowDown(int speed, int effectTime)
         {
             // Wyrównaj klatki przesunięcia
@@ -268,6 +411,10 @@ namespace Digger.Game.Elements
             _elapsedSlowTime = 0;
         }
 
+        /// <summary>
+        /// Metoda zatrzymująca w miejscu (zamrażająca) wroga.
+        /// </summary>
+        /// <param name="effectTime">Czas trwania efektu.</param>
         public void Freeze(int effectTime)
         {
             _isFreeze = true;
@@ -275,47 +422,10 @@ namespace Digger.Game.Elements
             _elapsedFreezeTime = 0;
         }
 
-        public int? Life
-        {
-            get { return _life; }
-            set
-            {
-                _life = value;
-                if (_life == 0) _isKilled = true;
-            }
-        }
-
-        public Direction Direction
-        {
-            get { return _direction; }
-            set { _direction = value; }
-        }
-
-        public EvolveDelegate Evolve
-        {
-            get { return _evolve; }
-        }
-
-        public TestMoveDelegate TestMove
-        {
-            get { return _testMove; }
-        }
-
-        public WebShootDelegate WebShoot
-        {
-            get { return _webShoot; }
-        }
-
-        public ObserveDelegate Observe
-        {
-            get { return _observe; }
-        }
-
-        public AttackDelegate Attack
-        {
-            get { return _attack; }
-        }
-
+        /// <summary>
+        /// Metoda zmieniająca punkt docelowy, w którym przemieszcza się obiekt.
+        /// </summary>
+        /// <param name="direction">Kierunek, w którm ma zostać wykonany ruch.</param>
         public void MakeMove(Direction direction)
         {
             // Podmień pozycję 
@@ -336,10 +446,14 @@ namespace Digger.Game.Elements
                     x -= 42;
                     break;
             }
-            _destination = new Point(_enemyRectangle.X + x, _enemyRectangle.Y + y);
+            _destination = new Point(_rectangle.X + x, _rectangle.Y + y);
             _isMoving = true;
         }
 
+        /// <summary>
+        /// Metoda przyśpieszająca jednostkę na czas nieokreślony.
+        /// </summary>
+        /// <param name="speed">Nowa prędkość.</param>
         public void MoveFaster(int speed)
         {
             // Wyrównaj klatki przesunięcia

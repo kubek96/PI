@@ -42,7 +42,7 @@ namespace Digger.Game.Common
             _fruitsTemplates.Add(FruitType.Candy, new Fruit(FruitType.Candy, "Game/Fruits/Candy", worm => worm.CandyCount++, delegate(Enemy enemy)
                 {
                     Enemy e = new Enemy(_enemyTemplates[EnemyType.Rat]);
-                    e.Initialize(enemy.EnemyRectangle);
+                    e.Initialize(enemy.Rectangle);
                     e.Direction = enemy.Direction;
                     e.AddAsNew = true;
                     return e;
@@ -55,17 +55,17 @@ namespace Digger.Game.Common
                 delegate(Enemy enemy)
                 {
                     Enemy e = new Enemy(_enemyTemplates[EnemyType.Spider]);
-                    e.Initialize(enemy.EnemyRectangle);
+                    e.Initialize(enemy.Rectangle);
                     e.Direction = enemy.Direction;
                     return e;
                 }, delegate(Enemy enemy, Ground[,] grounds, Rectangle gameField)
                 {
                     List<Direction> avaliableDirections = new List<Direction>();
                     Rectangle upRectangle, downRectangle, rightRectangle, leftRectangle;
-                    upRectangle = new Rectangle(enemy.EnemyRectangle.X, enemy.EnemyRectangle.Y - 42, enemy.EnemyRectangle.Width, enemy.EnemyRectangle.Height);
-                    rightRectangle = new Rectangle(enemy.EnemyRectangle.X + 42, enemy.EnemyRectangle.Y, enemy.EnemyRectangle.Width, enemy.EnemyRectangle.Height);
-                    downRectangle = new Rectangle(enemy.EnemyRectangle.X, enemy.EnemyRectangle.Y + 42, enemy.EnemyRectangle.Width, enemy.EnemyRectangle.Height);
-                    leftRectangle = new Rectangle(enemy.EnemyRectangle.X - 42, enemy.EnemyRectangle.Y, enemy.EnemyRectangle.Width, enemy.EnemyRectangle.Height);
+                    upRectangle = new Rectangle(enemy.Rectangle.X, enemy.Rectangle.Y - 42, enemy.Rectangle.Width, enemy.Rectangle.Height);
+                    rightRectangle = new Rectangle(enemy.Rectangle.X + 42, enemy.Rectangle.Y, enemy.Rectangle.Width, enemy.Rectangle.Height);
+                    downRectangle = new Rectangle(enemy.Rectangle.X, enemy.Rectangle.Y + 42, enemy.Rectangle.Width, enemy.Rectangle.Height);
+                    leftRectangle = new Rectangle(enemy.Rectangle.X - 42, enemy.Rectangle.Y, enemy.Rectangle.Width, enemy.Rectangle.Height);
                     bool[] freeSpace = new bool[4];
                     // Przecięcia z ziemią
                     for (int x = 0; x < Math.Sqrt(grounds.Length); x++)
@@ -96,15 +96,15 @@ namespace Digger.Game.Common
                     switch (enemy.Direction)
                     {
                         case Direction.Up:
-                            if (worm.WormRectangle.X != enemy.EnemyRectangle.X) break;
-                            if (worm.WormRectangle.Y > enemy.EnemyRectangle.Y) break;
+                            if (worm.WormRectangle.X != enemy.Rectangle.X) break;
+                            if (worm.WormRectangle.Y > enemy.Rectangle.Y) break;
                             for (int x = 0; x < Math.Sqrt(grounds.Length); x++)
                             {
                                 for (int y = 0; y < Math.Sqrt(grounds.Length); y++)
                                 {
                                     if (grounds[x, y].GroundType == GroundType.Free) continue;
-                                    if (grounds[x, y].Rectangle.X != enemy.EnemyRectangle.X) continue;
-                                    if (enemy.EnemyRectangle.Y > grounds[x, y].Rectangle.Y && grounds[x, y].Rectangle.Y > worm.WormRectangle.Y)
+                                    if (grounds[x, y].Rectangle.X != enemy.Rectangle.X) continue;
+                                    if (enemy.Rectangle.Y > grounds[x, y].Rectangle.Y && grounds[x, y].Rectangle.Y > worm.WormRectangle.Y)
                                     {
                                         enemy.SawWorm = false;
                                         return;
@@ -115,15 +115,15 @@ namespace Digger.Game.Common
                             enemy.MakeMove(Direction.Up);
                             return;
                         case Direction.Down:
-                            if (worm.WormRectangle.X != enemy.EnemyRectangle.X) break;
-                            if (worm.WormRectangle.Y < enemy.EnemyRectangle.Y) break;
+                            if (worm.WormRectangle.X != enemy.Rectangle.X) break;
+                            if (worm.WormRectangle.Y < enemy.Rectangle.Y) break;
                             for (int x = 0; x < Math.Sqrt(grounds.Length); x++)
                             {
                                 for (int y = 0; y < Math.Sqrt(grounds.Length); y++)
                                 {
                                     if (grounds[x, y].GroundType == GroundType.Free) continue;
-                                    if (grounds[x, y].Rectangle.X != enemy.EnemyRectangle.X) continue;
-                                    if (enemy.EnemyRectangle.Y < grounds[x, y].Rectangle.Y && grounds[x, y].Rectangle.Y < worm.WormRectangle.Y)
+                                    if (grounds[x, y].Rectangle.X != enemy.Rectangle.X) continue;
+                                    if (enemy.Rectangle.Y < grounds[x, y].Rectangle.Y && grounds[x, y].Rectangle.Y < worm.WormRectangle.Y)
                                     {
                                         enemy.SawWorm = false;
                                         return;
@@ -134,15 +134,15 @@ namespace Digger.Game.Common
                             enemy.MakeMove(Direction.Down);
                             return;
                         case Direction.Right:
-                            if (worm.WormRectangle.Y != enemy.EnemyRectangle.Y) break;
-                            if (worm.WormRectangle.X < enemy.EnemyRectangle.X) break;
+                            if (worm.WormRectangle.Y != enemy.Rectangle.Y) break;
+                            if (worm.WormRectangle.X < enemy.Rectangle.X) break;
                             for (int x = 0; x < Math.Sqrt(grounds.Length); x++)
                             {
                                 for (int y = 0; y < Math.Sqrt(grounds.Length); y++)
                                 {
                                     if (grounds[x, y].GroundType == GroundType.Free) continue;
-                                    if (grounds[x, y].Rectangle.Y != enemy.EnemyRectangle.Y) continue;
-                                    if (enemy.EnemyRectangle.X < grounds[x, y].Rectangle.X && grounds[x, y].Rectangle.X < worm.WormRectangle.X)
+                                    if (grounds[x, y].Rectangle.Y != enemy.Rectangle.Y) continue;
+                                    if (enemy.Rectangle.X < grounds[x, y].Rectangle.X && grounds[x, y].Rectangle.X < worm.WormRectangle.X)
                                     {
                                         enemy.SawWorm = false;
                                         return;
@@ -153,15 +153,15 @@ namespace Digger.Game.Common
                             enemy.MakeMove(Direction.Right);
                             return;
                         case Direction.Left:
-                            if (worm.WormRectangle.Y != enemy.EnemyRectangle.Y) break;
-                            if (worm.WormRectangle.X > enemy.EnemyRectangle.X) break;
+                            if (worm.WormRectangle.Y != enemy.Rectangle.Y) break;
+                            if (worm.WormRectangle.X > enemy.Rectangle.X) break;
                             for (int x = 0; x < Math.Sqrt(grounds.Length); x++)
                             {
                                 for (int y = 0; y < Math.Sqrt(grounds.Length); y++)
                                 {
                                     if (grounds[x, y].GroundType == GroundType.Free) continue;
-                                    if (grounds[x, y].Rectangle.Y != enemy.EnemyRectangle.Y) continue;
-                                    if (enemy.EnemyRectangle.X > grounds[x, y].Rectangle.X &&
+                                    if (grounds[x, y].Rectangle.Y != enemy.Rectangle.Y) continue;
+                                    if (enemy.Rectangle.X > grounds[x, y].Rectangle.X &&
                                         grounds[x, y].Rectangle.X > worm.WormRectangle.X)
                                     {
                                         enemy.SawWorm = false; 
@@ -179,7 +179,7 @@ namespace Digger.Game.Common
                 delegate(Enemy enemy)
                 {
                     Enemy e = new Enemy(_enemyTemplates[EnemyType.Beetle]);
-                    e.Initialize(enemy.EnemyRectangle);
+                    e.Initialize(enemy.Rectangle);
                     e.Direction = enemy.Direction;
                     e.AddAsNew = true;
                     return e;
@@ -188,10 +188,10 @@ namespace Digger.Game.Common
                 {
                     List<Direction> avaliableDirections = new List<Direction>();
                     Rectangle[] rectangles = new Rectangle[4];
-                    rectangles[0] = new Rectangle(enemy.EnemyRectangle.X, enemy.EnemyRectangle.Y - 42, enemy.EnemyRectangle.Width, enemy.EnemyRectangle.Height);
-                    rectangles[1] = new Rectangle(enemy.EnemyRectangle.X + 42, enemy.EnemyRectangle.Y, enemy.EnemyRectangle.Width, enemy.EnemyRectangle.Height);
-                    rectangles[2] = new Rectangle(enemy.EnemyRectangle.X, enemy.EnemyRectangle.Y + 42, enemy.EnemyRectangle.Width, enemy.EnemyRectangle.Height);
-                    rectangles[3] = new Rectangle(enemy.EnemyRectangle.X - 42, enemy.EnemyRectangle.Y, enemy.EnemyRectangle.Width, enemy.EnemyRectangle.Height);
+                    rectangles[0] = new Rectangle(enemy.Rectangle.X, enemy.Rectangle.Y - 42, enemy.Rectangle.Width, enemy.Rectangle.Height);
+                    rectangles[1] = new Rectangle(enemy.Rectangle.X + 42, enemy.Rectangle.Y, enemy.Rectangle.Width, enemy.Rectangle.Height);
+                    rectangles[2] = new Rectangle(enemy.Rectangle.X, enemy.Rectangle.Y + 42, enemy.Rectangle.Width, enemy.Rectangle.Height);
+                    rectangles[3] = new Rectangle(enemy.Rectangle.X - 42, enemy.Rectangle.Y, enemy.Rectangle.Width, enemy.Rectangle.Height);
 
                     // Up
                     if (gameField.Contains(rectangles[0])) avaliableDirections.Add(Direction.Up);
@@ -239,13 +239,13 @@ namespace Digger.Game.Common
                     enemy.MakeMove(choosenDirection);
                 }, null, delegate(Enemy enemy, Worm worm, Ground[,] grounds)
                 {
-                    if (Math.Sqrt(Math.Pow(enemy.EnemyRectangle.X - worm.WormRectangle.X, 2) +
-                         Math.Pow(enemy.EnemyRectangle.Y - worm.WormRectangle.Y, 2)) <= 4*42)
+                    if (Math.Sqrt(Math.Pow(enemy.Rectangle.X - worm.WormRectangle.X, 2) +
+                         Math.Pow(enemy.Rectangle.Y - worm.WormRectangle.Y, 2)) <= 4*42)
                     {
                         enemy.SawWorm = true;
-                        if (enemy.EnemyRectangle.Y < worm.WormRectangle.Y)
+                        if (enemy.Rectangle.Y < worm.WormRectangle.Y)
                         {
-                            Rectangle r = new Rectangle(enemy.EnemyRectangle.X, enemy.EnemyRectangle.Y + 42, enemy.EnemyRectangle.Width, enemy.EnemyRectangle.Height);
+                            Rectangle r = new Rectangle(enemy.Rectangle.X, enemy.Rectangle.Y + 42, enemy.Rectangle.Width, enemy.Rectangle.Height);
                             for (int x = 0; x < Math.Sqrt(grounds.Length); x++)
                             {
                                 for (int y = 0; y < Math.Sqrt(grounds.Length); y++)
@@ -262,9 +262,9 @@ namespace Digger.Game.Common
                             enemy.MakeMove(Direction.Down);
                             return;
                         }
-                        if (enemy.EnemyRectangle.Y > worm.WormRectangle.Y)
+                        if (enemy.Rectangle.Y > worm.WormRectangle.Y)
                         {
-                            Rectangle r = new Rectangle(enemy.EnemyRectangle.X, enemy.EnemyRectangle.Y - 42, enemy.EnemyRectangle.Width, enemy.EnemyRectangle.Height);
+                            Rectangle r = new Rectangle(enemy.Rectangle.X, enemy.Rectangle.Y - 42, enemy.Rectangle.Width, enemy.Rectangle.Height);
                             for (int x = 0; x < Math.Sqrt(grounds.Length); x++)
                             {
                                 for (int y = 0; y < Math.Sqrt(grounds.Length); y++)
@@ -281,9 +281,9 @@ namespace Digger.Game.Common
                             enemy.MakeMove(Direction.Up);
                             return;
                         }
-                        if (enemy.EnemyRectangle.X > worm.WormRectangle.X)
+                        if (enemy.Rectangle.X > worm.WormRectangle.X)
                         {
-                            Rectangle r = new Rectangle(enemy.EnemyRectangle.X - 42, enemy.EnemyRectangle.Y, enemy.EnemyRectangle.Width, enemy.EnemyRectangle.Height);
+                            Rectangle r = new Rectangle(enemy.Rectangle.X - 42, enemy.Rectangle.Y, enemy.Rectangle.Width, enemy.Rectangle.Height);
                             for (int x = 0; x < Math.Sqrt(grounds.Length); x++)
                             {
                                 for (int y = 0; y < Math.Sqrt(grounds.Length); y++)
@@ -300,9 +300,9 @@ namespace Digger.Game.Common
                             enemy.MakeMove(Direction.Left);
                             return;
                         }
-                        if (enemy.EnemyRectangle.X < worm.WormRectangle.X)
+                        if (enemy.Rectangle.X < worm.WormRectangle.X)
                         {
-                            Rectangle r = new Rectangle(enemy.EnemyRectangle.X + 42, enemy.EnemyRectangle.Y, enemy.EnemyRectangle.Width, enemy.EnemyRectangle.Height);
+                            Rectangle r = new Rectangle(enemy.Rectangle.X + 42, enemy.Rectangle.Y, enemy.Rectangle.Width, enemy.Rectangle.Height);
                             for (int x = 0; x < Math.Sqrt(grounds.Length); x++)
                             {
                                 for (int y = 0; y < Math.Sqrt(grounds.Length); y++)
@@ -325,14 +325,14 @@ namespace Digger.Game.Common
             _enemyTemplates.Add(EnemyType.Spider, new Enemy(EnemyType.Spider, "Game/Enemies/Spider", 2, 1, 3, Direction.Left, false, delegate(Enemy enemy)
                 {
                     Enemy e = new Enemy(_enemyTemplates[EnemyType.RedSpider]);
-                    e.Initialize(enemy.EnemyRectangle);
+                    e.Initialize(enemy.Rectangle);
                     e.Direction = enemy.Direction;
                     return e;
                 }, _enemyTemplates[EnemyType.Mouse].TestMove, null, _enemyTemplates[EnemyType.Mouse].Observe, _enemyTemplates[EnemyType.Mouse].Attack));
             _enemyTemplates.Add(EnemyType.RedSpider, new Enemy(EnemyType.RedSpider, "Game/Enemies/RedSpider", 2, 1, 3, Direction.Left, false, delegate(Enemy enemy)
                 {
                     Enemy e = new Enemy(_enemyTemplates[EnemyType.RedSpider]);
-                    e.Initialize(enemy.EnemyRectangle);
+                    e.Initialize(enemy.Rectangle);
                     e.Direction = enemy.Direction;
                     e.AddAsNew = true;
                     return e;
@@ -342,64 +342,64 @@ namespace Digger.Game.Common
                     switch (enemy.Direction)
                     {
                         case Direction.Up:
-                            if (worm.WormRectangle.X != enemy.EnemyRectangle.X) break;
-                            if (worm.WormRectangle.Y > enemy.EnemyRectangle.Y) break;
+                            if (worm.WormRectangle.X != enemy.Rectangle.X) break;
+                            if (worm.WormRectangle.Y > enemy.Rectangle.Y) break;
                             for (int x = 0; x < Math.Sqrt(grounds.Length); x++)
                             {
                                 for (int y = 0; y < Math.Sqrt(grounds.Length); y++)
                                 {
                                     if (grounds[x, y].GroundType == GroundType.Free) continue;
-                                    if (grounds[x, y].Rectangle.X != enemy.EnemyRectangle.X) continue;
-                                    if (enemy.EnemyRectangle.Y > grounds[x, y].Rectangle.Y && grounds[x, y].Rectangle.Y > worm.WormRectangle.Y) break;
+                                    if (grounds[x, y].Rectangle.X != enemy.Rectangle.X) continue;
+                                    if (enemy.Rectangle.Y > grounds[x, y].Rectangle.Y && grounds[x, y].Rectangle.Y > worm.WormRectangle.Y) break;
                                 }
                             }
                             s = new Shot(_shotTemplates[ShotType.Web]);
-                            s.Initialize(enemy.EnemyRectangle, Direction.Up);
+                            s.Initialize(enemy.Rectangle, Direction.Up);
                             return s;
                         case Direction.Down:
-                            if (worm.WormRectangle.X != enemy.EnemyRectangle.X) break;
-                            if (worm.WormRectangle.Y < enemy.EnemyRectangle.Y) break;
+                            if (worm.WormRectangle.X != enemy.Rectangle.X) break;
+                            if (worm.WormRectangle.Y < enemy.Rectangle.Y) break;
                             for (int x = 0; x < Math.Sqrt(grounds.Length); x++)
                             {
                                 for (int y = 0; y < Math.Sqrt(grounds.Length); y++)
                                 {
                                     if (grounds[x, y].GroundType == GroundType.Free) continue;
-                                    if (grounds[x, y].Rectangle.X != enemy.EnemyRectangle.X) continue;
-                                    if (enemy.EnemyRectangle.Y < grounds[x, y].Rectangle.Y && grounds[x, y].Rectangle.Y < worm.WormRectangle.Y) break;
+                                    if (grounds[x, y].Rectangle.X != enemy.Rectangle.X) continue;
+                                    if (enemy.Rectangle.Y < grounds[x, y].Rectangle.Y && grounds[x, y].Rectangle.Y < worm.WormRectangle.Y) break;
                                 }
                             }
                             s = new Shot(_shotTemplates[ShotType.Web]);
-                            s.Initialize(enemy.EnemyRectangle, Direction.Down);
+                            s.Initialize(enemy.Rectangle, Direction.Down);
                             return s;
                         case Direction.Right:
-                            if (worm.WormRectangle.Y != enemy.EnemyRectangle.Y) break;
-                            if (worm.WormRectangle.X < enemy.EnemyRectangle.X) break;
+                            if (worm.WormRectangle.Y != enemy.Rectangle.Y) break;
+                            if (worm.WormRectangle.X < enemy.Rectangle.X) break;
                             for (int x = 0; x < Math.Sqrt(grounds.Length); x++)
                             {
                                 for (int y = 0; y < Math.Sqrt(grounds.Length); y++)
                                 {
                                     if (grounds[x, y].GroundType == GroundType.Free) continue;
-                                    if (grounds[x, y].Rectangle.Y != enemy.EnemyRectangle.Y) continue;
-                                    if (enemy.EnemyRectangle.X < grounds[x, y].Rectangle.X && grounds[x, y].Rectangle.X < worm.WormRectangle.X) break;
+                                    if (grounds[x, y].Rectangle.Y != enemy.Rectangle.Y) continue;
+                                    if (enemy.Rectangle.X < grounds[x, y].Rectangle.X && grounds[x, y].Rectangle.X < worm.WormRectangle.X) break;
                                 }
                             }
                             s = new Shot(_shotTemplates[ShotType.Web]);
-                            s.Initialize(enemy.EnemyRectangle, Direction.Right);
+                            s.Initialize(enemy.Rectangle, Direction.Right);
                             return s;
                         case Direction.Left:
-                            if (worm.WormRectangle.Y != enemy.EnemyRectangle.Y) break;
-                            if (worm.WormRectangle.X > enemy.EnemyRectangle.X) break;
+                            if (worm.WormRectangle.Y != enemy.Rectangle.Y) break;
+                            if (worm.WormRectangle.X > enemy.Rectangle.X) break;
                             for (int x = 0; x < Math.Sqrt(grounds.Length); x++)
                             {
                                 for (int y = 0; y < Math.Sqrt(grounds.Length); y++)
                                 {
                                     if (grounds[x, y].GroundType == GroundType.Free) continue;
-                                    if (grounds[x, y].Rectangle.Y != enemy.EnemyRectangle.Y) continue;
-                                    if (enemy.EnemyRectangle.X > grounds[x, y].Rectangle.X && grounds[x, y].Rectangle.X > worm.WormRectangle.X) break;
+                                    if (grounds[x, y].Rectangle.Y != enemy.Rectangle.Y) continue;
+                                    if (enemy.Rectangle.X > grounds[x, y].Rectangle.X && grounds[x, y].Rectangle.X > worm.WormRectangle.X) break;
                                 }
                             }
                             s = new Shot(_shotTemplates[ShotType.Web]);
-                            s.Initialize(enemy.EnemyRectangle, Direction.Left);
+                            s.Initialize(enemy.Rectangle, Direction.Left);
                             return s;
                     }
                     return s;
