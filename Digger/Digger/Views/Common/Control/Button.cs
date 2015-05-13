@@ -78,6 +78,8 @@ namespace Digger.Views.Common.Control
                 if (_mouseState == MouseState.Click)
                 {
                     _label.Color = Color.Magenta;
+                    // Invoke navigate mission
+                    Navigator.NavigateTo(_navigationType, _passingParatemer);
                     return;
                 }
                 _label.Color = Color.White;
@@ -94,7 +96,7 @@ namespace Digger.Views.Common.Control
             {
                 _buttonGraphic.MoveToFrame(2);
                 // Invoke navigate mission
-                Navigator.NavigateTo(_navigationType);
+                Navigator.NavigateTo(_navigationType, _passingParatemer);
                 return;
             }
 

@@ -57,3 +57,5 @@ C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x8
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\OptionsButtons\Wsad.xnb
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Game\Fruits\Red.xnb
 C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\Help\Instruction.xnb
+C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\NextLevel.xnb
+C:\Users\Jakub\documents\visual studio 2013\Projects\Digger\Digger\Digger\bin\x86\Debug\Content\Views\NavigationButtons\TryAgain.xnb

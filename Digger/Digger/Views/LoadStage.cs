@@ -12,6 +12,8 @@ namespace Digger.Views
 {
     public class LoadStage : IXnaUseable
     {
+        private static int _maxLevel = 6;
+
         // Interferj użytkownika
         private FixedGraphic _background;
         private FixedGraphic _logo;
@@ -40,7 +42,8 @@ namespace Digger.Views
                 _players = new Button[Game1.Context.Players.Count];
                 for (int i = 0; i < Game1.Context.Players.Count; i++)
                 {
-                    _players[i] = new Button(typeof(NewGame), Game1.Context.Players[i].Level, Game1.Context.Players[i].Name);
+                    if (Game1.Context.Players[i].Level > _maxLevel) Game1.Context.Players[i].Level = _maxLevel;
+                    _players[i] = new Button(typeof(Stage), Game1.Context.Players[i].Level, Game1.Context.Players[i].Name);
                 }
             }
 
@@ -177,6 +180,7 @@ namespace Digger.Views
                     // Jeżeli kliknięty to szalej
                     if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                     {
+                        Game1.Context.LoadPlayerGame(i);
                         _players[i].MouseState = MouseState.Click;
                         continue;
                     }

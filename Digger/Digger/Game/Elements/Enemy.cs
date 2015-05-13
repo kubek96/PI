@@ -149,7 +149,7 @@ namespace Digger.Game.Elements
         {
             _enemyGraphic.Update(gameTime);
             // Sprawdź, czy nie minął już czas spowolnieniea
-            if (_sawWorm) return;
+            if (_sawWorm && !_isFreeze) return;
             _elapsedSlowTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
             if (_elapsedSlowTime > _slowEffectTime)
             {

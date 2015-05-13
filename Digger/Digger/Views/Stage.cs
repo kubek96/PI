@@ -17,7 +17,7 @@ namespace Digger.Views
 {
     public class Stage : IXnaUseable
     {
-        private static StageHelper _stageHelper;
+        private static StageHelper _stageHelper = new StageHelper();
 
         private FixedGraphic _background;
         private Worm _worm;
@@ -54,21 +54,30 @@ namespace Digger.Views
 
         // Pause
         private bool _isGamePaused;
-        private Pause _pause;
-        private Options _options;
-        private InGameHelp _help;
+        private Pause _pauseView;
+        private Options _optionsView;
+        private InGameHelp _helpView;
+
+        // Win
+        private Win _winView;
+        // Lose
+        private Lose _loseView;
 
         public Stage(int level)
         {
-            _stageHelper = new StageHelper();
-
-            _pause = new Pause();
+            _pauseView = new Pause();
             _isGamePaused = false;
 
-            _options = new Options();
-            _help = new InGameHelp();
+            _optionsView = new Options();
+            _helpView = new InGameHelp();
 
             _level = level;
+
+            // Win
+            _winView = new Win(_level + 1);
+
+            // Lose
+            _loseView = new Lose(_level);
 
             // Tło
             _background = new FixedGraphic();
@@ -99,10 +108,13 @@ namespace Digger.Views
             _totalEnemiesCount = 0;
             int[] enemiesCount = new int[5];
             for (int i = 0; i < 5; i++) enemiesCount[i] = 0;
-            for (int i = 0; i < _stageHelper.EnemiesLevelCount[_level].Count; i++)
+            //for (int i = 0; i < _stageHelper.EnemiesLevelCount[_level].Count; i++)
+            foreach (var pair in _stageHelper.EnemiesLevelCount[_level])
             {
-                _totalEnemiesCount += _stageHelper.EnemiesLevelCount[_level][(EnemyType) i];
-                enemiesCount[i] = _stageHelper.EnemiesLevelCount[_level][(EnemyType)i];
+                _totalEnemiesCount += pair.Value;
+                enemiesCount[(int) pair.Key] = pair.Value;
+                //_totalEnemiesCount += _stageHelper.EnemiesLevelCount[_level][(EnemyType) i];
+                //enemiesCount[i] = _stageHelper.EnemiesLevelCount[_level][(EnemyType)i];
             }
             _door = new Door(_stageHelper.GenerateEnemies(enemiesCount[0], enemiesCount[1], enemiesCount[2], enemiesCount[3], enemiesCount[4]), 8000);
             _totalKilledEnemiesCount = 0;
@@ -221,26 +233,105 @@ namespace Digger.Views
             int x, y;
             for (int i = 0; i < _stones.Count; i++)
             {
-                x = random.Next(0, (int) Math.Sqrt(_grounds.Length))*42 + horizontalShift; 
-                y = random.Next(0, (int)Math.Sqrt(_grounds.Length)) * 42 + verticalShift;
+                bool c = false;
                 // Randomowe koordynaty
-                // TODO: Zrób tak, żeby na siebie nie nachodziły (sprawdź, czy już nie została ta pozycja wylosowana)
+                x = random.Next(0, (int) Math.Sqrt(_grounds.Length))*42 + horizontalShift; 
+                y = random.Next(0, (int)Math.Sqrt(_grounds.Length)-1) * 42 + verticalShift;
+                // Zrób tak, żeby na siebie nie nachodziły (sprawdź, czy już nie została ta pozycja wylosowana)
+                for (int j = 0; j < i; j++)
+                {
+                    if (_stones[j].StoneRectangle.X == x && _stones[j].StoneRectangle.Y == y)
+                    {
+                        i--;
+                        c = true;
+                        break;
+                    }
+                }
+                for (int j = 0; j < _grounds.GetLength(0); j++)
+                {
+                    if (c) break;
+                    for (int k = 0; k < _grounds.GetLength(1); k++)
+                    {
+                        if (_grounds[j,k].GroundType != GroundType.Free) continue;
+                        if (_grounds[j, k].Rectangle.X == x && _grounds[j, k].Rectangle.Y == y)
+                        {
+                            i--;
+                            c = true;
+                            break;
+                        }
+                    }
+                }
+                if (c) continue;
                 _stones[i].Initialize(new Rectangle(x, y, 40, 40));
             }
             for (int i = 0; i < _purses.Count; i++)
             {
+                bool c = false;
                 x = random.Next(0, (int)Math.Sqrt(_grounds.Length)) * 42 + horizontalShift;
-                y = random.Next(0, (int)Math.Sqrt(_grounds.Length)) * 42 + verticalShift;
+                y = random.Next(0, (int)Math.Sqrt(_grounds.Length)-1) * 42 + verticalShift;
                 // Randomowe koordynaty
-                // TODO: Zrób tak, żeby na siebie nie nachodziły (sprawdź, czy już nie została ta pozycja wylosowana)
+                // Zrób tak, żeby na siebie nie nachodziły (sprawdź, czy już nie została ta pozycja wylosowana)
+                for (int j = 0; j < i; j++)
+                {
+                    if ((_purses[j].PurseRectangle.X == x && _purses[j].PurseRectangle.Y == y))
+                    {
+                        i--;
+                        c = true;
+                        break;
+                    }
+                }
+                for (int j = 0; j < _stones.Count; j++)
+                {
+                    if (_stones[j].StoneRectangle.X == x && _stones[j].StoneRectangle.Y == y)
+                    {
+                        i--;
+                        c = true;
+                        break;
+                    }
+                }
+                for (int j = 0; j < _grounds.GetLength(0); j++)
+                {
+                    if (c) break;
+                    for (int k = 0; k < _grounds.GetLength(1); k++)
+                    {
+                        if (_grounds[j, k].GroundType != GroundType.Free) continue;
+                        if (_grounds[j, k].Rectangle.X == x && _grounds[j, k].Rectangle.Y == y)
+                        {
+                            i--;
+                            c = true;
+                            break;
+                        }
+                    }
+                }
+                if (c) continue;
                 _purses[i].Initialize(new Rectangle(x, y, 40, 40));
             }
             for (int i = 0; i < _redFruits.Count; i++)
             {
+                bool c = false;
                 x = random.Next(0, (int)Math.Sqrt(_grounds.Length)) * 42 + horizontalShift;
                 y = random.Next(0, (int)Math.Sqrt(_grounds.Length)) * 42 + verticalShift;
                 // Randomowe koordynaty
-                // TODO: Zrób tak, żeby na siebie nie nachodziły (sprawdź, czy już nie została ta pozycja wylosowana)
+                // Zrób tak, żeby na siebie nie nachodziły (sprawdź, czy już nie została ta pozycja wylosowana)
+                for (int j = 0; j < _purses.Count; j++)
+                {
+                    if ((_purses[j].PurseRectangle.X == x && _purses[j].PurseRectangle.Y == y))
+                    {
+                        i--;
+                        c = true;
+                        break;
+                    }
+                }
+                for (int j = 0; j < _stones.Count; j++)
+                {
+                    if (_stones[j].StoneRectangle.X == x && _stones[j].StoneRectangle.Y == y)
+                    {
+                        i--;
+                        c = true;
+                        break;
+                    }
+                }
+                if (c) continue;
                 _redFruits[i].Initialize(new Rectangle(x, y, 40, 40));
             }
 
@@ -277,7 +368,6 @@ namespace Digger.Views
                 }
             }
 
-            //spriteBatch.Draw(_background.Image, _gameField, Color.Violet);
             // Rysuj grabalbe owocki
             for (int i = 0; i < _grabbableFruits.Count; i++)
             {
@@ -339,21 +429,42 @@ namespace Digger.Views
             _worm.Draw(spriteBatch);
 
 
-            // Dodaj rysowanie Pause
+            #region Pause
             if (_isGamePaused)
             {
-                if (_pause.ShowOptions)
+                if (_pauseView.ShowOptions)
                 {
-                    _options.Draw(spriteBatch, gameTime);
+                    _optionsView.Draw(spriteBatch, gameTime);
                     return;
                 }
-                if (_pause.ShowHelp)
+                if (_pauseView.ShowHelp)
                 {
-                    _help.Draw(spriteBatch, gameTime);
+                    _helpView.Draw(spriteBatch, gameTime);
                     return;
                 }
-                _pause.Draw(spriteBatch, gameTime);
+                _pauseView.Draw(spriteBatch, gameTime);
+                return;
             }
+            #endregion
+
+            #region Win
+
+            if (_winView.IsVisible)
+            {
+                _winView.Draw(spriteBatch,gameTime);
+                return;
+            }
+
+            #endregion
+
+            #region Lose
+
+            if (_loseView.IsVisible)
+            {
+                _loseView.Draw(spriteBatch,gameTime);
+            }
+
+            #endregion
         }
 
         public void Update(GameTime gameTime)
@@ -401,51 +512,70 @@ namespace Digger.Views
             Keys[] keys = newKeyboardState.GetPressedKeys();
 
             #region Pause
-            // Czy wciśnięto spacje lub p
+            // Czy wciśnięto spacje lub p lub esc
             for (int i = 0; i < keys.Length; i++)
             {
-                if (keys[i] != Keys.Space && keys[i] != Keys.P) continue;
+                if (keys[i] != Keys.Space && keys[i] != Keys.P && keys[i] != Keys.Escape) continue;
 
                 _isGamePaused = true;
-                _pause.Close = false;
+                _pauseView.Close = false;
             }
 
             // Czy pause
             if (_isGamePaused)
             {
-                if (_pause.ShowOptions)
+                if (_pauseView.ShowOptions)
                 {
-                    _options.Update(gameTime);
-                    if (_options.Close)
+                    _optionsView.Update(gameTime);
+                    if (_optionsView.Close)
                     {
-                        _options.Close = false;
-                        _pause.ElapsedGoBackTime = 0;
-                        _pause.ShowOptions = false;
+                        _optionsView.Close = false;
+                        _pauseView.ElapsedGoBackTime = 0;
+                        _pauseView.ShowOptions = false;
                     }
                     return;
                 }
 
-                if (_pause.ShowHelp)
+                if (_pauseView.ShowHelp)
                 {
-                    _help.Update(gameTime);
-                    if (_help.Close)
+                    _helpView.Update(gameTime);
+                    if (_helpView.Close)
                     {
-                        _help.Close = false;
-                        _pause.ElapsedGoBackTime = 0;
-                        _pause.ShowHelp = false;
+                        _helpView.Close = false;
+                        _pauseView.ElapsedGoBackTime = 0;
+                        _pauseView.ShowHelp = false;
                     }
                     return;
                 }
 
-                _pause.Update(gameTime);
-                if (_pause.Close) _isGamePaused = false;
+                _pauseView.Update(gameTime);
+                if (_pauseView.Close) _isGamePaused = false;
                 return;
             }
             #endregion
 
+            #region Win
+
+            if (_winView.IsVisible)
+            {
+                _winView.Update(gameTime);
+                return;
+            }
+
+            #endregion
+
+            #region Lose
+
+            if (_loseView.IsVisible)
+            {
+                _loseView.Update(gameTime);
+                return;
+            }
+
+            #endregion
+
+            #region Reakcja na wciskanie klawiszy przez użytkownika
             // Obsługuj ruch robaczka
-
-
             _elapsedTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
             _nextEnemieElapsedTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
             _enemieMoveElapsedTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -575,8 +705,10 @@ namespace Digger.Views
                 _elapsedTime = 0;
             }
             _lastPressedKeys = keys.ToArray();
-            // Robaczek
+            #endregion
 
+            #region Wrom akcja kopania
+            // Robaczek
             // Sprawdź przecięcia
             for (int x = 0; x < Math.Sqrt(_grounds.Length); x++)
             {
@@ -612,6 +744,9 @@ namespace Digger.Views
                     }
                 }
             }
+            #endregion
+
+            #region Przecięcia owoców z robaczkiem
             // Przecięcia z owocami
             for (int j = 0; j < _grabbableFruits.Count; j++)
             {
@@ -628,9 +763,12 @@ namespace Digger.Views
                 {
                     _redFruits[j].PlayerUse(_worm);
                     _redFruits[j].IsUsed = true;
+                    Game1.Context.Player.Points++;
                 }
             }
+            #endregion
 
+            #region Generowanie kolejnych przeciwników
             // Generuj kolejnych przeciwników
             if (_nextEnemieElapsedTime > _door.TimeToNextEnemie)
             {
@@ -638,7 +776,9 @@ namespace Digger.Views
                 if (e != null) _enemies.Add(e);
                 _nextEnemieElapsedTime = 0;
             }
+            #endregion
 
+            #region Enemies poruszanie
             if (_enemieMoveElapsedTime > 200)
             {
                 // Poruszaj przeciwnikami
@@ -709,6 +849,7 @@ namespace Digger.Views
             {
                 _enemies[i].Move();
 
+                #region Przecięcia emeies z strzałami
                 for (int j = 0; j < _shots.Count; j++)
                 {
                     if (_shots[j].ShootSomething) 
@@ -719,7 +860,9 @@ namespace Digger.Views
                         _shots[j].ShootSomething = true;
                     }
                 }
+                #endregion
 
+                #region Przecięcia eniemies z zgniłymi owcami
                 for (int j = 0; j < _rootenKiwis.Count; j++)
                 {
                     if (_rootenKiwis[j].FruitRectangle.Intersects(_enemies[i].EnemyRectangle))
@@ -728,8 +871,11 @@ namespace Digger.Views
                         _rootenKiwis[j].IsUsed = true;
                     }
                 }
+                #endregion
             }
+            #endregion
 
+            #region Obsługa ruchu strzałów użytkownika
             // Akutalizacja strzałów
             for (int i = 0; i < _shots.Count; i++)
             {
@@ -755,6 +901,9 @@ namespace Digger.Views
                     }
                 }
             }
+            #endregion
+
+            #region Obsługa strzałów wystrzelonych przez enemies
             for (int i = 0; i < _webShots.Count; i++)
             {
                 _webShots[i].Move();
@@ -795,7 +944,9 @@ namespace Digger.Views
                     }
                 }
             }
+            #endregion
 
+            #region Kamienie
             // Aktualizacja kamieni
             for (int i = 0; i < _stones.Count; i++)
             {
@@ -896,6 +1047,9 @@ namespace Digger.Views
                 if (freeSpace[2] && !ocupated[2]) _stones[i].MakeMove(Direction.Down);
             }
 
+            #endregion
+
+            #region Sakiewki
             // Akutalizacja sakiewek
             for (int i = 0; i < _purses.Count; i++)
             {
@@ -1001,10 +1155,14 @@ namespace Digger.Views
 
                 if (freeSpace[2] && !ocupated[2]) _purses[i].MakeMove(Direction.Down);
             }
+            #endregion
 
+            #region Worm poruszanie
             // Przesuwanie robaczka
             _worm.Move();
+            #endregion
 
+            #region obsługa możliwości przejścia do kolejnej planszy
             // Sprawdź, czy gracz juz nie przeszedl gry
             if (_worm.RedFruits == _redFruitsCount || _totalEnemiesCount == _totalKilledEnemiesCount)
             {
@@ -1012,19 +1170,27 @@ namespace Digger.Views
                 // Ew. dodaj szczura
                 if (e != null) _enemies.Add(e);
             }
+            #endregion
 
+            #region Obsługa wygranej i przegranej
             // Czy gracz zeczywiscie przeszedl gre
             if (_door.AreOpen && _worm.WormRectangle.Intersects(_door.DoorRectangle))
             {
-                // TODO: wyświetl inofmracje o wygrnaej
+                // Wyświetl inofmracje o wygrnaej
+                Game1.Context.Player.Level++;
+                Game1.Context.SavePlayersToSerializedFile();
+                _winView.IsVisible = true;
             }
 
             // Czy gracz przegrał
             if (_worm.Life == 0)
             {
-                // TODO: Gracz przegral
+                // Gracz przegral
+                _loseView.IsVisible = true;
             }
+            #endregion
 
+            #region Interfejs użytkownika
             // Uaktualnienie elementów interfejsu użytkownika
             _interfaceFruitsCounts[0].Text = _worm.AcidShoots.ToString();
             _interfaceFruitsCounts[1].Text = _worm.VenomShoots.ToString();
@@ -1033,8 +1199,9 @@ namespace Digger.Views
             _interfaceFruitsCounts[4].Text = _worm.MudCount.ToString();
             _interfaceFruitsCounts[5].Text = _worm.CandyCount.ToString();
             _interfaceLifeCount.Text = _worm.Life.ToString();
+            #endregion
 
-            // Obsługa usuwania elementów
+            #region Obsługa usuwania elementów
             // Usuwanie użytych owoców
             for (int i = 0; i < _grabbableFruits.Count; i++)
             {
@@ -1077,8 +1244,7 @@ namespace Digger.Views
             {
                 if (_stones[i].IsShatter) _stones.RemoveAt(i);
             }
-
-            
+            #endregion
         }
     }
 }

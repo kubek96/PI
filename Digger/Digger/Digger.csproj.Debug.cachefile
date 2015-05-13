@@ -50,4 +50,6 @@ Content\Views\OptionsButtons\Arrows.xnb
 Content\Views\OptionsButtons\Wsad.xnb
 Content\Game\Fruits\Red.xnb
 Content\Views\Help\Instruction.xnb
+Content\Views\NavigationButtons\NextLevel.xnb
+Content\Views\NavigationButtons\TryAgain.xnb
 Content\Sounds\Sound1.wma
