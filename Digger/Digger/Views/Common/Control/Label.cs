@@ -4,6 +4,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Digger.Views.Common.Control
 {
+    /// <summary>
+    /// Klasa obszaru tekstowego.
+    /// </summary>
     public class Label
     {
         private string _string;
@@ -12,6 +15,7 @@ namespace Digger.Views.Common.Control
         private Color _color;
         private Rectangle _rectangle;
 
+        #region Properties
         public Rectangle Rectangle
         {
             get { return _rectangle; }
@@ -34,18 +38,32 @@ namespace Digger.Views.Common.Control
             get { return _color; }
             set { _color = value; }
         }
+        #endregion
 
+        /// <summary>
+        /// Wczytuje czcionkę dla obszaru tekstowego.
+        /// </summary>
+        /// <param name="content">Obiekt wskazujący na bibliotekę plików peryferyjnych.</param>
+        /// <param name="assetName">Ścieżka do zasobu.</param>
         public void LoadContent(ContentManager content, string assetName)
         {
             _font = content.Load<SpriteFont>(assetName);
         }
 
+        /// <summary>
+        /// Inicjalizuje położenie obszaru tekstowego. 
+        /// </summary>
+        /// <param name="position">Pozycja centralna dla nowego tekstu.</param>
         public void Initialize(Vector2 position)
         {
             _position = position;
             _rectangle = new Rectangle((int)_position.X, (int)_position.Y, (int)_font.MeasureString(_string).X, (int)_font.MeasureString(_string).Y);
         }
 
+        /// <summary>
+        /// Funkcja ospowiadająca za rysowanie się obiektu obszaru roboczego.
+        /// </summary>
+        /// <param name="spriteBatch">Powłoka graficzna.</param>
         public void Draw(SpriteBatch spriteBatch)
         {
             // Find the center of the string

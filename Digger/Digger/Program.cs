@@ -7,11 +7,11 @@ namespace Digger
     static class Program
     {
         /// <summary>
-        /// The main entry point for the application.
+        /// Wywo³uje uruchomienie gry.
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            using (Window game = new Window())
             {
                 game.Run();
             }

@@ -108,7 +108,7 @@ namespace Digger.Game.Elements
             _observe = observe;
             _attack = attack;
 
-            LoadContent(Game1.Context.Content, assetName);
+            LoadContent(Window.Context.Content, assetName);
 
             _isKilled = false;
             _sawWorm = false;

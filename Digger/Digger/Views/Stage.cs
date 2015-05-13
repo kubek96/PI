@@ -178,12 +178,12 @@ namespace Digger.Views
             _interfaceLevelNumber = new Label(_level.ToString());
 
             _interfacePoints = new Label("Points");
-            _interfacePointsCount = new Label(Game1.Context.Player.Points.ToString());
+            _interfacePointsCount = new Label(Window.Context.Player.Points.ToString());
 
             #endregion
 
             // Wczytaj zawartość
-            LoadContent(Game1.Context.Content);
+            LoadContent(Window.Context.Content);
 
             // Zainicjalizuj
             Initialize();
@@ -416,7 +416,7 @@ namespace Digger.Views
             #endregion
 
             #region Music
-            if (Game1.Context.Player.IsMusicOn) MediaPlayer.Play(_song);
+            if (Window.Context.Player.IsMusicOn) MediaPlayer.Play(_song);
             MediaPlayer.IsRepeating = true;
             #endregion
         }
@@ -578,7 +578,7 @@ namespace Digger.Views
             #endregion
 
             #region Music
-            if (!Game1.Context.Player.IsMusicOn) MediaPlayer.Stop();
+            if (!Window.Context.Player.IsMusicOn) MediaPlayer.Stop();
             else
             {
                 if (MediaPlayer.State == MediaState.Stopped)
@@ -667,8 +667,8 @@ namespace Digger.Views
                 // Klawisz w dole
 
                 // Ruch:
-                //if (!Game1.Context.Player.UserControls.ContainsKey(keys[i]))
-                if (!Digger.Data.Control.Keyboard.Layout[Game1.Context.Player.UserKeyboraPreferences].ContainsKey(keys[i]))
+                //if (!Window.Context.Player.UserControls.ContainsKey(keys[i]))
+                if (!Digger.Data.Control.Keyboard.Layout[Window.Context.Player.UserKeyboraPreferences].ContainsKey(keys[i]))
                 {
                     // Budowanie grudek ziemi
                     if (!_lastPressedKeys.Contains(Keys.D5) && keys[i] == Keys.D5 && _worm.MudCount > 0)
@@ -773,14 +773,14 @@ namespace Digger.Views
                 }
 
                 // Sprawdź, czy po ruchu gracz jest wewnątrz obszaru grania
-                //if (!_gameField.Contains(_worm.TestMove(Game1.Context.Player.UserControls[keys[i]]))) 
-                if (!_gameField.Contains(_worm.TestMove(Digger.Data.Control.Keyboard.Layout[Game1.Context.Player.UserKeyboraPreferences][keys[i]]))) 
+                //if (!_gameField.Contains(_worm.TestMove(Window.Context.Player.UserControls[keys[i]]))) 
+                if (!_gameField.Contains(_worm.TestMove(Digger.Data.Control.Keyboard.Layout[Window.Context.Player.UserKeyboraPreferences][keys[i]]))) 
                     continue;
                 // Sprawdź czy robaczek nie w ruchu
                 if (_worm.IsMoving) 
                     continue;
 
-                _worm.MakeMove(Digger.Data.Control.Keyboard.Layout[Game1.Context.Player.UserKeyboraPreferences][keys[i]]);
+                _worm.MakeMove(Digger.Data.Control.Keyboard.Layout[Window.Context.Player.UserKeyboraPreferences][keys[i]]);
                
                 _elapsedTime = 0;
             }
@@ -843,7 +843,7 @@ namespace Digger.Views
                 {
                     _redFruits[j].PlayerUse(_worm);
                     _redFruits[j].IsUsed = true;
-                    Game1.Context.Player.Points++;
+                    Window.Context.Player.Points++;
                 }
             }
             #endregion
@@ -1259,11 +1259,11 @@ namespace Digger.Views
 
             #region Obsługa wygranej i przegranej
             // Czy gracz zeczywiscie przeszedl gre
-            if (_door.AreOpen && _worm.WormRectangle.Intersects(_door.DoorRectangle))
+            if (_door.AreOpen && _worm.WormRectangle.Intersects(_door.Rectangle))
             {
                 // Wyświetl inofmracje o wygrnaej
-                Game1.Context.Player.Level++;
-                Game1.Context.SavePlayersToSerializedFile();
+                Window.Context.Player.Level++;
+                Window.Context.SavePlayersToSerializedFile();
                 _winView.IsVisible = true;
             }
 
@@ -1286,7 +1286,7 @@ namespace Digger.Views
             _interfaceLifeCount.Text = _worm.Life.ToString();
 
             _interfaceRedFruitCounts.Text = _worm.RedFruits.ToString();
-            _interfacePointsCount.Text = Game1.Context.Player.Points.ToString();
+            _interfacePointsCount.Text = Window.Context.Player.Points.ToString();
 
             #endregion
 

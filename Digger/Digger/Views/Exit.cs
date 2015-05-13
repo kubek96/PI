@@ -16,10 +16,12 @@ namespace Digger.Views
             _background = new FixedGraphic();
 
             // Wczytaj zawartość
-            LoadContent(Game1.Context.Content);
+            LoadContent(Window.Context.Content);
 
             // Zainicjalizuj
             Initialize();
+
+            Logger.Report("rozpoczęto procedurę wyłączania gry.");
         }
 
         public void LoadContent(ContentManager content)
@@ -42,7 +44,7 @@ namespace Digger.Views
 
         public void Update(GameTime gameTime)
         {
-            Game1.Context.ReadyToExit = true;
+            Window.Context.ReadyToExit = true;
         }
     }
 }

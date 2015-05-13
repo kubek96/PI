@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MouseState = Digger.Views.Common.Control.MouseState;
+using ButtonState = Digger.Views.Common.Control.ButtonState;
 
 namespace Digger.Views
 {
@@ -29,18 +29,18 @@ namespace Digger.Views
             _header = new Label("Best scores:");
 
             // Część główna okna
-            if (Game1.Context.Players.Count == 0)
+            if (Window.Context.Players.Count == 0)
             {
                 _players = new Label[1, 1];
                 _players[0,0] = new Label("There are no players yet.");
             }
             else
             {
-                _players = new Label[Game1.Context.Players.Count, 2];
-                for (int i = 0; i < Game1.Context.Players.Count; i++)
+                _players = new Label[Window.Context.Players.Count, 2];
+                for (int i = 0; i < Window.Context.Players.Count; i++)
                 {
-                    _players[i, 0] = new Label(Game1.Context.Players[i].Name);
-                    _players[i, 1] = new Label(Game1.Context.Players[i].Points.ToString());
+                    _players[i, 0] = new Label(Window.Context.Players[i].Name);
+                    _players[i, 1] = new Label(Window.Context.Players[i].Points.ToString());
                 }
             }
 
@@ -49,7 +49,7 @@ namespace Digger.Views
             _exit = new Button(typeof(Exit));
 
             // Wczytaj zawartość
-            LoadContent(Game1.Context.Content);
+            LoadContent(Window.Context.Content);
 
             // Zainicjalizuj
             Initialize();
@@ -83,13 +83,13 @@ namespace Digger.Views
             _exit.ButtonGraphic.Initialize(new Vector2(screenWidth - 360, 50), 340, 25, 1, 100, Color.White);
             _previousPage.ButtonGraphic.Initialize(new Vector2(0, 50), 340, 25, 1, 100, Color.White);
 
-            if (Game1.Context.Players.Count == 0)
+            if (Window.Context.Players.Count == 0)
             {
                 _players[0, 0].Initialize(new Vector2(screenWidth / 2, screenHeight / 2));
             }
             else
             {
-                for (int i = 0; i < Game1.Context.Players.Count; i++)
+                for (int i = 0; i < Window.Context.Players.Count; i++)
                 {
                     _players[i, 0].Initialize(new Vector2((screenWidth/2) - 150, 230 + i * 40));
                     _players[i, 1].Initialize(new Vector2((screenWidth / 2) +160, 230 + i * 40));
@@ -136,37 +136,37 @@ namespace Digger.Views
             if (_previousPage.ButtonGraphic.DestRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
             {
                 // Jeżeli kliknięty to szalej
-                if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                if (Mouse.GetState().LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 {
-                    _previousPage.MouseState = MouseState.Click;
+                    _previousPage.ButtonState = ButtonState.Click;
                 }
                 else
                 {
                     // Zmień wyglad buttona
-                    _previousPage.MouseState = MouseState.MouseOn;
+                    _previousPage.ButtonState = ButtonState.MouseOn;
                 }   
             }
             else
             {
-                _previousPage.MouseState = MouseState.MouseLeave;
+                _previousPage.ButtonState = ButtonState.MouseLeave;
             }
 
             if (_exit.ButtonGraphic.DestRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
             {
                 // Jeżeli kliknięty to szalej
-                if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                if (Mouse.GetState().LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 {
-                    _exit.MouseState = MouseState.Click;
+                    _exit.ButtonState = ButtonState.Click;
                 }
                 else
                 {
                     // Zmień wyglad buttona
-                    _exit.MouseState = MouseState.MouseOn;
+                    _exit.ButtonState = ButtonState.MouseOn;
                 }
             }
             else
             {
-                _exit.MouseState = MouseState.MouseLeave;
+                _exit.ButtonState = ButtonState.MouseLeave;
             }
         }
     }

@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using MouseState = Digger.Views.Common.Control.MouseState;
+using ButtonState = Digger.Views.Common.Control.ButtonState;
 
 namespace Digger.Views
 {
@@ -47,7 +47,7 @@ namespace Digger.Views
             _menu[4] = new Button(typeof(Exit));
             
             // Wczytaj zawartość
-            LoadContent(Game1.Context.Content);
+            LoadContent(Window.Context.Content);
 
             // Zainicjalizuj
             Initialize();
@@ -145,18 +145,18 @@ namespace Digger.Views
                 if (_menu[i].ButtonGraphic.DestRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
                     // Jeżeli kliknięty to szalej
-                    if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                    if (Mouse.GetState().LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                     {
-                        _menu[i].MouseState = MouseState.Click;
+                        _menu[i].ButtonState = ButtonState.Click;
                         continue;
                     }
 
                     // Zmień wyglad buttona
-                    _menu[i].MouseState = MouseState.MouseOn;
+                    _menu[i].ButtonState = ButtonState.MouseOn;
                     continue;
                 }
 
-                _menu[i].MouseState = MouseState.MouseLeave;
+                _menu[i].ButtonState = ButtonState.MouseLeave;
             }
         }
     }

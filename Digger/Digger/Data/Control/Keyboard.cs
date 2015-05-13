@@ -4,12 +4,19 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Digger.Data.Control
 {
+    /// <summary>
+    /// Enumerator możliwych konfiguracji klawiatury.
+    /// </summary>
     public enum KeyboradLayout
     {
         Arrows,
         WSAD
     }
 
+    /// <summary>
+    /// Klasa zarządcy klawiaturą.
+    /// Zawiera słownik możliwych konfiguracji sterowania.
+    /// </summary>
     public static class Keyboard
     {
          public static Dictionary<KeyboradLayout, Dictionary<Keys, Direction>> Layout = new Dictionary<KeyboradLayout, Dictionary<Keys, Direction>>()

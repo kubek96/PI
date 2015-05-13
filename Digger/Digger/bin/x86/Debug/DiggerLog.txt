@@ -1,0 +1,7 @@
+Digger logger is running.
+Session from: 2015-05-13 21:24:38
+Uruchomienie w trybie pełnego ekranu.
+Poprawnie wczytano plik z zapisanymi graczami
+Wczytano rozgrywkę gracza o imieniu: Kuba.
+rozpoczęto procedurę wyłączania gry.
+Zapisano graczy do pliku.

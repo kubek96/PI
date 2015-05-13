@@ -32,7 +32,7 @@ namespace Digger.Game.Elements
             _shotGraphic = new AnimatedGraphic();
             _speed = 14;
             _shootSomething = false;
-            LoadContent(Game1.Context.Content, assetName);
+            LoadContent(Window.Context.Content, assetName);
             _shootEnemy = shootEnemy;
         }
 

@@ -51,7 +51,7 @@ namespace Digger.Game.Elements
 
             _fruitGraphic = new FixedGraphic();
 
-            LoadContent(Game1.Context.Content, assetName);
+            LoadContent(Window.Context.Content, assetName);
 
             _isUsed = false;
         }

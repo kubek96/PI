@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MouseState = Digger.Views.Common.Control.MouseState;
+using ButtonState = Digger.Views.Common.Control.ButtonState;
 
 namespace Digger.Views
 {
@@ -33,17 +33,17 @@ namespace Digger.Views
             _header = new Label("Choose player name to play:");
 
             // Część główna okna
-            if (Game1.Context.Players.Count == 0)
+            if (Window.Context.Players.Count == 0)
             {
                 _noPlayers = new Label("There are no players yet.");
             }
             else
             {
-                _players = new Button[Game1.Context.Players.Count];
-                for (int i = 0; i < Game1.Context.Players.Count; i++)
+                _players = new Button[Window.Context.Players.Count];
+                for (int i = 0; i < Window.Context.Players.Count; i++)
                 {
-                    if (Game1.Context.Players[i].Level > _maxLevel) Game1.Context.Players[i].Level = _maxLevel;
-                    _players[i] = new Button(typeof(Stage), Game1.Context.Players[i].Level, Game1.Context.Players[i].Name);
+                    if (Window.Context.Players[i].Level > _maxLevel) Window.Context.Players[i].Level = _maxLevel;
+                    _players[i] = new Button(typeof(Stage), Window.Context.Players[i].Level, Window.Context.Players[i].Name);
                 }
             }
 
@@ -52,7 +52,7 @@ namespace Digger.Views
             _exit = new Button(typeof(Exit));
 
             // Wczytaj zawartość
-            LoadContent(Game1.Context.Content);
+            LoadContent(Window.Context.Content);
 
             // Zainicjalizuj
             Initialize();
@@ -68,7 +68,7 @@ namespace Digger.Views
 
             _header.LoadContent(content, "Fonts/Silkscreen");
 
-            if (Game1.Context.Players.Count == 0)
+            if (Window.Context.Players.Count == 0)
             {
                 _noPlayers.LoadContent(content, "Fonts/Silkscreen");
             }
@@ -90,13 +90,13 @@ namespace Digger.Views
             _exit.ButtonGraphic.Initialize(new Vector2(screenWidth - 360, 50), 340, 25, 1, 100, Color.White);
             _previousPage.ButtonGraphic.Initialize(new Vector2(0, 50), 340, 25, 1, 100, Color.White);
 
-            if (Game1.Context.Players.Count == 0)
+            if (Window.Context.Players.Count == 0)
             {
                 _noPlayers.Initialize(new Vector2(screenWidth / 2, screenHeight / 2));
             }
             else
             {
-                for (int i = 0; i < Game1.Context.Players.Count; i++)
+                for (int i = 0; i < Window.Context.Players.Count; i++)
                 {
                     _players[i].Label.Initialize(new Vector2(screenWidth / 2,230+40*i));
                 }
@@ -110,13 +110,13 @@ namespace Digger.Views
         {
             _background.Draw(spriteBatch);
 
-            if (Game1.Context.Players.Count == 0)
+            if (Window.Context.Players.Count == 0)
             {
                 _noPlayers.Draw(spriteBatch);
             }
             else
             {
-                for (int i = 0; i < Game1.Context.Players.Count; i++)
+                for (int i = 0; i < Window.Context.Players.Count; i++)
                 {
                     _players[i].Draw(spriteBatch, gameTime);
                 }
@@ -138,37 +138,37 @@ namespace Digger.Views
             if (_previousPage.ButtonGraphic.DestRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
             {
                 // Jeżeli kliknięty to szalej
-                if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                if (Mouse.GetState().LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 {
-                    _previousPage.MouseState = MouseState.Click;
+                    _previousPage.ButtonState = ButtonState.Click;
                 }
                 else
                 {
                     // Zmień wyglad buttona
-                    _previousPage.MouseState = MouseState.MouseOn;
+                    _previousPage.ButtonState = ButtonState.MouseOn;
                 }
             }
             else
             {
-                _previousPage.MouseState = MouseState.MouseLeave;
+                _previousPage.ButtonState = ButtonState.MouseLeave;
             }
 
             if (_exit.ButtonGraphic.DestRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
             {
                 // Jeżeli kliknięty to szalej
-                if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                if (Mouse.GetState().LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 {
-                    _exit.MouseState = MouseState.Click;
+                    _exit.ButtonState = ButtonState.Click;
                 }
                 else
                 {
                     // Zmień wyglad buttona
-                    _exit.MouseState = MouseState.MouseOn;
+                    _exit.ButtonState = ButtonState.MouseOn;
                 }
             }
             else
             {
-                _exit.MouseState = MouseState.MouseLeave;
+                _exit.ButtonState = ButtonState.MouseLeave;
             }
 
             for (int i = 0; i < _players.Length; i++)
@@ -178,19 +178,19 @@ namespace Digger.Views
                 if (_players[i].Label.Rectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
                     // Jeżeli kliknięty to szalej
-                    if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                    if (Mouse.GetState().LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                     {
-                        Game1.Context.LoadPlayerGame(i);
-                        _players[i].MouseState = MouseState.Click;
+                        Window.Context.LoadPlayerGame(i);
+                        _players[i].ButtonState = ButtonState.Click;
                         continue;
                     }
 
                     // Zmień wyglad buttona
-                    _players[i].MouseState = MouseState.MouseOn;
+                    _players[i].ButtonState = ButtonState.MouseOn;
                     continue;
                 }
 
-                _players[i].MouseState = MouseState.MouseLeave;
+                _players[i].ButtonState = ButtonState.MouseLeave;
             }
         }
     }

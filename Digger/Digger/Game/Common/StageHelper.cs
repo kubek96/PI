@@ -7,6 +7,11 @@ using System.Linq;
 
 namespace Digger.Game.Common
 {
+    /// <summary>
+    /// Statyczna klasa umożliwiająca szybkie kopiowanie obiektów owoców, wrogów, strzałów ze wzorców.
+    /// Dodatkowo posiada słownik mówiący o ilości danych przeciwników na danym poziome.
+    /// Dostarcza metod umożliwijących szybkie generowanie planszy.
+    /// </summary>
     public class StageHelper
     {
         private Dictionary<FruitType, Fruit> _fruitsTemplates;
@@ -14,6 +19,9 @@ namespace Digger.Game.Common
         private Dictionary<ShotType, Shot> _shotTemplates;
         private Dictionary<int, Dictionary<EnemyType, int>> _enemiesLevelCount;
 
+        /// <summary>
+        /// Konstruktor inicjalicujący wszystkie słowniki.
+        /// </summary>
         public StageHelper()
         {
             _fruitsTemplates = new Dictionary<FruitType, Fruit>();
@@ -453,6 +461,14 @@ namespace Digger.Game.Common
             }
         }
 
+        /// <summary>
+        /// Metoda generująca koordynaty, które mają być wolne od ziemi (ścieżki).
+        /// Wykorzystuje do tego algorytm opracowany w dokumentacji technicznej na stronie 15.
+        /// </summary>
+        /// <param name="n">Liczba "zagięć" korytaża.</param>
+        /// <param name="width">Szerokość planszy, domyślnie 20.</param>
+        /// <param name="height">Wysokość planszy, domyślnie 20.</param>
+        /// <returns>Tablica punktów z "wolnymi" koordynatami.</returns>
         public Point[] GenerateFreeGroundsCoordinates(int n, int width=20, int height=20)
         {
             // Popraw do indeksowania od 0;
@@ -504,7 +520,13 @@ namespace Digger.Game.Common
             return tunnel.ToArray();
         }
 
-        // Zwrócone obiekty wymagają initialize!
+        /// <summary>
+        /// Funkcja generująca owoce, które nie są czerwone.
+        /// Wybór dokonuje się w sposób losowy.
+        /// Zwrócone obiekty wymagają wywołania metody Initialize!
+        /// </summary>
+        /// <param name="n">Liczba owoców do wygenerowania.</param>
+        /// <returns>Lista owoców.</returns>
         public List<Fruit> GenerateGrabableFruits(int n)
         {
             Random random = new Random();
@@ -516,6 +538,12 @@ namespace Digger.Game.Common
             return fruits;
         }
 
+        /// <summary>
+        /// Funkcja generująca listę czerwonych owoców.
+        /// Zwrócone obiekty wymagają wywołania metody Initialize!
+        /// </summary>
+        /// <param name="n">Liczba owoców do wygenerowania.</param>
+        /// <returns>Lista czerwonych owoców.</returns>
         public List<Fruit> GenerateRedFruits(int n)
         {
             List<Fruit> fruits = new List<Fruit>();
@@ -526,6 +554,15 @@ namespace Digger.Game.Common
             return fruits;
         }
 
+        /// <summary>
+        /// Funkcja generująca strukturę, na której kolejno ułożone są kolejne jednostki wrogów.
+        /// </summary>
+        /// <param name="mouses">Liczba myszy.</param>
+        /// <param name="beetles">Liczba żuków.</param>
+        /// <param name="spiders">Liczba pająków.</param>
+        /// <param name="redSpiders">Liczba czerownych pająków.</param>
+        /// <param name="rats">Liczba szczurów.</param>
+        /// <returns>Stos wrogów.</returns>
         public Stack<Enemy> GenerateEnemies(int mouses = 5, int beetles = 0, int spiders = 0, int redSpiders = 0, int rats = 0)
         {
             Stack<Enemy> enemies = new Stack<Enemy>();
@@ -554,6 +591,10 @@ namespace Digger.Game.Common
             return enemies;
         } 
 
+        /// <summary>
+        /// Metoda pozwalająca w szybki sposób wyciągnąć odpowiednie obiekty owoców w celu umieszczenia ich w interfejsie użytkownika.
+        /// </summary>
+        /// <returns>Tablica owoców.</returns>
         public Fruit[] GenerateInterfaceFruits()
         {
             Fruit[] fruits = new Fruit[6];
@@ -568,6 +609,11 @@ namespace Digger.Game.Common
             return fruits;
         }
 
+        /// <summary>
+        /// Metoda generująca odpowiednią liczbę obiektów kamieni.
+        /// </summary>
+        /// <param name="n">Liczba kamieni.</param>
+        /// <returns>Lista kamieni.</returns>
         public List<Stone> GenerateStones(int n)
         {
             List<Stone> stones = new List<Stone>();
@@ -579,7 +625,13 @@ namespace Digger.Game.Common
 
             return stones;
         }
-
+        
+        /// <summary>
+        /// Metoda generująca sakiewki.
+        /// Każda z nich z różnym prawdopodobieństwem może zawierać różne owocki bądź być pustą.
+        /// </summary>
+        /// <param name="n">Liczba sakiewek do wygenerowania.</param>
+        /// <returns>Lista sakiewek.</returns>
         public List<Purse> GeneratePurses(int n)
         {
             List<Purse> purses = new List<Purse>();
@@ -597,16 +649,15 @@ namespace Digger.Game.Common
                     continue;
                 }
 
-                fruitType = FruitType.Candy;
-                //fruitType = next >= 85
-                //    ? FruitType.Candy
-                //    : next >= 70
-                //        ? FruitType.Kiwi
-                //        : next >= 55
-                //            ? FruitType.Plum
-                //            : next >= 40
-                //                ? FruitType.Watermelon
-                //                : next >= 20 ? FruitType.Orange : FruitType.Lemon;
+                fruitType = next >= 85
+                    ? FruitType.Candy
+                    : next >= 70
+                        ? FruitType.Kiwi
+                        : next >= 55
+                            ? FruitType.Plum
+                            : next >= 40
+                                ? FruitType.Watermelon
+                                : next >= 20 ? FruitType.Orange : FruitType.Lemon;
 
                 purses.Add(new Purse(new Fruit(_fruitsTemplates[fruitType])));
             }
@@ -614,24 +665,39 @@ namespace Digger.Game.Common
             return purses;
         }
 
+        #region Properites
+
+        /// <summary>
+        /// Słownik strzałów.
+        /// </summary>
         public Dictionary<ShotType, Shot> ShotTemplates
         {
             get { return _shotTemplates; }
         }
 
+        /// <summary>
+        /// Słownik owoców.
+        /// </summary>
         public Dictionary<FruitType, Fruit> FruitsTemplates
         {
             get { return _fruitsTemplates; }
         }
 
+        /// <summary>
+        /// Słownik wrogów.
+        /// </summary>
         public Dictionary<EnemyType, Enemy> EnemyTemplates
         {
             get { return _enemyTemplates; }
         }
 
+        /// <summary>
+        /// Słownik liczności wrogów na danym poziome gry.
+        /// </summary>
         public Dictionary<int, Dictionary<EnemyType, int>> EnemiesLevelCount
         {
             get { return _enemiesLevelCount; }
         }
+        #endregion
     }
 }

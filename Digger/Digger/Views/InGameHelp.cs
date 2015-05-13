@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MouseState = Digger.Views.Common.Control.MouseState;
+using ButtonState = Digger.Views.Common.Control.ButtonState;
 
 namespace Digger.Views
 {
@@ -48,7 +48,7 @@ namespace Digger.Views
             _exit = new Button(typeof(Exit));
 
             // Wczytaj zawartość
-            LoadContent(Game1.Context.Content);
+            LoadContent(Window.Context.Content);
 
             // Zainicjalizuj
             Initialize();
@@ -104,37 +104,37 @@ namespace Digger.Views
             if (_goBack.ButtonGraphic.DestRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
             {
                 // Jeżeli kliknięty to szalej
-                if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                if (Mouse.GetState().LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 {
                     _close = true;
                 }
                 else
                 {
                     // Zmień wyglad buttona
-                    _goBack.MouseState = MouseState.MouseOn;
+                    _goBack.ButtonState = ButtonState.MouseOn;
                 }
             }
             else
             {
-                _goBack.MouseState = MouseState.MouseLeave;
+                _goBack.ButtonState = ButtonState.MouseLeave;
             }
 
             if (_exit.ButtonGraphic.DestRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
             {
                 // Jeżeli kliknięty to szalej
-                if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                if (Mouse.GetState().LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 {
-                    _exit.MouseState = MouseState.Click;
+                    _exit.ButtonState = ButtonState.Click;
                 }
                 else
                 {
                     // Zmień wyglad buttona
-                    _exit.MouseState = MouseState.MouseOn;
+                    _exit.ButtonState = ButtonState.MouseOn;
                 }
             }
             else
             {
-                _exit.MouseState = MouseState.MouseLeave;
+                _exit.ButtonState = ButtonState.MouseLeave;
             }
         }
     }

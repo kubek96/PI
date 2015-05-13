@@ -8,18 +8,29 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Digger.Views.Common.Control
 {
+    /// <summary>
+    /// Klasa przycisków.
+    /// </summary>
     public class Button
     {
         private AnimatedGraphic _buttonAnimation;
         private AnimatedGraphic _buttonGraphic;
         private Type _navigationType;
-        private MouseState _mouseState; // czy myszka znajduje się nad obiektem
+        private ButtonState _buttonState; // czy myszka znajduje się nad obiektem
         private int? _passingParatemer;
         private Label _label;
         
+        /// <summary>
+        /// Konstruktor.
+        /// Jeżeli pole label zostanie ustawione button przestanie działać w trybie wyświetlania grafiki.
+        /// Będzie wyświetlał i wykonywał operacje na tekście.
+        /// </summary>
+        /// <param name="navigationType">Typ klasy widoku, do którego ma nastąpić przekierowanie w razie zmiany stanu na kliknięto.</param>
+        /// <param name="args">Parametry opcjonalne potrzebne do inicjowania obiektów widoków.</param>
+        /// <param name="label">Tekst do trybu tekstowego buttona.</param>
         public Button(Type navigationType, int? args = null, string label=null)
         {
-            _mouseState = MouseState.MouseLeave;
+            _buttonState = ButtonState.MouseLeave;
             _navigationType = navigationType;
             _passingParatemer = args;
 
@@ -28,23 +39,30 @@ namespace Digger.Views.Common.Control
             else _label = null;
         }
 
+        #region Properties
         public AnimatedGraphic ButtonGraphic
         {
             get { return _buttonGraphic; }
             set { _buttonGraphic = value; }
         }
 
-        public MouseState MouseState
+        public ButtonState ButtonState
         {
-            get { return _mouseState; }
-            set { _mouseState = value; }
+            get { return _buttonState; }
+            set { _buttonState = value; }
         }
 
         public Label Label
         {
             get { return _label; }
         }
+        #endregion
 
+        /// <summary>
+        /// Metoda wczytująca zasoby potrzebne do wyświetlania przycisku.
+        /// </summary>
+        /// <param name="content">Wskazanie na obiekt zarządcy zasobami.</param>
+        /// <param name="assetName">Ścieżka do zasobu.</param>
         public void LoadContent(ContentManager content, string assetName)
         {
             if (_label != null)
@@ -55,6 +73,11 @@ namespace Digger.Views.Common.Control
             _buttonGraphic.LoadContent(content, assetName);
         }
 
+        /// <summary>
+        /// Metoda rysująca button.
+        /// </summary>
+        /// <param name="spriteBatch">Powłoka graficzna.</param>
+        /// <param name="gameTime">Informacja na temat czasu gry.</param>
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             if (_label != null)
@@ -66,16 +89,20 @@ namespace Digger.Views.Common.Control
             _buttonGraphic.Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// Wykonuje operacje związane z obsługą zachowania buttona.
+        /// </summary>
+        /// <param name="gameTime">Informacja na temat czasu gry.</param>
         public void Update(GameTime gameTime)
         {
             if (_label != null)
             {
-                if (_mouseState == MouseState.MouseOn)
+                if (_buttonState == ButtonState.MouseOn)
                 {
                     _label.Color = Color.Yellow;
                     return;
                 }
-                if (_mouseState == MouseState.Click)
+                if (_buttonState == ButtonState.Click)
                 {
                     _label.Color = Color.Magenta;
                     // Invoke navigate mission
@@ -86,13 +113,13 @@ namespace Digger.Views.Common.Control
                 return;
             }
 
-            if (_mouseState == MouseState.MouseOn)
+            if (_buttonState == ButtonState.MouseOn)
             {
                 _buttonGraphic.MoveToFrame(1);
                 return;
             }
 
-            if (_mouseState == MouseState.Click)
+            if (_buttonState == ButtonState.Click)
             {
                 _buttonGraphic.MoveToFrame(2);
                 // Invoke navigate mission

@@ -7,6 +7,9 @@ using System.Linq;
 
 namespace Digger.Views.Common.Control
 {
+    /// <summary>
+    /// Klasa kontrolki Input.
+    /// </summary>
     public class Input
     {
         private string _string;
@@ -15,12 +18,18 @@ namespace Digger.Views.Common.Control
         private AnimatedGraphic _iBeam;
         private Keys[] _lastPressedKeys;
 
+        #region Properites
         public string Text
         {
             get { return _string; }
             set { _string = value; }
         }
+        #endregion
 
+        /// <summary>
+        /// Konstruktor.
+        /// </summary>
+        /// <param name="label">Tekst początkowy.</param>
         public Input(string label ="")
         {
             _string = label;
@@ -32,6 +41,11 @@ namespace Digger.Views.Common.Control
             _lastPressedKeys = new Keys[0];
         }
 
+        /// <summary>
+        /// Metoda wczytująca zasoby potrzebne to utworzenia obiektu Input.
+        /// </summary>
+        /// <param name="content">Obiket wskazujący na zarządcę zasobów.</param>
+        /// <param name="assetName">Ścieżka do zasobu.</param>
         public void LoadContent(ContentManager content, string assetName)
         {
             _font = content.Load<SpriteFont>(assetName);
@@ -40,6 +54,10 @@ namespace Digger.Views.Common.Control
             _iBeam.LoadContent(content, "Views/Common/IBeam");
         }
 
+        /// <summary>
+        /// Umiejscawia kontrolkę we wskazanej pozycji.
+        /// </summary>
+        /// <param name="position">Wektor pozycji.</param>
         public void Initialize(Vector2 position)
         {
             _position = position;
@@ -48,6 +66,11 @@ namespace Digger.Views.Common.Control
             _iBeam.Initialize(new Vector2(_position.X, _position.Y-(_iBeam.Image.Height/2) - 2), 5, _iBeam.Image.Height, 2, 500, Color.White);
         }
 
+        /// <summary>
+        /// Metoda wykonująca rysowanie obiektów składających się na kontrolkę input.
+        /// </summary>
+        /// <param name="spriteBatch">Powłoka graficzna.</param>
+        /// <param name="gameTime">Informacja na temat czasu gry.</param>
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             // Find the center of the string
@@ -58,6 +81,11 @@ namespace Digger.Views.Common.Control
             _iBeam.Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// Wykonuje operacje związane z logiką działania kontrolki Input.
+        /// W tym również obsługuje zachowanie iBeam'u.
+        /// </summary>
+        /// <param name="gameTime">Informacja na temat czasu gry.</param>
         public void Update(GameTime gameTime)
         {
             _iBeam.Update(gameTime);

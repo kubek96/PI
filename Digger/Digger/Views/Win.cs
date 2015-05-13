@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MouseState = Digger.Views.Common.Control.MouseState;
+using ButtonState = Digger.Views.Common.Control.ButtonState;
 
 namespace Digger.Views
 {
@@ -53,7 +53,7 @@ namespace Digger.Views
             _goToMainMenuButton = new Button(typeof(Menu));
 
             // Wczytaj zawartość
-            LoadContent(Game1.Context.Content);
+            LoadContent(Window.Context.Content);
 
             // Zainicjalizuj
             Initialize();
@@ -115,38 +115,38 @@ namespace Digger.Views
                 if (_goToNextLevel.ButtonGraphic.DestRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
                     // Jeżeli kliknięty to szalej
-                    if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                    if (Mouse.GetState().LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                     {
-                        _goToNextLevel.MouseState = MouseState.Click;
+                        _goToNextLevel.ButtonState = ButtonState.Click;
                     }
                     else
                     {
                         // Zmień wyglad buttona
-                        _goToNextLevel.MouseState = MouseState.MouseOn;
+                        _goToNextLevel.ButtonState = ButtonState.MouseOn;
                     }
                 }
                 else
                 {
-                    _goToNextLevel.MouseState = MouseState.MouseLeave;
+                    _goToNextLevel.ButtonState = ButtonState.MouseLeave;
                 }
             }
 
             if (_goToMainMenuButton.ButtonGraphic.DestRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
             {
                 // Jeżeli kliknięty to szalej
-                if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                if (Mouse.GetState().LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 {
-                    _goToMainMenuButton.MouseState = MouseState.Click;
+                    _goToMainMenuButton.ButtonState = ButtonState.Click;
                 }
                 else
                 {
                     // Zmień wyglad buttona
-                    _goToMainMenuButton.MouseState = MouseState.MouseOn;
+                    _goToMainMenuButton.ButtonState = ButtonState.MouseOn;
                 }
             }
             else
             {
-                _goToMainMenuButton.MouseState = MouseState.MouseLeave;
+                _goToMainMenuButton.ButtonState = ButtonState.MouseLeave;
             }
         }
     }

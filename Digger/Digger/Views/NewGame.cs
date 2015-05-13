@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MouseState = Digger.Views.Common.Control.MouseState;
+using ButtonState = Digger.Views.Common.Control.ButtonState;
 
 namespace Digger.Views
 {
@@ -34,7 +34,7 @@ namespace Digger.Views
             _userName = new Input();
 
             // Wczytaj zawartość
-            LoadContent(Game1.Context.Content);
+            LoadContent(Window.Context.Content);
 
             // Zainicjalizuj
             Initialize();
@@ -96,7 +96,7 @@ namespace Digger.Views
                 if (_menu[i].ButtonGraphic.DestRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 {
                     // Jeżeli kliknięty to szalej
-                    if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                    if (Mouse.GetState().LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                     {
                         // Dokonaj szybkiej walidacji
                         if (i == 0)
@@ -104,21 +104,21 @@ namespace Digger.Views
                             // Czy wprowadzono imię gracza?
                             if (_userName.Text.Trim() == "") continue;
                             // Utwórz nowego gracza
-                            Game1.Context.CreateNewPlayer(_userName.Text);
+                            Window.Context.CreateNewPlayer(_userName.Text);
                             Navigator.NavigateTo(typeof(Stage), 0);
                             continue;
                         }
 
-                        _menu[i].MouseState = MouseState.Click;
+                        _menu[i].ButtonState = ButtonState.Click;
                         continue;
                     }
 
                     // Zmień wyglad buttona
-                    _menu[i].MouseState = MouseState.MouseOn;
+                    _menu[i].ButtonState = ButtonState.MouseOn;
                     continue;
                 }
 
-                _menu[i].MouseState = MouseState.MouseLeave;
+                _menu[i].ButtonState = ButtonState.MouseLeave;
             }
 
             // Input

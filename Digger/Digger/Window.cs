@@ -15,44 +15,44 @@ using Microsoft.Xna.Framework.Media;
 namespace Digger
 {
     /// <summary>
-    /// This is the main type for your game
+    /// G³ówne okno aplikacji.
     /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class Window : Microsoft.Xna.Framework.Game
     {
         public static Context Context;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        //private Context context;
 
-        public Game1()
+        /// <summary>
+        /// Konstruktor bezparametrowy
+        /// </summary>
+        public Window()
         {
             graphics = new GraphicsDeviceManager(this);
-            //graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
 
             // Wielkoœæ obrazu
-            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            
-            //Window.AllowUserResizing = true;
-            //Window.ClientSizeChanged += Window_ClientSizeChanged; 
+            graphics.PreferredBackBufferHeight = 900;
+            graphics.PreferredBackBufferWidth = 1440;
+
+            if (graphics.PreferredBackBufferHeight <= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height &&
+            graphics.PreferredBackBufferWidth <= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width)
+            {
+                Logger.Report("Uruchomienie w trybie pe³nego ekranu.");
+                graphics.IsFullScreen = true;
+            }
+            else
+            {
+                Logger.Report("Uruchomienie w trybie okna. Gra nie mieœci siê na ekranie.");
+            }
 
             IsMouseVisible = true;
         }
 
-        //void Window_ClientSizeChanged(object sender, EventArgs e) // change resolution after resize 
-        //{
-        //    graphics.PreferredBackBufferWidth = GraphicsDevice.Viewport.Width;
-        //    graphics.PreferredBackBufferHeight = GraphicsDevice.Viewport.Height;
-        //    graphics.ApplyChanges();
-        //} 
-
         /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
+        /// Inicjalizuj obiekty.
+        /// Wykonuje inicjalizacje bie¿¹cego kontekstu oraz przekierowywuje widok do menu.
         /// </summary>
         protected override void Initialize()
         {
@@ -64,32 +64,26 @@ namespace Digger
         }
 
         /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
+        /// Wczytuje pliki zewnêtrzne.
+        /// Inicjalizuje pow³okê graficzn¹.
         /// </summary>
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            //bg = new Background(Content);
-
-            // TODO: use this.Content to load your game content here
         }
 
         /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
+        /// Zadaniem funkcji jest posprz¹tanie po zakoñczeniu pracy.
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
 
         /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
+        /// Wywo³uje logikê danego obiketu widoku.
         /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        /// <param name="gameTime">Dostarcza informacji na temat czasu gry.</param>
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
@@ -103,9 +97,9 @@ namespace Digger
         }
 
         /// <summary>
-        /// This is called when the game should draw itself.
+        /// Pozwala na rysowanie obiektów znajduj¹cych siê w wybranym widoku.
         /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        /// <param name="gameTime">Dostarcza informacji na temat czasu gry.</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
