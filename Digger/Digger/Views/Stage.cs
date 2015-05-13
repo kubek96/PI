@@ -15,6 +15,10 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Digger.Views
 {
+    /// <summary>
+    /// Klasa zawierająca całą logikę gry.
+    /// Wie, które obiekty interfejsu planszy należy narysować.
+    /// </summary>
     public class Stage : IXnaUseable
     {
         private static StageHelper _stageHelper = new StageHelper();
@@ -78,6 +82,10 @@ namespace Digger.Views
         private Lose _loseView;
         #endregion
 
+        /// <summary>
+        /// Konstruktor tworzący wszystkie obiekty potrzebne do zainicjalizowania rozgrywki.
+        /// </summary>
+        /// <param name="level">Numer bieżącego levelu.</param>
         public Stage(int level)
         {
             _level = level;
@@ -189,6 +197,10 @@ namespace Digger.Views
             Initialize();
         }
 
+        /// <summary>
+        /// Metoda wczytuje grafiki, czcionkni oraz muzykę dla wszystkich obiektów znajdujących się w Stage.
+        /// </summary>
+        /// <param name="content">Manager zasobów.</param>
         public void LoadContent(ContentManager content)
         {
             #region Muzyka
@@ -249,6 +261,10 @@ namespace Digger.Views
             #endregion
         }
 
+        /// <summary>
+        /// Metoda inicjalizująca obiekty interfejsu użytkownika,
+        /// muzykę oraz wszystkie elementy planszy.
+        /// </summary>
         public void Initialize()
         {
             #region Elementy gry
@@ -421,6 +437,11 @@ namespace Digger.Views
             #endregion
         }
 
+        /// <summary>
+        /// Metoda wywołująca rysowanie obiektów gry, interfejsów oraz, jeżeli mają być widoczne - odpowiednio innych widoków.
+        /// </summary>
+        /// <param name="spriteBatch">Powłoka graficzna.</param>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             #region Elementy gry
@@ -547,6 +568,12 @@ namespace Digger.Views
             #endregion
         }
 
+        /// <summary>
+        /// Metoda uaktualniająca obiekty interfejsu.
+        /// Odpowiada za obsługę zdarzeń.
+        /// To tu znajduje się cała logika gry.
+        /// </summary>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Update(GameTime gameTime)
         {
             #region Update

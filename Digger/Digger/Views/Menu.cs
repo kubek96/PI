@@ -13,6 +13,9 @@ using ButtonState = Digger.Views.Common.Control.ButtonState;
 
 namespace Digger.Views
 {
+    /// <summary>
+    /// Klasa menu głównego gry.
+    /// </summary>
     public class Menu : IXnaUseable
     {
         private FixedGraphic _background;
@@ -23,6 +26,9 @@ namespace Digger.Views
         private FixedGraphic _groundBuffer;
         private FixedGraphic _menuFrame;
 
+        /// <summary>
+        /// Konstruktor menu głównego.
+        /// </summary>
         public Menu()
         {
             // Tło
@@ -55,6 +61,10 @@ namespace Digger.Views
             MediaPlayer.Stop();
         }
 
+        /// <summary>
+        /// Metoda wczytuje grafiki i czcionkni dla wszystkich obiektów znajdujących się w Menu.
+        /// </summary>
+        /// <param name="content">Manager zasobów.</param>
         public void LoadContent(ContentManager content)
         {
             _background.LoadContent(content, "Views/Common/Background");
@@ -102,6 +112,11 @@ namespace Digger.Views
             }
         }
 
+        /// <summary>
+        /// Metoda wywołująca rysowanie obiektów interfejsu.
+        /// </summary>
+        /// <param name="spriteBatch">Powłoka graficzna.</param>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             _background.Draw(spriteBatch);
@@ -122,6 +137,11 @@ namespace Digger.Views
             }
         }
 
+        /// <summary>
+        /// Metoda uaktualniająca obiekty interfejsu.
+        /// Odpowiada za obsługę zdarzeń.
+        /// </summary>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Update(GameTime gameTime)
         {
             // Grass

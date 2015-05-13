@@ -9,6 +9,9 @@ using ButtonState = Digger.Views.Common.Control.ButtonState;
 
 namespace Digger.Views
 {
+    /// <summary>
+    /// Klasa widoku przegranej.
+    /// </summary>
     public class Lose : IXnaUseable
     {
 
@@ -23,12 +26,20 @@ namespace Digger.Views
 
         private int _currentLevel;
 
+        #region Properties
         public bool IsVisible
         {
             get { return _isVisible; }
             set { _isVisible = value; }
         }
+        #endregion
 
+        /// <summary>
+        /// Konstruktor widoku przegranej. 
+        /// Widok ten wyświetlany jest w momencie zabicia robaczka.
+        /// Domyślnie jest niewidoczny.
+        /// </summary>
+        /// <param name="currentLevel">Numer bieżącego levelu.</param>
         public Lose(int currentLevel)
         {
             _currentLevel = currentLevel;
@@ -52,6 +63,10 @@ namespace Digger.Views
             Initialize();
         }
 
+        /// <summary>
+        /// Metoda wczytuje grafiki i czcionkni dla wszystkich obiektów znajdujących się w Lose.
+        /// </summary>
+        /// <param name="content">Manager zasobów.</param>
         public void LoadContent(ContentManager content)
         {
             _background.LoadContent(content, "Views/Common/TransparentBackground");
@@ -63,6 +78,9 @@ namespace Digger.Views
             _infoLabel.LoadContent(content, "Fonts/Silkscreen");
         }
 
+        /// <summary>
+        /// Metoda inicjalizująca obiekty interfejsu użytkownika.
+        /// </summary>
         public void Initialize()
         {
             int screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
@@ -75,6 +93,11 @@ namespace Digger.Views
             _tryAgain.ButtonGraphic.Initialize(new Vector2((screenWidth - 350) / 2, 420), 370, 72, 1, 100, Color.White);
         }
 
+        /// <summary>
+        /// Metoda wywołująca rysowanie obiektów interfejsu.
+        /// </summary>
+        /// <param name="spriteBatch">Powłoka graficzna.</param>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             _background.Draw(spriteBatch);
@@ -88,6 +111,11 @@ namespace Digger.Views
             _infoLabel.Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// Metoda uaktualniająca obiekty interfejsu.
+        /// Odpowiada za obsługę zdarzeń.
+        /// </summary>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Update(GameTime gameTime)
         {
             _goToMainMenuButton.Update(gameTime);

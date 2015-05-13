@@ -1,4 +1,8 @@
-﻿using Digger.Graphic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Digger.Data;
+using Digger.Graphic;
 using Digger.Views.Common;
 using Digger.Views.Common.Control;
 using Microsoft.Xna.Framework;
@@ -9,6 +13,9 @@ using ButtonState = Digger.Views.Common.Control.ButtonState;
 
 namespace Digger.Views
 {
+    /// <summary>
+    /// Widok najlepszych wyników.
+    /// </summary>
     public class BestScores : IXnaUseable
     {
         // Interferj użytkownika
@@ -19,6 +26,10 @@ namespace Digger.Views
         private Button _previousPage;
         private Label[,] _players;
 
+        /// <summary>
+        /// Konstruktor.
+        /// Wczytuje listę 16 najlepszych graczy oraz sortuje ich od najlepszego wyniku w dół.
+        /// </summary>
         public BestScores()
         {
             // Tło
@@ -36,11 +47,15 @@ namespace Digger.Views
             }
             else
             {
-                _players = new Label[Window.Context.Players.Count, 2];
-                for (int i = 0; i < Window.Context.Players.Count; i++)
+                List<Player> p = Window.Context.Players.ToList();
+                p.Sort((p1, p2) => p2.Points.CompareTo(p1.Points));
+
+                int howMany = p.Count < 16 ? p.Count : 16;
+                _players = new Label[howMany, 2];
+                for (int i = 0; i < howMany; i++)
                 {
-                    _players[i, 0] = new Label(Window.Context.Players[i].Name);
-                    _players[i, 1] = new Label(Window.Context.Players[i].Points.ToString());
+                    _players[i, 0] = new Label(p[i].Name);
+                    _players[i, 1] = new Label(p[i].Points.ToString());
                 }
             }
 
@@ -55,6 +70,10 @@ namespace Digger.Views
             Initialize();
         }
 
+        /// <summary>
+        /// Metoda wczytuje grafiki i czcionkni dla wszystkich obiektów znajdujących się w BestScores.
+        /// </summary>
+        /// <param name="content">Manager zasobów.</param>
         public void LoadContent(ContentManager content)
         {
             _background.LoadContent(content, "Views/Common/Background");
@@ -74,6 +93,9 @@ namespace Digger.Views
             }
         }
 
+        /// <summary>
+        /// Metoda inicjalizująca obiekty interfejsu użytkownika.
+        /// </summary>
         public void Initialize()
         {
             int screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
@@ -89,7 +111,7 @@ namespace Digger.Views
             }
             else
             {
-                for (int i = 0; i < Window.Context.Players.Count; i++)
+                for (int i = 0; i < _players.GetLength(0); i++)
                 {
                     _players[i, 0].Initialize(new Vector2((screenWidth/2) - 150, 230 + i * 40));
                     _players[i, 1].Initialize(new Vector2((screenWidth / 2) +160, 230 + i * 40));
@@ -108,6 +130,11 @@ namespace Digger.Views
             _logo.Initialize(new Vector2((screenWidth - _logo.Image.Width)/ 2, 20), Color.White);
         }
 
+        /// <summary>
+        /// Metoda wywołująca rysowanie obiektów interfejsu.
+        /// </summary>
+        /// <param name="spriteBatch">Powłoka graficzna.</param>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             _background.Draw(spriteBatch);
@@ -128,6 +155,11 @@ namespace Digger.Views
             _header.Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// Metoda uaktualniająca obiekty interfejsu.
+        /// Odpowiada za obsługę zdarzeń.
+        /// </summary>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Update(GameTime gameTime)
         {
             _previousPage.Update(gameTime);

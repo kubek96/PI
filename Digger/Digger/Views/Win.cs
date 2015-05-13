@@ -9,6 +9,9 @@ using ButtonState = Digger.Views.Common.Control.ButtonState;
 
 namespace Digger.Views
 {
+    /// <summary>
+    /// Klasa widoku odpowiadającego za wyświetlanie ekranu wygranej.
+    /// </summary>
     public class Win : IXnaUseable
     {
         private static int _maxLevel = 7;
@@ -29,6 +32,12 @@ namespace Digger.Views
             set { _isVisible = value; }
         }
 
+        /// <summary>
+        /// Konstruktor.
+        /// Jako paramter przyjmuje numer levelu, do którego ma prowadzić przycisk do następnego levelu.
+        /// Jeżeli numer przekracza przyjęty limit wyświetlony zostje komunikat o przejściu gry.
+        /// </summary>
+        /// <param name="nextLevel">Numer następnego levelu.</param>
         public Win(int nextLevel)
         {
             _nextLevel = nextLevel;
@@ -59,6 +68,10 @@ namespace Digger.Views
             Initialize();
         }
 
+        /// <summary>
+        /// Metoda wczytuje grafiki i czcionkni dla wszystkich obiektów znajdujących się w BestScores.
+        /// </summary>
+        /// <param name="content">Manager zasobów.</param>
         public void LoadContent(ContentManager content)
         {
             _background.LoadContent(content, "Views/Common/TransparentBackground");
@@ -74,6 +87,9 @@ namespace Digger.Views
             _infoLabel.LoadContent(content, "Fonts/Silkscreen");
         }
 
+        /// <summary>
+        /// Metoda inicjalizująca obiekty interfejsu użytkownika.
+        /// </summary>
         public void Initialize()
         {
             int screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
@@ -89,6 +105,11 @@ namespace Digger.Views
             }
         }
 
+        /// <summary>
+        /// Metoda wywołująca rysowanie obiektów interfejsu.
+        /// </summary>
+        /// <param name="spriteBatch">Powłoka graficzna.</param>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             _background.Draw(spriteBatch);
@@ -105,6 +126,11 @@ namespace Digger.Views
             _infoLabel.Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// Metoda uaktualniająca obiekty interfejsu.
+        /// Odpowiada za obsługę zdarzeń.
+        /// </summary>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Update(GameTime gameTime)
         {
             _goToMainMenuButton.Update(gameTime);

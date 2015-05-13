@@ -11,6 +11,9 @@ using ButtonState = Digger.Views.Common.Control.ButtonState;
 
 namespace Digger.Views
 {
+    /// <summary>
+    /// Klasa widoku interfejsu tworzenia nowej gry.
+    /// </summary>
     public class NewGame : IXnaUseable
     {
         private FixedGraphic _background;
@@ -18,6 +21,9 @@ namespace Digger.Views
         private FixedGraphic _menuFrame;
         private Input _userName;
 
+        /// <summary>
+        /// Konstrukotr widoku okna nowej gry.
+        /// </summary>
         public NewGame()
         {
             // Tło
@@ -40,6 +46,10 @@ namespace Digger.Views
             Initialize();
         }
 
+        /// <summary>
+        /// Metoda wczytuje grafiki i czcionkni dla wszystkich obiektów znajdujących się w NewGame.
+        /// </summary>
+        /// <param name="content">Manager zasobów.</param>
         public void LoadContent(ContentManager content)
         {
             _background.LoadContent(content, "Views/Common/Background");
@@ -53,6 +63,9 @@ namespace Digger.Views
             _userName.LoadContent(content, "Fonts/Silkscreen");
         }
 
+        /// <summary>
+        /// Metoda inicjalizująca obiekty interfejsu użytkownika.
+        /// </summary>
         public void Initialize()
         {
             int screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
@@ -69,6 +82,11 @@ namespace Digger.Views
             _userName.Initialize(new Vector2(screenWidth / 2, screenHeight / 2));
         }
 
+        /// <summary>
+        /// Metoda wywołująca rysowanie obiektów interfejsu.
+        /// </summary>
+        /// <param name="spriteBatch">Powłoka graficzna.</param>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             _background.Draw(spriteBatch);
@@ -82,6 +100,11 @@ namespace Digger.Views
             _userName.Draw(spriteBatch, gameTime);
         }
 
+        /// <summary>
+        /// Metoda uaktualniająca obiekty interfejsu.
+        /// Odpowiada za obsługę zdarzeń.
+        /// </summary>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Update(GameTime gameTime)
         {
             // Menu

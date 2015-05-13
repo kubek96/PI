@@ -10,6 +10,9 @@ using ButtonState = Digger.Views.Common.Control.ButtonState;
 
 namespace Digger.Views
 {
+    /// <summary>
+    /// Klasa widoku opcji (preferencji) gracza.
+    /// </summary>
     public class Options : IXnaUseable
     {
         // Interferj użytkownika
@@ -33,6 +36,10 @@ namespace Digger.Views
             set { _close = value; }
         }
 
+        /// <summary>
+        /// Konstruktor opcji.
+        /// Domyślnie widok ten jest niewidoczny.
+        /// </summary>
         public Options()
         {
             // Tło
@@ -64,6 +71,10 @@ namespace Digger.Views
             Initialize();
         }
 
+        /// <summary>
+        /// Metoda wczytuje grafiki i czcionkni dla wszystkich obiektów znajdujących się w Options.
+        /// </summary>
+        /// <param name="content">Manager zasobów.</param>
         public void LoadContent(ContentManager content)
         {
             _background.LoadContent(content, "Views/Common/TransparentBackground");
@@ -83,6 +94,9 @@ namespace Digger.Views
             _header.LoadContent(content, "Fonts/Silkscreen");
         }
 
+        /// <summary>
+        /// Metoda inicjalizująca obiekty interfejsu użytkownika.
+        /// </summary>
         public void Initialize()
         {
             int screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
@@ -104,6 +118,11 @@ namespace Digger.Views
             _logo.Initialize(new Vector2((screenWidth - _logo.Image.Width) / 2, 20), Color.White);
         }
 
+        /// <summary>
+        /// Metoda wywołująca rysowanie obiektów interfejsu.
+        /// </summary>
+        /// <param name="spriteBatch">Powłoka graficzna.</param>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             _background.Draw(spriteBatch);
@@ -128,6 +147,11 @@ namespace Digger.Views
             _header.Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// Metoda uaktualniająca obiekty interfejsu.
+        /// Odpowiada za obsługę zdarzeń.
+        /// </summary>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Update(GameTime gameTime)
         {
             _goBack.Update(gameTime);

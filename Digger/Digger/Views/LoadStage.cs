@@ -10,6 +10,9 @@ using ButtonState = Digger.Views.Common.Control.ButtonState;
 
 namespace Digger.Views
 {
+    /// <summary>
+    /// Klasa widoku służącego do wczytywania zapisanej rozgrywki.
+    /// </summary>
     public class LoadStage : IXnaUseable
     {
         private static int _maxLevel = 6;
@@ -22,7 +25,12 @@ namespace Digger.Views
         private Button _previousPage;
         private Button[] _players;
         private Label _noPlayers;
+        private int _howMany;
 
+        /// <summary>
+        /// Konstruktor widoku wczytywania istniejących rozgrywek.
+        /// Wczytuje je od najstarszej (pierwszej utwożonej) do najnoweszej.
+        /// </summary>
         public LoadStage()
         {
             // Tło
@@ -39,8 +47,9 @@ namespace Digger.Views
             }
             else
             {
-                _players = new Button[Window.Context.Players.Count];
-                for (int i = 0; i < Window.Context.Players.Count; i++)
+                int howMany = Window.Context.Players.Count < 16 ? Window.Context.Players.Count : 16;
+                _players = new Button[howMany];
+                for (int i = 0; i < howMany; i++)
                 {
                     if (Window.Context.Players[i].Level > _maxLevel) Window.Context.Players[i].Level = _maxLevel;
                     _players[i] = new Button(typeof(Stage), Window.Context.Players[i].Level, Window.Context.Players[i].Name);
@@ -58,6 +67,10 @@ namespace Digger.Views
             Initialize();
         }
 
+        /// <summary>
+        /// Metoda wczytuje grafiki i czcionkni dla wszystkich obiektów znajdujących się w LoadState.
+        /// </summary>
+        /// <param name="content">Manager zasobów.</param>
         public void LoadContent(ContentManager content)
         {
             _background.LoadContent(content, "Views/Common/Background");
@@ -81,6 +94,9 @@ namespace Digger.Views
             }
         }
 
+        /// <summary>
+        /// Metoda inicjalizująca obiekty interfejsu użytkownika.
+        /// </summary>
         public void Initialize()
         {
             int screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
@@ -96,7 +112,7 @@ namespace Digger.Views
             }
             else
             {
-                for (int i = 0; i < Window.Context.Players.Count; i++)
+                for (int i = 0; i < _players.Length; i++)
                 {
                     _players[i].Label.Initialize(new Vector2(screenWidth / 2,230+40*i));
                 }
@@ -106,6 +122,11 @@ namespace Digger.Views
             _logo.Initialize(new Vector2((screenWidth - _logo.Image.Width) / 2, 20), Color.White);
         }
 
+        /// <summary>
+        /// Metoda wywołująca rysowanie obiektów interfejsu.
+        /// </summary>
+        /// <param name="spriteBatch">Powłoka graficzna.</param>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             _background.Draw(spriteBatch);
@@ -116,7 +137,7 @@ namespace Digger.Views
             }
             else
             {
-                for (int i = 0; i < Window.Context.Players.Count; i++)
+                for (int i = 0; i < _players.Length; i++)
                 {
                     _players[i].Draw(spriteBatch, gameTime);
                 }
@@ -130,6 +151,11 @@ namespace Digger.Views
             _header.Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// Metoda uaktualniająca obiekty interfejsu.
+        /// Odpowiada za obsługę zdarzeń.
+        /// </summary>
+        /// <param name="gameTime">Ramka czasowa.</param>
         public void Update(GameTime gameTime)
         {
             _previousPage.Update(gameTime);
