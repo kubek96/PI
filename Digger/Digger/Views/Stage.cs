@@ -65,6 +65,8 @@ namespace Digger.Views
 
         private Label _interfacePoints;
         private Label _interfacePointsCount;
+
+        private FixedGraphic _frameGraphic;
         #endregion
 
         private Song _song;
@@ -188,6 +190,8 @@ namespace Digger.Views
             _interfacePoints = new Label("Points");
             _interfacePointsCount = new Label(Window.Context.Player.Points.ToString());
 
+            _frameGraphic = new FixedGraphic();
+
             #endregion
 
             // Wczytaj zawartość
@@ -257,6 +261,8 @@ namespace Digger.Views
 
             _interfacePoints.LoadContent(content, "Fonts/Silkscreen");
             _interfacePointsCount.LoadContent(content, "Fonts/Silkscreen");
+
+            _frameGraphic.LoadContent(content, "Game/GameFrame");
 
             #endregion
         }
@@ -429,6 +435,8 @@ namespace Digger.Views
             _interfacePoints.Initialize(new Vector2(x+80, 70));
             _interfacePointsCount.Initialize(new Vector2(x+80,110));
 
+            _frameGraphic.Initialize(new Vector2((screenWidth - _frameGraphic.Image.Width) / 2, (screenHeight - _frameGraphic.Image.Height) / 2), Color.White);
+
             #endregion
 
             #region Music
@@ -527,6 +535,8 @@ namespace Digger.Views
 
             _interfacePoints.Draw(spriteBatch);
             _interfacePointsCount.Draw(spriteBatch);
+
+            _frameGraphic.Draw(spriteBatch);
 
             #endregion
 

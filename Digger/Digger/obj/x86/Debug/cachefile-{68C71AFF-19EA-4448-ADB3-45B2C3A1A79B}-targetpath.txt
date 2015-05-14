@@ -53,3 +53,4 @@ Content\Views\NavigationButtons\TryAgain.xnb
 Content\Fonts\Silkscreen.xnb
 Content\Sounds\Sound1.xnb
 Content\Sounds\Sound1.wma
+Content\Game\GameFrame.xnb

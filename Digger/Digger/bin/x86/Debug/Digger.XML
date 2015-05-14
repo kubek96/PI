@@ -1,0 +1,1832 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Digger</name>
+    </assembly>
+    <members>
+        <member name="T:Digger.Controller.Context">
+            <summary>
+            Klasa głównego kontekstu (zarządcy programem).
+            </summary>
+        </member>
+        <member name="M:Digger.Controller.Context.#ctor(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Konstruktor.
+            Przytworzeniu obiektu tej klasy dochodzi do automatycznego wczytania zapisanych graczy.
+            </summary>
+            <param name="content">Obiekt zarządcy zawartością peryferyjną</param>
+        </member>
+        <member name="M:Digger.Controller.Context.LoadPlayersFromSerializedFile">
+            <summary>
+            Jeżeli domyślny plik zapisu istnieje dokonuje wczytania zapisanej zawartości.
+            W przypadku zaistnienia błędów informację taką umieszcza w pliku logu.
+            </summary>
+        </member>
+        <member name="M:Digger.Controller.Context.SavePlayersToSerializedFile">
+            <summary>
+            Metoda zapisująca bieżącą konfigurację użytkowników do pliku.
+            W przypadku zaistnienia błędów informację taką umieszcza w pliku logu.
+            </summary>
+        </member>
+        <member name="M:Digger.Controller.Context.CreateNewPlayer(System.String)">
+            <summary>
+            Metoda pozwalająca na utwożenie nowego gracza.
+            </summary>
+            <param name="playerName">Imię nowego gracza.</param>
+        </member>
+        <member name="M:Digger.Controller.Context.LoadPlayerGame(System.Int32)">
+            <summary>
+            Metoda logująca gracza.
+            </summary>
+            <param name="playerIndex">Numer gracza (id przydzielone na okres 1 działania gry).</param>
+        </member>
+        <member name="P:Digger.Controller.Context.CurrentView">
+            <summary>
+            Obecnie wczytany obiekt widoku.
+            </summary>
+        </member>
+        <member name="P:Digger.Controller.Context.ReadyToExit">
+            <summary>
+            Zmienna mówiąca, czy gra jest gotowa do wyłączenia.
+            </summary>
+        </member>
+        <member name="P:Digger.Controller.Context.Content">
+            <summary>
+            Obiekt zarządcy zwartością peryferyjną (zasobami).
+            </summary>
+        </member>
+        <member name="P:Digger.Controller.Context.Player">
+            <summary>
+            Obiekt aktualnego gracza.
+            </summary>
+        </member>
+        <member name="P:Digger.Controller.Context.Players">
+            <summary>
+            Lista wczytanych graczy.
+            </summary>
+        </member>
+        <member name="T:Digger.Data.Control.KeyboradLayout">
+            <summary>
+            Enumerator możliwych konfiguracji klawiatury.
+            </summary>
+        </member>
+        <member name="T:Digger.Data.Control.Keyboard">
+            <summary>
+            Klasa zarządcy klawiaturą.
+            Zawiera słownik możliwych konfiguracji sterowania.
+            </summary>
+        </member>
+        <member name="M:Digger.Data.Player.#ctor(System.String)">
+            <summary>
+            Konstruktor tworzący obiekt nowego gracza.
+            Domyślnie za układ sterowania przyjmowane są strzałki.
+            Muzyka jest ustawiona na włączoną.
+            </summary>
+            <param name="playerName">Imię nowego gracza</param>
+        </member>
+        <member name="M:Digger.Data.Player.#ctor">
+            <summary>
+            Konstruktor bezparametrowy używany do serializacji.
+            </summary>
+        </member>
+        <member name="P:Digger.Data.Player.UserKeyboraPreferences">
+            <summary>
+            Preferencje układu klawiatury gracza.
+            </summary>
+        </member>
+        <member name="P:Digger.Data.Player.Points">
+            <summary>
+            Liczba punktów, które posiada gracz.
+            </summary>
+        </member>
+        <member name="P:Digger.Data.Player.Name">
+            <summary>
+            Imię gracza.
+            </summary>
+        </member>
+        <member name="P:Digger.Data.Player.Level">
+            <summary>
+            Maksymalny level, do którego dotarł gracz.
+            </summary>
+        </member>
+        <member name="P:Digger.Data.Player.IsMusicOn">
+            <summary>
+            Informacja o preferencjach dotyczących tego, czy muzyka ma być włączona, czy też nie.
+            </summary>
+        </member>
+        <member name="T:Digger.Game.Common.Direction">
+            <summary>
+            Enumerator umożliwiający zdeterminowanie kierunku poruszania.
+            </summary>
+        </member>
+        <member name="T:Digger.Game.Common.StageHelper">
+            <summary>
+            Statyczna klasa umożliwiająca szybkie kopiowanie obiektów owoców, wrogów, strzałów ze wzorców.
+            Dodatkowo posiada słownik mówiący o ilości danych przeciwników na danym poziome.
+            Dostarcza metod umożliwijących szybkie generowanie planszy.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Common.StageHelper.#ctor">
+            <summary>
+            Konstruktor inicjalicujący wszystkie słowniki.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Common.StageHelper.GenerateFreeGroundsCoordinates(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Metoda generująca koordynaty, które mają być wolne od ziemi (ścieżki).
+            Wykorzystuje do tego algorytm opracowany w dokumentacji technicznej na stronie 15.
+            </summary>
+            <param name="n">Liczba "zagięć" korytaża.</param>
+            <param name="width">Szerokość planszy, domyślnie 20.</param>
+            <param name="height">Wysokość planszy, domyślnie 20.</param>
+            <returns>Tablica punktów z "wolnymi" koordynatami.</returns>
+        </member>
+        <member name="M:Digger.Game.Common.StageHelper.GenerateGrabableFruits(System.Int32)">
+            <summary>
+            Funkcja generująca owoce, które nie są czerwone.
+            Wybór dokonuje się w sposób losowy.
+            Zwrócone obiekty wymagają wywołania metody Initialize!
+            </summary>
+            <param name="n">Liczba owoców do wygenerowania.</param>
+            <returns>Lista owoców.</returns>
+        </member>
+        <member name="M:Digger.Game.Common.StageHelper.GenerateRedFruits(System.Int32)">
+            <summary>
+            Funkcja generująca listę czerwonych owoców.
+            Zwrócone obiekty wymagają wywołania metody Initialize!
+            </summary>
+            <param name="n">Liczba owoców do wygenerowania.</param>
+            <returns>Lista czerwonych owoców.</returns>
+        </member>
+        <member name="M:Digger.Game.Common.StageHelper.GenerateEnemies(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Funkcja generująca strukturę, na której kolejno ułożone są kolejne jednostki wrogów.
+            </summary>
+            <param name="mouses">Liczba myszy.</param>
+            <param name="beetles">Liczba żuków.</param>
+            <param name="spiders">Liczba pająków.</param>
+            <param name="redSpiders">Liczba czerownych pająków.</param>
+            <param name="rats">Liczba szczurów.</param>
+            <returns>Stos wrogów.</returns>
+        </member>
+        <member name="M:Digger.Game.Common.StageHelper.GenerateInterfaceFruits">
+            <summary>
+            Metoda pozwalająca w szybki sposób wyciągnąć odpowiednie obiekty owoców w celu umieszczenia ich w interfejsie użytkownika.
+            </summary>
+            <returns>Tablica owoców.</returns>
+        </member>
+        <member name="M:Digger.Game.Common.StageHelper.GenerateStones(System.Int32)">
+            <summary>
+            Metoda generująca odpowiednią liczbę obiektów kamieni.
+            </summary>
+            <param name="n">Liczba kamieni.</param>
+            <returns>Lista kamieni.</returns>
+        </member>
+        <member name="M:Digger.Game.Common.StageHelper.GeneratePurses(System.Int32)">
+            <summary>
+            Metoda generująca sakiewki.
+            Każda z nich z różnym prawdopodobieństwem może zawierać różne owocki bądź być pustą.
+            </summary>
+            <param name="n">Liczba sakiewek do wygenerowania.</param>
+            <returns>Lista sakiewek.</returns>
+        </member>
+        <member name="P:Digger.Game.Common.StageHelper.ShotTemplates">
+            <summary>
+            Słownik strzałów.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Common.StageHelper.FruitsTemplates">
+            <summary>
+            Słownik owoców.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Common.StageHelper.EnemyTemplates">
+            <summary>
+            Słownik wrogów.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Common.StageHelper.EnemiesLevelCount">
+            <summary>
+            Słownik liczności wrogów na danym poziome gry.
+            </summary>
+        </member>
+        <member name="T:Digger.Game.Elements.Door">
+            <summary>
+            Klasa drzwi.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Door.#ctor(System.Collections.Generic.Stack{Digger.Game.Elements.Enemy},System.Int32)">
+            <summary>
+            Konstruktor.
+            Ustawia obiekt szczura na null oraz informację dotyczącą stanu otwarcia drzwi na false.
+            </summary>
+            <param name="enemies">Stos wrogów, jacy mają wychodzić przez drzwi.</param>
+            <param name="timeToNextEnemie">Odstęp czasu jaki ma być między kolejnymi pojawieniami się wrogów.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Door.OpenDoor">
+            <summary>
+            Funkcja otwierająca dzrwi.
+            </summary>
+            <returns>Obiekt szczura (jeżeli został ustawiony) lub null, jeżeli żaden z wrogów nie wkroczył w cukierek.</returns>
+        </member>
+        <member name="M:Digger.Game.Elements.Door.ReleaseRatWhenOpen(Digger.Game.Elements.Enemy)">
+            <summary>
+            Funkcja ustawiająca obiekt szczura.
+            Dokonuje jego inicjalizacji w miejscu drzwi.
+            </summary>
+            <param name="enemy">Obiekt szczura (lub defakto każdego innego wroga).</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Door.ReleaseNextEnemy">
+            <summary>
+            Funkcja uwalniajaca kolejnego wroga.
+            Jako jego pozycję ustawia położenie drzwi.
+            </summary>
+            <returns>Obiekt wroga.</returns>
+        </member>
+        <member name="M:Digger.Game.Elements.Door.ReleaseNewEnemyNow(Digger.Game.Elements.Enemy)">
+            <summary>
+            Metoda pozwala na natychmiastowe uwolnienie wskazanego wroga z pozycji drzwi.
+            </summary>
+            <param name="enemy">Obiekt wroga.</param>
+            <returns>Obiekt wroga w nowej pozycji.</returns>
+        </member>
+        <member name="M:Digger.Game.Elements.Door.LoadContent(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
+            <summary>
+            Wczytuje zawrtości graficzne drzwi.
+            </summary>
+            <param name="content">Obiekt managera zasobów.</param>
+            <param name="assetName">Nazwa zasobu.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Door.Initialize(Microsoft.Xna.Framework.Rectangle)">
+            <summary>
+            Dokonuje inicjalizację obiektu drzwi w podanej pozycji.
+            </summary>
+            <param name="rectangle">Pozycja drzwi.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Door.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Wykonuje rysowanie obiektu drzwi w ich odpowiednim stanie. 
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Door.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Dokonuje aktualizacji grafiki drzwi.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="P:Digger.Game.Elements.Door.Rectangle">
+            <summary>
+            Obszar zajmowany przez drzwi.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Door.AreOpen">
+            <summary>
+            Mówi, czy drzwi są już otwarte.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Door.TimeToNextEnemie">
+            <summary>
+            Zwraca czas, jaki został ustawiony do wypuszczenia kolejnego wroga.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Door.Rat">
+            <summary>
+            Obiekt szczura.
+            </summary>
+        </member>
+        <member name="T:Digger.Game.Elements.EnemyType">
+            <summary>
+            Enumerator pozwalający na jednoznaczne zidentyfikowanie typu wroga.
+            </summary>
+        </member>
+        <member name="T:Digger.Game.Elements.Enemy">
+            <summary>
+            Klasa wroga.
+            </summary>
+        </member>
+        <member name="T:Digger.Graphic.IMoveable">
+            <summary>
+            Interfejs gwaranrujacy możliwość poruszania.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Enemy.#ctor(Digger.Game.Elements.Enemy)">
+            <summary>
+            Konstruktor kopiujący
+            </summary>
+            <param name="enemy">Obiekt wzorcowy</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Enemy.#ctor(Digger.Game.Elements.EnemyType,System.String,System.Nullable{System.Int32},System.Int32,System.Int32,Digger.Game.Common.Direction,System.Boolean,Digger.Game.Elements.EvolveDelegate,Digger.Game.Elements.TestMoveDelegate,Digger.Game.Elements.WebShootDelegate,Digger.Game.Elements.ObserveDelegate,Digger.Game.Elements.AttackDelegate)">
+            <summary>
+            Konstruktor.
+            </summary>
+            <param name="enemyType">Typ wroga.</param>
+            <param name="assetName">Nazwa zasobu grafiki wroga.</param>
+            <param name="life">Liczba życia wroga.</param>
+            <param name="strenght">Siła ataku.</param>
+            <param name="speed">Prędkość będąca dzielnikiem liczby 42.</param>
+            <param name="direction">Kierunek początkowego porusznia się.</param>
+            <param name="isFreeze">Czy jest zatrzymany w miejscu.</param>
+            <param name="evolve">Delegatura do funkcji ewolucji.</param>
+            <param name="testMove">Delegatura do funkcji testowania ruchu.</param>
+            <param name="webShoot">Delegatura do funkcji strzelania.</param>
+            <param name="observe">Delegatura do funkcji obserwowania w poszukiwaniu robaczka.</param>
+            <param name="attack">Delegatura do funckji ataku na robaczka.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Enemy.Kill">
+            <summary>
+            Funkcja uśmiercająca wroga.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Enemy.LoadContent(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
+            <summary>
+            Funkcja ładująca grafikę wroga oraz inicjalizuja obiekt jego położenia.
+            </summary>
+            <param name="content">Manager zasobów.</param>
+            <param name="assetName">Ścieżka zasobu grafiki wroga.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Enemy.Initialize(Microsoft.Xna.Framework.Rectangle)">
+            <summary>
+            Metoda inicjalizująca położenie wroga.
+            </summary>
+            <param name="rectangle">Obszar.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Enemy.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Metoda wykonująca rysowanie wroga.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Enemy.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Medota obsługująca logikę zachowania postaci wroga.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Enemy.Move">
+            <summary>
+            Wykoananie ruch w celu osiągnięcia odpowiedniego punktu docelowego.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Enemy.SlowDown(System.Int32,System.Int32)">
+            <summary>
+            Medota wykonująca spowolnienie wroga.
+            </summary>
+            <param name="speed">Nowa prędkość.</param>
+            <param name="effectTime">Czas trwania efektu.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Enemy.Freeze(System.Int32)">
+            <summary>
+            Metoda zatrzymująca w miejscu (zamrażająca) wroga.
+            </summary>
+            <param name="effectTime">Czas trwania efektu.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Enemy.MakeMove(Digger.Game.Common.Direction)">
+            <summary>
+            Metoda zmieniająca punkt docelowy, w którym przemieszcza się obiekt.
+            </summary>
+            <param name="direction">Kierunek, w którm ma zostać wykonany ruch.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Enemy.MoveFaster(System.Int32)">
+            <summary>
+            Metoda przyśpieszająca jednostkę na czas nieokreślony.
+            </summary>
+            <param name="speed">Nowa prędkość.</param>
+        </member>
+        <member name="P:Digger.Game.Elements.Enemy.EnemyType">
+            <summary>
+            Typ wroga.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Enemy.SawWorm">
+            <summary>
+            Informacja o tym, czy w zasięgu wzroku/węchu/słuchu wroga jest robaczek.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Enemy.AddAsNew">
+            <summary>
+            Czy został dodany jako nowy wróg.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Enemy.IsKilled">
+            <summary>
+            Czy przypadkiem nie jest już martwy.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Enemy.IsFreeze">
+            <summary>
+            Czy jest zamrożony/zatrzymany.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Enemy.Destination">
+            <summary>
+            Kierunek poruszania się wroga.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Enemy.IsDigging">
+            <summary>
+            Informacja o tym, czy kopie w ziemi.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Enemy.IsMoving">
+            <summary>
+            Informacja o tym, czy się porusza.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Enemy.Life">
+            <summary>
+            Życie wroga.
+            Przy zejściu do wartości 0 uśmierca wroga.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Enemy.Direction">
+            <summary>
+            Kiedunek poruszania się wroga.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Enemy.Rectangle">
+            <summary>
+            Obszar zajmowany przez wroga.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Enemy.Evolve">
+            <summary>
+            Funkcja ewolucji.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Enemy.TestMove">
+            <summary>
+            Funkcja sprawdzenia możliwości ruchu.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Enemy.WebShoot">
+            <summary>
+            Funkcja strzału.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Enemy.Observe">
+            <summary>
+            Funkcja obserowania/nasłuchiwania/węchu otoczenia.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Enemy.Attack">
+            <summary>
+            Funkcja ataku.
+            </summary>
+        </member>
+        <member name="T:Digger.Game.Elements.FruitType">
+            <summary>
+            Enumerator pozwalający na rozróżnienie typów owoców.
+            </summary>
+        </member>
+        <member name="T:Digger.Game.Elements.Fruit">
+            <summary>
+            Klasa owocu.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Fruit.#ctor(Digger.Game.Elements.Fruit)">
+            <summary>
+            Konstruktor kopiujący
+            </summary>
+            <param name="fruit">Obiekt wzorcowy.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Fruit.#ctor(Digger.Game.Elements.FruitType,System.String,Digger.Game.Elements.PlayerUseDelegate,Digger.Game.Elements.EnemyUseDelegate)">
+            <summary>
+            Konstruktor.
+            </summary>
+            <param name="fruitType">Typ owocu.</param>
+            <param name="assetName">Ścieżka do zasobu grafiki.</param>
+            <param name="playerUse">Funkcja zjedzenia owocu przez gracza.</param>
+            <param name="enemyUse">Funkcja zjedzenia owocu przez wroga.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Fruit.LoadContent(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
+            <summary>
+            Metoda wczytująca grafike owocu.
+            </summary>
+            <param name="content">Manager zasobów.</param>
+            <param name="assetName">Ścieżka do zasobu.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Fruit.Initialize(Microsoft.Xna.Framework.Rectangle)">
+            <summary>
+            Metoda inicjalizująca położenie owocu.
+            </summary>
+            <param name="rectangle">Obszar, który ma być zajmowany przez owoc.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Fruit.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Metoda rysująca owoc.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+        </member>
+        <member name="P:Digger.Game.Elements.Fruit.Rectangle">
+            <summary>
+            Obszar zajmowany przez owoc.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Fruit.PlayerUse">
+            <summary>
+            Funkcja wywoływana przy zjedzeniu owocu przez gracza.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Fruit.EnemyUse">
+            <summary>
+            Funkcja wywoływana przy zjedzeniu owocy przez wroga.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Fruit.IsUsed">
+            <summary>
+            Czy owoc został już zjedzony?
+            </summary>
+        </member>
+        <member name="T:Digger.Game.Elements.GroundType">
+            <summary>
+            Enumerator pozwalający na jednoznaczne rozróżnienie między typami ziemi.
+            </summary>
+        </member>
+        <member name="T:Digger.Game.Elements.Ground">
+            <summary>
+            Klasa ziemi.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Ground.#ctor">
+            <summary>
+            Konstruktor. Inicjalizuje obiekty grafiki ziemi.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Ground.LoadContent(Microsoft.Xna.Framework.Content.ContentManager,System.String,System.String)">
+            <summary>
+            Metoda wczytująca grafiki ziemi.
+            </summary>
+            <param name="content">Menager zasobów.</param>
+            <param name="normalGroundGraphic">Ścieżka do zasobu normalnej ziemi.</param>
+            <param name="freeGroundGraphic">Ścieżka do zasobu pustej ziemi.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Ground.Initialize(Microsoft.Xna.Framework.Vector2,Digger.Game.Elements.GroundType)">
+            <summary>
+            Metoda inicjalizująca pozycję grudki ziemi.
+            </summary>
+            <param name="position">Pozycja.</param>
+            <param name="groundType">Typ ziemi w jakim ma obecnie ona się pokazywać.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Ground.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Metoda rysująca zimię w zależności od jej typu.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Ground.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda aktualizująca.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="P:Digger.Game.Elements.Ground.GroundType">
+            <summary>
+            Typ ziemi.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Ground.Rectangle">
+            <summary>
+            Przestrzeń zajmowana przez ziemię.
+            </summary>
+        </member>
+        <member name="T:Digger.Game.Elements.Purse">
+            <summary>
+            Klasa sakiewek.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Purse.#ctor(Digger.Game.Elements.Fruit)">
+            <summary>
+            Konstruktor kopiujący.
+            </summary>
+            <param name="fruit">Obiekt wzorcowy.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Purse.#ctor">
+            <summary>
+            Konstruktor tworzący sakiewkę.
+            Nie spada, nie jest roztrzaskana. Nie ma owocu.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Purse.LoadContent(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
+            <summary>
+            Metoda wczytująca grafikę sakiewki.
+            </summary>
+            <param name="content"></param>
+            <param name="assetName"></param>
+        </member>
+        <member name="M:Digger.Game.Elements.Purse.Initialize(Microsoft.Xna.Framework.Rectangle)">
+            <summary>
+            Inicjalizacja pozycji sakiewki.
+            </summary>
+            <param name="rectangle">Pozycja sakiewki.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Purse.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Metoda rysująca sakiewkę.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Purse.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda uaktalniająca grafikę sakiewki.
+            </summary>
+            <param name="gameTime"></param>
+        </member>
+        <member name="M:Digger.Game.Elements.Purse.MakeMove(Digger.Game.Common.Direction)">
+            <summary>
+            Wykoananie ruchu w zadanym kierunku.
+            </summary>
+            <param name="direction">Kierunek poruszania się.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Purse.Move">
+            <summary>
+            Wykonaj ruch w zadanym przez punkt docelowym kierunku.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Purse.Shatter">
+            <summary>
+            Roztrzaskaj sakiewkę.
+            </summary>
+            <returns>Obiekt owocu przetrzymywanego w sakiewce lub null jeżeli sakiewka była pusta.</returns>
+        </member>
+        <member name="P:Digger.Game.Elements.Purse.Fruit">
+            <summary>
+            Owoc przetrzymywany wewnątrz sakiewki lub null, jeżeli jest pusta.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Purse.IsShatter">
+            <summary>
+            Czy sakiewka roztrzaskała się.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Purse.WasFalling">
+            <summary>
+            Czy sakiewka upadała?
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Purse.IsMoving">
+            <summary>
+            Czy sakieka przemieszcza się?
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Purse.Rectangle">
+            <summary>
+            Przstrzeń zajmowana przez sakiewkę.
+            </summary>
+        </member>
+        <member name="T:Digger.Game.Elements.ShotType">
+            <summary>
+            Enumerator pozwalający stwierdzić typ strzału.
+            </summary>
+        </member>
+        <member name="T:Digger.Game.Elements.Shot">
+            <summary>
+            Klasa strzałów.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Shot.#ctor(Digger.Game.Elements.ShotType,System.String,Digger.Game.Elements.ShootEnemy)">
+            <summary>
+            Konstruktor.
+            </summary>
+            <param name="shotType">Typ strzału.</param>
+            <param name="assetName">Ścieżka do zasobu grafiki strzału.</param>
+            <param name="shootEnemy">Funkcja zestrzelenia wroga.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Shot.#ctor(Digger.Game.Elements.Shot)">
+            <summary>
+            Konstruktor kopiujący.
+            </summary>
+            <param name="shot">Obiekt wzorcowy.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Shot.LoadContent(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
+            <summary>
+            Meotda wczytująca grafikę strzału.
+            </summary>
+            <param name="content">Obiekt managera zasobów.</param>
+            <param name="assetName">Ścieżka do zasobu grafiki.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Shot.Initialize(Microsoft.Xna.Framework.Rectangle,Digger.Game.Common.Direction)">
+            <summary>
+            Metoda inicjalizująca położenie początkowe strzału.
+            </summary>
+            <param name="rectangle">Obszar zajmowany na początku przez strzał.</param>
+            <param name="direction">Kierunek strzału.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Shot.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Metoda rysująca obiekt strzału.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Shot.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda aktualizująca grafikę strzału.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Shot.Move">
+            <summary>
+            Metoda poruszania strzału.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Shot.MakeMove(Digger.Game.Common.Direction)">
+            <summary>
+            Metoda wykoania ruchu.
+            </summary>
+            <param name="direction"></param>
+        </member>
+        <member name="P:Digger.Game.Elements.Shot.ShootEnemy">
+            <summary>
+            Metoda zestrzelenia wroga.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Shot.Rectangle">
+            <summary>
+            Obszar zajmowany przez strzał
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Shot.ShootSomething">
+            <summary>
+            Czy coś już zostało zestrzelone?
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Stone.#ctor">
+            <summary>
+            Konstruktor kamienia.
+            Nie porusza się, nie spada.
+            Jego prędkość to 6.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Stone.LoadContent(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
+            <summary>
+            Wczytuje grafikę kamienia.
+            </summary>
+            <param name="content">Manager zasobów.</param>
+            <param name="assetName">Ścieżka do zasobu grafiki.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Stone.Initialize(Microsoft.Xna.Framework.Rectangle)">
+            <summary>
+            Metoda inicjalizująca pozycję kamienia.
+            </summary>
+            <param name="rectangle">Pozycja kamienia.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Stone.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Metoda rysująca kamień.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Stone.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda aktualizująca grafikę kamienia.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Stone.Shatter">
+            <summary>
+            Metoda roztrzaskująca kamień.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Stone.MakeMove(Digger.Game.Common.Direction)">
+            <summary>
+            Funkcja inicjalizująca wykonywanie ruchu w zadanym kierunku.
+            </summary>
+            <param name="direction">Kierunek poruszania.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Stone.Move">
+            <summary>
+            Metoda wykonująca faktyczny ruch.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Stone.WasFalling">
+            <summary>
+            Informacja o tym, czy kamień spadał.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Stone.IsShatter">
+            <summary>
+            Czy kamień już się roztrzaskał?
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Stone.IsMoving">
+            <summary>
+            Czy kamień porusza się?
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Stone.Rectangle">
+            <summary>
+            Obszar zajmowany przez kamień.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Worm.#ctor">
+            <summary>
+            Konstruktor.
+            Życie robaczka to 10.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Worm.LoadContent(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
+            <summary>
+            Wczytuje grafikę robaczka.
+            </summary>
+            <param name="content">Manager zasobów.</param>
+            <param name="assetName">Ścieżka do zasobu grafiki.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Worm.Initialize(Microsoft.Xna.Framework.Rectangle)">
+            <summary>
+            Metoda inicjalizująca robaczka na wskazanej pozycji.
+            </summary>
+            <param name="rectangle">Pozycja.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Worm.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Metoda rysująca robaczka.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Worm.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda aktualizująca robaczka zgodnie z jego logiką.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Worm.MoveFaster(System.Int32,System.Int32)">
+            <summary>
+            Przyśpieszenie robaczka na zadany czas przy użyciu śliwki.
+            </summary>
+            <param name="speed">Nowa prędkość.</param>
+            <param name="effectTime">Czas efektu.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Worm.MoveSlower(System.Int32,System.Int32)">
+            <summary>
+            Metoda spowalniająca robaczka.
+            </summary>
+            <param name="speed">Nowa prędkość.</param>
+            <param name="effectTime">Czas trwania efektu.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Worm.Heal">
+            <summary>
+            Uzdrowienie.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Worm.MakeMove(Digger.Game.Common.Direction)">
+            <summary>
+            Inicjalizacja procesu wykonywania ruchu.
+            </summary>
+            <param name="direction">Kierunek, w którym ma zostać wykonany ruch.</param>
+        </member>
+        <member name="M:Digger.Game.Elements.Worm.Move">
+            <summary>
+            Faktyczny proces wykonania ruchu.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Elements.Worm.TestMove(Digger.Game.Common.Direction)">
+            <summary>
+            Metoda pozwalająca na sprawdzenie, czy można w danym kierunku wykonać ruch.
+            </summary>
+            <param name="direction">Kierunek, w którm ma zostać zbadany ruch.</param>
+            <returns>Położenie po ruchu lub pusta przestrzeń.</returns>
+        </member>
+        <member name="P:Digger.Game.Elements.Worm.Destination">
+            <summary>
+            Kiedunek doceloweg porusznai się robaczka.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Worm.CandyCount">
+            <summary>
+            Ile ma cukierków?
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Worm.PlumsCount">
+            <summary>
+            Ile ma śliwek?
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Worm.MudCount">
+            <summary>
+            Ile może zbudować grudek ziemi?
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Worm.KiwisCount">
+            <summary>
+            Ile ma kiwi?
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Worm.Speed">
+            <summary>
+            Prędkość robaczka.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Worm.AcidShoots">
+            <summary>
+            Liczba kwasowych strzałów.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Worm.RedFruits">
+            <summary>
+            Liczba zgromadzonych czerwonych owoców.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Worm.FramesCount">
+            <summary>
+            Liczba ramek grafiki robaczka.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Worm.VenomShoots">
+            <summary>
+            Liczba trujacych strzałów robaczka.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Worm.IsDigging">
+            <summary>
+            Czy robaczek kopie?
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Worm.Life">
+            <summary>
+            Liczba żyć robaczka.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Worm.WormGraphic">
+            <summary>
+            Grafika robaczka.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Worm.WormRectangle">
+            <summary>
+            Pozycja robaczka.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Worm.Direction">
+            <summary>
+            Kierunek, w którym przemieszcza się robaczek.
+            </summary>
+        </member>
+        <member name="P:Digger.Game.Elements.Worm.IsMoving">
+            <summary>
+            Czy robaczek się przemieszcza?
+            </summary>
+        </member>
+        <member name="T:Digger.Game.Specified.Rat">
+            <summary>
+            Klasa wyspecjalizowana dla Szczura.
+            Zawiera zaimplementowane algorytmy A* oraz przesukiwanie drzewa w głąb.
+            Z podowu naprzemiennego stosowania obu tych algorytmów muszą one być zaimplementowane razem.
+            </summary>
+        </member>
+        <member name="M:Digger.Game.Specified.Rat.#ctor(Digger.Game.Elements.Enemy)">
+            <summary>
+            Konstruktor kopiujący
+            </summary>
+            <param name="enemy">Obiekt źródłowy</param>
+        </member>
+        <member name="M:Digger.Game.Specified.Rat.#ctor(Digger.Game.Elements.EnemyType,System.String,System.Nullable{System.Int32},System.Int32,System.Int32,Digger.Game.Common.Direction,System.Boolean,Digger.Game.Elements.EvolveDelegate,Digger.Game.Elements.TestMoveDelegate,Digger.Game.Elements.WebShootDelegate,Digger.Game.Elements.ObserveDelegate,Digger.Game.Elements.AttackDelegate)">
+            <summary>
+            Konstruktor tworzący nowy obiekt szczura.
+            </summary>
+            <param name="enemyType">Typ wroga.</param>
+            <param name="assetName">Nazwa zasobu grafiki wroga.</param>
+            <param name="life">Liczba życia wroga.</param>
+            <param name="strenght">Siła ataku.</param>
+            <param name="speed">Prędkość będąca dzielnikiem liczby 42.</param>
+            <param name="direction">Kierunek początkowego porusznia się.</param>
+            <param name="isFreeze">Czy jest zatrzymany w miejscu.</param>
+            <param name="evolve">Delegatura do funkcji ewolucji.</param>
+            <param name="testMove">Delegatura do funkcji testowania ruchu.</param>
+            <param name="webShoot">Delegatura do funkcji strzelania.</param>
+            <param name="observe">Delegatura do funkcji obserwowania w poszukiwaniu robaczka.</param>
+            <param name="attack">Delegatura do funckji ataku na robaczka.</param>
+        </member>
+        <member name="M:Digger.Game.Specified.Rat.Initialize(Microsoft.Xna.Framework.Rectangle)">
+            <summary>
+            Metoda inicjalizująca szczura w zadanej pozycji.
+            </summary>
+            <param name="startPosition">Pozycja.</param>
+        </member>
+        <member name="M:Digger.Game.Specified.Rat.Attack(Digger.Game.Elements.Worm)">
+            <summary>
+            Metoda ataku.
+            </summary>
+            <param name="worm">Obiekt robaczka.</param>
+        </member>
+        <member name="M:Digger.Game.Specified.Rat.Observe(Digger.Game.Elements.Enemy,Digger.Game.Elements.Worm,Digger.Game.Elements.Ground[0:,0:])">
+            <summary>
+            Metoda obserwacji/nasłuchiwania otoczenia.
+            Zostaje ona podana jako delegat do Observe.
+            To tu wykonywany jest A*.
+            </summary>
+            <param name="enemy">Obiekt szczura.</param>
+            <param name="worm">Obiekt robaczka.</param>
+            <param name="grounds">Tablica ziemi.</param>
+        </member>
+        <member name="M:Digger.Game.Specified.Rat.TestMove(Digger.Game.Elements.Enemy,Digger.Game.Elements.Ground[0:,0:],Microsoft.Xna.Framework.Rectangle)">
+            <summary>
+            Metoda testu czy w daną stronę można się poruszać.
+            Jeżeli można, inicjalizowana jest operacja poruszania w zadanym kierunku.
+            Metoda podawana jako delegat do TestMove.
+            </summary>
+            <param name="enemy">Obiekt szczura.</param>
+            <param name="grounds">Tablica ziemi.</param>
+            <param name="gameField">Obszar gry.</param>
+        </member>
+        <member name="P:Digger.Game.Specified.Rat.IsKilled">
+            <summary>
+            Czy szczur jest zabity? Nie jest.
+            </summary>
+        </member>
+        <member name="T:Digger.Graphic.AnimatedGraphic">
+            <summary>
+            Klasa animowanej grafiki. 
+            Dziedziczy po grafice statycznej.
+            </summary>
+        </member>
+        <member name="T:Digger.Graphic.FixedGraphic">
+            <summary>
+            Klasa grafiki statycznej.
+            </summary>
+        </member>
+        <member name="M:Digger.Graphic.FixedGraphic.LoadContent(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
+            <summary>
+            Metoda pozwalająca na załadowanie grafiki z zasobnika.
+            </summary>
+            <param name="content">Zasobnik.</param>
+            <param name="assetName">Ścieżka do zasobu grafiki.</param>
+        </member>
+        <member name="M:Digger.Graphic.FixedGraphic.Initialize(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,System.Single)">
+            <summary>
+            Inicjalizacja obiektu na wskazanej pozycji.
+            </summary>
+            <param name="position">Pozycja.</param>
+            <param name="color">Kolor tła. Biały dla przeźroczystości.</param>
+            <param name="scale">Skala.</param>
+        </member>
+        <member name="M:Digger.Graphic.FixedGraphic.Initialize(Microsoft.Xna.Framework.Rectangle,Microsoft.Xna.Framework.Color,System.Single)">
+            <summary>
+            Inicjalizacja obiektu na wskazanym obszarze.
+            </summary>
+            <param name="destRectangle">Obszar.</param>
+            <param name="color">Kolor tła. Biały dla przeźroczystości.</param>
+            <param name="scale">Skala.</param>
+        </member>
+        <member name="M:Digger.Graphic.FixedGraphic.Clone">
+            <summary>
+            Metoda klonująca obiekt grafiki statycznej.
+            </summary>
+            <returns>Kopia grafiki.</returns>
+        </member>
+        <member name="M:Digger.Graphic.FixedGraphic.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Metoda rysująca.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+        </member>
+        <member name="P:Digger.Graphic.FixedGraphic.DestRectangle">
+            <summary>
+            Docelowa pozycja grafiki.
+            </summary>
+        </member>
+        <member name="P:Digger.Graphic.FixedGraphic.Image">
+            <summary>
+            Właściwy obraz.
+            </summary>
+        </member>
+        <member name="M:Digger.Graphic.AnimatedGraphic.#ctor">
+            <summary>
+            Konstruktor.
+            </summary>
+        </member>
+        <member name="M:Digger.Graphic.AnimatedGraphic.Initialize(Microsoft.Xna.Framework.Vector2,System.Int32,System.Int32,System.Int32,System.Int32,Microsoft.Xna.Framework.Color,System.Boolean,System.Single)">
+            <summary>
+            Inicjalizacjia
+            </summary>
+            <param name="position">Pozycja docelowa.</param>
+            <param name="frameWidth">Szerokość jednej ramki.</param>
+            <param name="frameHeight">Wysokość jednej ramki.</param>
+            <param name="frameCount">Ilość ramek.</param>
+            <param name="frameTime">Czas wyświetlania jednej ramki.</param>
+            <param name="color">Kolor tła obrazu.</param>
+            <param name="looping">Czy animacja jest zapętlona?</param>
+            <param name="scale">Skala.</param>
+        </member>
+        <member name="M:Digger.Graphic.AnimatedGraphic.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Funkcja uaktualniająca animację grafiki.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="M:Digger.Graphic.AnimatedGraphic.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Rysowanie grafiki.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+        </member>
+        <member name="M:Digger.Graphic.AnimatedGraphic.MoveToFrame(System.Int32)">
+            <summary>
+            Metoda umożliwiająca przesunięcie wyświetlanej grafiki do innej ramki.
+            </summary>
+            <param name="frameNumber">Numer ramki docelowej.</param>
+        </member>
+        <member name="M:Digger.Graphic.AnimatedGraphic.Clone">
+            <summary>
+            Metoda klonująca grafikę.
+            </summary>
+            <returns>Nowy obiekt animowanej grafiki.</returns>
+        </member>
+        <member name="P:Digger.Graphic.AnimatedGraphic.Position">
+            <summary>
+            Pozycja grafiki.
+            </summary>
+        </member>
+        <member name="P:Digger.Graphic.AnimatedGraphic.FrameWidth">
+            <summary>
+            Szerokość wyświetlanej ramki.
+            </summary>
+        </member>
+        <member name="P:Digger.Graphic.AnimatedGraphic.FrameHeight">
+            <summary>
+            Wysokość wyświetlanej ramki.
+            </summary>
+        </member>
+        <member name="P:Digger.Graphic.AnimatedGraphic.Active">
+            <summary>
+            Czy grafika jest aktywna?
+            </summary>
+        </member>
+        <member name="P:Digger.Graphic.AnimatedGraphic.FrameTime">
+            <summary>
+            Czas jednej wyświetlania jednej ramki.
+            </summary>
+        </member>
+        <member name="T:Digger.Views.BestScores">
+            <summary>
+            Widok najlepszych wyników.
+            </summary>
+        </member>
+        <member name="T:Digger.Views.Common.IXnaUseable">
+            <summary>
+            Interfejs gwarantujący kompatybilność obiektów wiodku z standardami XNA.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Common.IXnaUseable.LoadContent(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Odpowiada za wczytywanie plików peryferyjnych.
+            </summary>
+            <param name="content"></param>
+        </member>
+        <member name="M:Digger.Views.Common.IXnaUseable.Initialize">
+            <summary>
+            Wykonuje niezbędne operacje między innymi umiejscowienia obiektów na planszy.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Common.IXnaUseable.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Wywołuje operację rysowania się obiektów.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+            <param name="gameTime">Dostarcza informacji na temat czasu gry.</param>
+        </member>
+        <member name="M:Digger.Views.Common.IXnaUseable.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Obsługuje logikę danego widoku.
+            </summary>
+            <param name="gameTime">Dostarcza informacji na temat czasu gry.</param>
+        </member>
+        <member name="M:Digger.Views.BestScores.#ctor">
+            <summary>
+            Konstruktor.
+            Wczytuje listę 16 najlepszych graczy oraz sortuje ich od najlepszego wyniku w dół.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.BestScores.LoadContent(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Metoda wczytuje grafiki i czcionkni dla wszystkich obiektów znajdujących się w BestScores.
+            </summary>
+            <param name="content">Manager zasobów.</param>
+        </member>
+        <member name="M:Digger.Views.BestScores.Initialize">
+            <summary>
+            Metoda inicjalizująca obiekty interfejsu użytkownika.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.BestScores.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda wywołująca rysowanie obiektów interfejsu.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="M:Digger.Views.BestScores.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda uaktualniająca obiekty interfejsu.
+            Odpowiada za obsługę zdarzeń.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="T:Digger.Views.Common.Control.Button">
+            <summary>
+            Klasa przycisków.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Common.Control.Button.#ctor(System.Type,System.Nullable{System.Int32},System.String)">
+            <summary>
+            Konstruktor.
+            Jeżeli pole label zostanie ustawione button przestanie działać w trybie wyświetlania grafiki.
+            Będzie wyświetlał i wykonywał operacje na tekście.
+            </summary>
+            <param name="navigationType">Typ klasy widoku, do którego ma nastąpić przekierowanie w razie zmiany stanu na kliknięto.</param>
+            <param name="args">Parametry opcjonalne potrzebne do inicjowania obiektów widoków.</param>
+            <param name="label">Tekst do trybu tekstowego buttona.</param>
+        </member>
+        <member name="M:Digger.Views.Common.Control.Button.LoadContent(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
+            <summary>
+            Metoda wczytująca zasoby potrzebne do wyświetlania przycisku.
+            </summary>
+            <param name="content">Wskazanie na obiekt zarządcy zasobami.</param>
+            <param name="assetName">Ścieżka do zasobu.</param>
+        </member>
+        <member name="M:Digger.Views.Common.Control.Button.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda rysująca button.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+            <param name="gameTime">Informacja na temat czasu gry.</param>
+        </member>
+        <member name="M:Digger.Views.Common.Control.Button.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Wykonuje operacje związane z obsługą zachowania buttona.
+            </summary>
+            <param name="gameTime">Informacja na temat czasu gry.</param>
+        </member>
+        <member name="T:Digger.Logger">
+            <summary>
+            Klasa służąca do udostępniania metod związanych z logowaniem informacji.
+            </summary>
+        </member>
+        <member name="M:Digger.Logger.#cctor">
+            <summary>
+            Konstruktor bezparametrowy.
+            </summary>
+        </member>
+        <member name="M:Digger.Logger.RedirectTo(System.String)">
+            <summary>
+            Funkcja umożliwiająca zmienę domyślnej ścieżki do pliku log.
+            </summary>
+            <param name="path">Ściezka do pliku.</param>
+        </member>
+        <member name="M:Digger.Logger.Report(System.String)">
+            <summary>
+            Funkcja umożliwiająca logowanie komunikatów.
+            </summary>
+            <param name="s">Treść komunikatu.</param>
+        </member>
+        <member name="T:Digger.Navigator">
+            <summary>
+            Klasa umożliwiająca wykonywanie operacji związanych z nawigacją między widokami w grze.
+            </summary>
+        </member>
+        <member name="M:Digger.Navigator.NavigateTo(System.Type,System.Nullable{System.Int32})">
+            <summary>
+            Funkcja wykonująca operację przejścia do wskazanego widoku.
+            </summary>
+            <param name="type">Typ klasy okna, do której ma zostać wykonane przejście.</param>
+            <param name="arg">Opcjonalny, umożliwia ustawienie stanu wczytywanego obiektu.</param>
+        </member>
+        <member name="M:Digger.Program.Main(System.String[])">
+            <summary>
+            Wywołuje uruchomienie gry.
+            </summary>
+        </member>
+        <member name="T:Digger.Window">
+            <summary>
+            Główne okno aplikacji.
+            </summary>
+        </member>
+        <member name="M:Digger.Window.#ctor">
+            <summary>
+            Konstruktor bezparametrowy
+            </summary>
+        </member>
+        <member name="M:Digger.Window.Initialize">
+            <summary>
+            Inicjalizuj obiekty.
+            Wykonuje inicjalizacje bieżącego kontekstu oraz przekierowywuje widok do menu.
+            </summary>
+        </member>
+        <member name="M:Digger.Window.LoadContent">
+            <summary>
+            Wczytuje pliki zewnętrzne.
+            Inicjalizuje powłokę graficzną.
+            </summary>
+        </member>
+        <member name="M:Digger.Window.UnloadContent">
+            <summary>
+            Zadaniem funkcji jest posprzątanie po zakończeniu pracy.
+            </summary>
+        </member>
+        <member name="M:Digger.Window.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Wywołuje logikę danego obiketu widoku.
+            </summary>
+            <param name="gameTime">Dostarcza informacji na temat czasu gry.</param>
+        </member>
+        <member name="M:Digger.Window.Draw(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Pozwala na rysowanie obiektów znajdujących się w wybranym widoku.
+            </summary>
+            <param name="gameTime">Dostarcza informacji na temat czasu gry.</param>
+        </member>
+        <member name="T:Digger.Views.Common.Control.Input">
+            <summary>
+            Klasa kontrolki Input.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Common.Control.Input.#ctor(System.String)">
+            <summary>
+            Konstruktor.
+            </summary>
+            <param name="label">Tekst początkowy.</param>
+        </member>
+        <member name="M:Digger.Views.Common.Control.Input.LoadContent(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
+            <summary>
+            Metoda wczytująca zasoby potrzebne to utworzenia obiektu Input.
+            </summary>
+            <param name="content">Obiket wskazujący na zarządcę zasobów.</param>
+            <param name="assetName">Ścieżka do zasobu.</param>
+        </member>
+        <member name="M:Digger.Views.Common.Control.Input.Initialize(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Umiejscawia kontrolkę we wskazanej pozycji.
+            </summary>
+            <param name="position">Wektor pozycji.</param>
+        </member>
+        <member name="M:Digger.Views.Common.Control.Input.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda wykonująca rysowanie obiektów składających się na kontrolkę input.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+            <param name="gameTime">Informacja na temat czasu gry.</param>
+        </member>
+        <member name="M:Digger.Views.Common.Control.Input.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Wykonuje operacje związane z logiką działania kontrolki Input.
+            W tym również obsługuje zachowanie iBeam'u.
+            </summary>
+            <param name="gameTime">Informacja na temat czasu gry.</param>
+        </member>
+        <member name="T:Digger.Views.Common.Control.Label">
+            <summary>
+            Klasa obszaru tekstowego.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Common.Control.Label.LoadContent(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
+            <summary>
+            Wczytuje czcionkę dla obszaru tekstowego.
+            </summary>
+            <param name="content">Obiekt wskazujący na bibliotekę plików peryferyjnych.</param>
+            <param name="assetName">Ścieżka do zasobu.</param>
+        </member>
+        <member name="M:Digger.Views.Common.Control.Label.Initialize(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Inicjalizuje położenie obszaru tekstowego. 
+            </summary>
+            <param name="position">Pozycja centralna dla nowego tekstu.</param>
+        </member>
+        <member name="M:Digger.Views.Common.Control.Label.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Funkcja ospowiadająca za rysowanie się obiektu obszaru roboczego.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+        </member>
+        <member name="T:Digger.Views.Common.Control.ButtonState">
+            <summary>
+            Enumerator pozwalający na zdeterminowanie stanu Buttona.
+            </summary>
+        </member>
+        <member name="T:Digger.Graphic.ParallaxingGraphic">
+            <summary>
+            Klasa parallaksyjnej grafiki.
+            Dziedziczy po grafice statycznej.
+            </summary>
+        </member>
+        <member name="M:Digger.Graphic.ParallaxingGraphic.Initialize(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,System.Int32,System.Int32,System.Single)">
+            <summary>
+            Inicjalizacja na zadanej pozycji z zadana prędkością przesuania.
+            </summary>
+            <param name="position">Pozycja.</param>
+            <param name="color">Kolor tła. Biały dla przeźroczystości.</param>
+            <param name="screenWidth">Szerokość ekranu.</param>
+            <param name="speed">Prędkość przesuwania grafiki.</param>
+            <param name="scale">Skala.</param>
+        </member>
+        <member name="M:Digger.Graphic.ParallaxingGraphic.Update">
+            <summary>
+            Metoda uakutualniająca pozycję grafiki.
+            </summary>
+        </member>
+        <member name="M:Digger.Graphic.ParallaxingGraphic.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Metoda rysująca.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+        </member>
+        <member name="T:Digger.Views.Exit">
+            <summary>
+            Klasa, której obiekt wywoływany jest bezpośrednio przed samym zamknięciem gry.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Exit.#ctor">
+            <summary>
+            Konstruktor.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Exit.LoadContent(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Metoda wczytuje tło w Exit.
+            </summary>
+            <param name="content">Manager zasobów.</param>
+        </member>
+        <member name="M:Digger.Views.Exit.Initialize">
+            <summary>
+            Metoda inicjalizująca obiekty interfejsu użytkownika.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Exit.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda wywołująca rysowanie obiektów interfejsu.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="M:Digger.Views.Exit.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda uaktualniająca obiekty interfejsu.
+            Odpowiada za obsługę zdarzeń.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="T:Digger.Views.Help">
+            <summary>
+            Klasa pomocy dostępna z poziomu menu.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Help.#ctor">
+            <summary>
+            Konstruktor.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Help.LoadContent(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Metoda wczytuje grafiki i czcionkni dla wszystkich obiektów znajdujących się w Help.
+            </summary>
+            <param name="content">Manager zasobów.</param>
+        </member>
+        <member name="M:Digger.Views.Help.Initialize">
+            <summary>
+            Metoda inicjalizująca obiekty interfejsu użytkownika.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Help.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda wywołująca rysowanie obiektów interfejsu.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="M:Digger.Views.Help.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda uaktualniająca obiekty interfejsu.
+            Odpowiada za obsługę zdarzeń.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="T:Digger.Views.InGameHelp">
+            <summary>
+            Klasa widoku pomocy dostępnej w trakcie rozgrywki.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.InGameHelp.#ctor">
+            <summary>
+            Konstruktor widoku pomocy widocznego w trakcie rozgrywki.
+            Domyślnie jest niewidoczny. 
+            </summary>
+        </member>
+        <member name="M:Digger.Views.InGameHelp.LoadContent(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Metoda wczytuje grafiki i czcionkni dla wszystkich obiektów znajdujących się w InGameHelp.
+            </summary>
+            <param name="content">Manager zasobów.</param>
+        </member>
+        <member name="M:Digger.Views.InGameHelp.Initialize">
+            <summary>
+            Metoda inicjalizująca obiekty interfejsu użytkownika.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.InGameHelp.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda wywołująca rysowanie obiektów interfejsu.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="M:Digger.Views.InGameHelp.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda uaktualniająca obiekty interfejsu.
+            Odpowiada za obsługę zdarzeń.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="T:Digger.Views.LoadStage">
+            <summary>
+            Klasa widoku służącego do wczytywania zapisanej rozgrywki.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.LoadStage.#ctor">
+            <summary>
+            Konstruktor widoku wczytywania istniejących rozgrywek.
+            Wczytuje je od najstarszej (pierwszej utwożonej) do najnoweszej.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.LoadStage.LoadContent(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Metoda wczytuje grafiki i czcionkni dla wszystkich obiektów znajdujących się w LoadState.
+            </summary>
+            <param name="content">Manager zasobów.</param>
+        </member>
+        <member name="M:Digger.Views.LoadStage.Initialize">
+            <summary>
+            Metoda inicjalizująca obiekty interfejsu użytkownika.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.LoadStage.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda wywołująca rysowanie obiektów interfejsu.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="M:Digger.Views.LoadStage.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda uaktualniająca obiekty interfejsu.
+            Odpowiada za obsługę zdarzeń.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="T:Digger.Views.Menu">
+            <summary>
+            Klasa menu głównego gry.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Menu.#ctor">
+            <summary>
+            Konstruktor menu głównego.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Menu.LoadContent(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Metoda wczytuje grafiki i czcionkni dla wszystkich obiektów znajdujących się w Menu.
+            </summary>
+            <param name="content">Manager zasobów.</param>
+        </member>
+        <member name="M:Digger.Views.Menu.Initialize">
+            <summary>
+            Metoda inicjalizująca widok menu. 
+            Ustawia na odpowiednie pozycje wszystkie obiekty graficzne.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Menu.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda wywołująca rysowanie obiektów interfejsu.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="M:Digger.Views.Menu.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda uaktualniająca obiekty interfejsu.
+            Odpowiada za obsługę zdarzeń.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="T:Digger.Views.NewGame">
+            <summary>
+            Klasa widoku interfejsu tworzenia nowej gry.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.NewGame.#ctor">
+            <summary>
+            Konstrukotr widoku okna nowej gry.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.NewGame.LoadContent(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Metoda wczytuje grafiki i czcionkni dla wszystkich obiektów znajdujących się w NewGame.
+            </summary>
+            <param name="content">Manager zasobów.</param>
+        </member>
+        <member name="M:Digger.Views.NewGame.Initialize">
+            <summary>
+            Metoda inicjalizująca obiekty interfejsu użytkownika.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.NewGame.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda wywołująca rysowanie obiektów interfejsu.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="M:Digger.Views.NewGame.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda uaktualniająca obiekty interfejsu.
+            Odpowiada za obsługę zdarzeń.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="T:Digger.Views.Options">
+            <summary>
+            Klasa widoku opcji (preferencji) gracza.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Options.#ctor">
+            <summary>
+            Konstruktor opcji.
+            Domyślnie widok ten jest niewidoczny.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Options.LoadContent(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Metoda wczytuje grafiki i czcionkni dla wszystkich obiektów znajdujących się w Options.
+            </summary>
+            <param name="content">Manager zasobów.</param>
+        </member>
+        <member name="M:Digger.Views.Options.Initialize">
+            <summary>
+            Metoda inicjalizująca obiekty interfejsu użytkownika.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Options.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda wywołująca rysowanie obiektów interfejsu.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="M:Digger.Views.Options.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda uaktualniająca obiekty interfejsu.
+            Odpowiada za obsługę zdarzeń.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="T:Digger.Views.Pause">
+            <summary>
+            Klasa widoku Pausy urachamianego widocznego tylko w trybie rozgrywki.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Pause.#ctor">
+            <summary>
+            Kontruktor widoku pausy.
+            Widok ustawiony jest jako niewidoczny.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Pause.LoadContent(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Metoda wczytuje grafiki i czcionkni dla wszystkich obiektów znajdujących się w Pause.
+            </summary>
+            <param name="content">Manager zasobów.</param>
+        </member>
+        <member name="M:Digger.Views.Pause.Initialize">
+            <summary>
+            Metoda inicjalizująca obiekty interfejsu użytkownika.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Pause.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda wywołująca rysowanie obiektów interfejsu.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="M:Digger.Views.Pause.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda uaktualniająca obiekty interfejsu.
+            Odpowiada za obsługę zdarzeń.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="T:Digger.Views.Stage">
+            <summary>
+            Klasa zawierająca całą logikę gry.
+            Wie, które obiekty interfejsu planszy należy narysować.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Stage.#ctor(System.Int32)">
+            <summary>
+            Konstruktor tworzący wszystkie obiekty potrzebne do zainicjalizowania rozgrywki.
+            </summary>
+            <param name="level">Numer bieżącego levelu.</param>
+        </member>
+        <member name="M:Digger.Views.Stage.LoadContent(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Metoda wczytuje grafiki, czcionkni oraz muzykę dla wszystkich obiektów znajdujących się w Stage.
+            </summary>
+            <param name="content">Manager zasobów.</param>
+        </member>
+        <member name="M:Digger.Views.Stage.Initialize">
+            <summary>
+            Metoda inicjalizująca obiekty interfejsu użytkownika,
+            muzykę oraz wszystkie elementy planszy.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Stage.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda wywołująca rysowanie obiektów gry, interfejsów oraz, jeżeli mają być widoczne - odpowiednio innych widoków.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="M:Digger.Views.Stage.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda uaktualniająca obiekty interfejsu.
+            Odpowiada za obsługę zdarzeń.
+            To tu znajduje się cała logika gry.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="T:Digger.Views.Lose">
+            <summary>
+            Klasa widoku przegranej.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Lose.#ctor(System.Int32)">
+            <summary>
+            Konstruktor widoku przegranej. 
+            Widok ten wyświetlany jest w momencie zabicia robaczka.
+            Domyślnie jest niewidoczny.
+            </summary>
+            <param name="currentLevel">Numer bieżącego levelu.</param>
+        </member>
+        <member name="M:Digger.Views.Lose.LoadContent(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Metoda wczytuje grafiki i czcionkni dla wszystkich obiektów znajdujących się w Lose.
+            </summary>
+            <param name="content">Manager zasobów.</param>
+        </member>
+        <member name="M:Digger.Views.Lose.Initialize">
+            <summary>
+            Metoda inicjalizująca obiekty interfejsu użytkownika.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Lose.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda wywołująca rysowanie obiektów interfejsu.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="M:Digger.Views.Lose.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda uaktualniająca obiekty interfejsu.
+            Odpowiada za obsługę zdarzeń.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="T:Digger.Views.Win">
+            <summary>
+            Klasa widoku odpowiadającego za wyświetlanie ekranu wygranej.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Win.#ctor(System.Int32)">
+            <summary>
+            Konstruktor.
+            Jako paramter przyjmuje numer levelu, do którego ma prowadzić przycisk do następnego levelu.
+            Jeżeli numer przekracza przyjęty limit wyświetlony zostje komunikat o przejściu gry.
+            </summary>
+            <param name="nextLevel">Numer następnego levelu.</param>
+        </member>
+        <member name="M:Digger.Views.Win.LoadContent(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Metoda wczytuje grafiki i czcionkni dla wszystkich obiektów znajdujących się w BestScores.
+            </summary>
+            <param name="content">Manager zasobów.</param>
+        </member>
+        <member name="M:Digger.Views.Win.Initialize">
+            <summary>
+            Metoda inicjalizująca obiekty interfejsu użytkownika.
+            </summary>
+        </member>
+        <member name="M:Digger.Views.Win.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda wywołująca rysowanie obiektów interfejsu.
+            </summary>
+            <param name="spriteBatch">Powłoka graficzna.</param>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+        <member name="M:Digger.Views.Win.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Metoda uaktualniająca obiekty interfejsu.
+            Odpowiada za obsługę zdarzeń.
+            </summary>
+            <param name="gameTime">Ramka czasowa.</param>
+        </member>
+    </members>
+</doc>
