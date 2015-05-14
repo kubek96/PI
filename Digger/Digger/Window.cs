@@ -33,8 +33,8 @@ namespace Digger
             Content.RootDirectory = "Content";
 
             // Wielkoœæ obrazu
-            graphics.PreferredBackBufferHeight = 900;
-            graphics.PreferredBackBufferWidth = 1440;
+            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
 
             if (graphics.PreferredBackBufferHeight <= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height &&
             graphics.PreferredBackBufferWidth <= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width)
